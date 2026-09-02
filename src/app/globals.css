@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --color-brand-yellow: #f5d613;
+  --color-brand-yellow-hover: #d4b910;
+  --color-brand-charcoal: #2b2b2a;
+  --color-brand-bg: #f7f5f0;
+  --color-brand-surface: #ffffff;
+  --color-brand-text: #2b2b2a;
+  --color-brand-text-secondary: #5a5a58;
+  --color-brand-border: #e5e2da;
+}
+
+@theme inline {
+  --color-brand-yellow: var(--color-brand-yellow);
+  --color-brand-yellow-hover: var(--color-brand-yellow-hover);
+  --color-brand-charcoal: var(--color-brand-charcoal);
+  --color-brand-bg: var(--color-brand-bg);
+  --color-brand-surface: var(--color-brand-surface);
+  --color-brand-text: var(--color-brand-text);
+  --color-brand-text-secondary: var(--color-brand-text-secondary);
+  --color-brand-border: var(--color-brand-border);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-archivo);
+}
+
+body {
+  background: var(--color-brand-bg);
+  color: var(--color-brand-text);
+}

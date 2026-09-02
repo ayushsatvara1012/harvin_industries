@@ -216,11 +216,14 @@ included for that case).
 
 ## 7. Session status (last updated: this session)
 
-**Repo state:** git initialized, on branch `chore/project-setup`, **no commits made
-yet** — everything below is uncommitted working tree. Next.js scaffolded via
-`create-next-app` directly into repo root (had to scaffold into a temp dir first and
-move up, since the folder name `Harvin_Industries` has capitals npm rejects — this
-is done, no action needed, just explaining the history if the tree looks odd).
+**Repo state:** git initialized, on branch `chore/project-setup`, root commit
+`6d99725` ("Scaffold Next.js project and build homepage (Phase 1)") — working tree
+clean as of that commit. Next.js scaffolded via `create-next-app` directly into repo
+root (had to scaffold into a temp dir first and move up, since the folder name
+`Harvin_Industries` has capitals npm rejects — this is done, no action needed).
+Note: `Harvin_brochures/` also has 3 WhatsApp images + 1 WhatsApp video committed
+that hadn't been reviewed yet as of this note — check them for additional product
+photos/content before the image-sourcing phase.
 
 **Approach:** building **page by page**, not the whole site at once — each page gets
 built, reviewed live at `localhost:3000`, and confirmed (palette/type/spacing) before

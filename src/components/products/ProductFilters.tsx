@@ -80,7 +80,7 @@ export function ProductFilters() {
       </label>
 
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-brand-text-secondary">
+        <h3 className="text-xs font-semibold tracking-widest text-brand-text-secondary">
           Type
         </h3>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -91,7 +91,7 @@ export function ProductFilters() {
               onClick={() =>
                 update({ type: option.value === "all" ? null : option.value, category: null })
               }
-              className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
+              className={`rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-colors ${
                 type === option.value
                   ? "bg-brand-brick text-brand-cream"
                   : "border border-brand-border bg-brand-surface text-brand-text-secondary hover:border-brand-brick hover:text-brand-ink"
@@ -104,7 +104,7 @@ export function ProductFilters() {
       </div>
 
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-brand-text-secondary">
+        <h3 className="text-xs font-semibold tracking-widest text-brand-text-secondary">
           Category
         </h3>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -113,7 +113,7 @@ export function ProductFilters() {
               key={value}
               type="button"
               onClick={() => update({ category: category === value ? null : value })}
-              className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
+              className={`rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-colors ${
                 category === value
                   ? "bg-brand-brick text-brand-cream"
                   : "border border-brand-border bg-brand-surface text-brand-text-secondary hover:border-brand-brick hover:text-brand-ink"
@@ -127,7 +127,7 @@ export function ProductFilters() {
 
       {showMaterial && (
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-widest text-brand-text-secondary">
+          <h3 className="text-xs font-semibold tracking-widest text-brand-text-secondary">
             Material
           </h3>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -136,7 +136,7 @@ export function ProductFilters() {
                 key={value}
                 type="button"
                 onClick={() => update({ material: material === value ? null : value })}
-                className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                className={`rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-colors ${
                   material === value
                     ? "bg-brand-brick text-brand-cream"
                     : "border border-brand-border bg-brand-surface text-brand-text-secondary hover:border-brand-brick hover:text-brand-ink"

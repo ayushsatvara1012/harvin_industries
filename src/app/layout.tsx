@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Archivo } from "next/font/google";
+import { Inter, Forum } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,10 +7,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const forum = Forum({
+  variable: "--font-forum",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -23,8 +23,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${archivo.variable} h-full antialiased`}
+      className={`${inter.variable} ${forum.variable} h-full antialiased`}
     >
+      <head>
+        {/* eslint-disable-next-line @next/next/no-page-custom-font -- icon font, not a page font; root layout is the correct place for a site-wide stylesheet link */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..500,0..1,-25..0&display=swap"
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

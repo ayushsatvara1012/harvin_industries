@@ -1,31 +1,61 @@
 @import "tailwindcss";
 
+/* "Fired Clay" palette — sampled from brick/terracotta tones, ties the site's
+   color language directly to what Harvin manufactures. */
 :root {
-  --color-brand-yellow: #f5d613;
-  --color-brand-yellow-hover: #d4b910;
-  --color-brand-charcoal: #2b2b2a;
-  --color-brand-bg: #f7f5f0;
+  --color-brand-ink: #2f1b27;
+  --color-brand-umber: #513533;
+  --color-brand-brick: #b4442a;
+  --color-brand-brick-hover: #98371f;
+  --color-brand-clay: #dcc4a2;
+  --color-brand-cream: #f7f1e6;
   --color-brand-surface: #ffffff;
-  --color-brand-text: #2b2b2a;
-  --color-brand-text-secondary: #5a5a58;
-  --color-brand-border: #e5e2da;
+  --color-brand-text: #2f1b27;
+  --color-brand-text-secondary: #6b5a52;
+  --color-brand-border: #e5d9c6;
 }
 
 @theme inline {
-  --color-brand-yellow: var(--color-brand-yellow);
-  --color-brand-yellow-hover: var(--color-brand-yellow-hover);
-  --color-brand-charcoal: var(--color-brand-charcoal);
-  --color-brand-bg: var(--color-brand-bg);
+  --color-brand-ink: var(--color-brand-ink);
+  --color-brand-umber: var(--color-brand-umber);
+  --color-brand-brick: var(--color-brand-brick);
+  --color-brand-brick-hover: var(--color-brand-brick-hover);
+  --color-brand-clay: var(--color-brand-clay);
+  --color-brand-cream: var(--color-brand-cream);
   --color-brand-surface: var(--color-brand-surface);
   --color-brand-text: var(--color-brand-text);
   --color-brand-text-secondary: var(--color-brand-text-secondary);
   --color-brand-border: var(--color-brand-border);
 
   --font-sans: var(--font-inter);
-  --font-display: var(--font-archivo);
+  --font-display: var(--font-forum);
+
+  --container-8xl: 90rem;
 }
 
 body {
-  background: var(--color-brand-bg);
+  background: var(--color-brand-cream);
   color: var(--color-brand-text);
+}
+
+/* Scrolling stays fully functional everywhere — only the scrollbar's visible
+   track/thumb are hidden, including inner scroll containers (e.g. spec tables). */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+  font-size: 1.25em;
+  line-height: 1;
+  vertical-align: -0.2em;
 }

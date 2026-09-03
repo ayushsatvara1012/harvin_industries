@@ -18,11 +18,19 @@ brand/company facts pulled from the brochure.
 
 ## Brand
 
-- Palette (decided, "Brochure Match" — see plan doc for full table): primary yellow
-  `#F5D613` / hover `#D4B910`, charcoal `#2B2B2A`, off-white bg `#F7F5F0`, white
-  surface `#FFFFFF`, text-secondary `#5A5A58`, border `#E5E2DA`. Use Tailwind
-  `brand.*` tokens, never hardcode these hex values inline.
-- Logo: hexagon "HI" mark. No standalone vector file yet — see plan doc open items.
+- Palette (decided, "Fired Clay" — sampled from brick/terracotta tones): ink
+  `#2F1B27`, umber `#513533`, brick `#B4442A` / hover `#98371F`, clay `#DCC4A2`,
+  cream (page bg) `#F7F1E6`, surface `#FFFFFF`, text-secondary `#6B5A52`, border
+  `#E5D9C6`. Tokens live in `src/app/globals.css` as `--color-brand-*` (Tailwind v4
+  `@theme`, not `tailwind.config.ts`) — use `brand-*` Tailwind classes, never
+  hardcode these hex values inline.
+- Fonts: **Forum** (serif display, weight 400) for headings via `font-display`,
+  **Inter** for body via `font-sans` — loaded in `src/app/layout.tsx`.
+- Icons: Google Material Symbols Outlined, loaded via stylesheet link in
+  `src/app/layout.tsx`, used through the `<Icon name="..." />` wrapper in
+  `src/components/ui/Icon.tsx` — never a different icon set.
+- Logo: hexagon "HI" mark (`src/components/layout/Logo.tsx`). No standalone vector
+  file yet — see plan doc open items.
 - No prices are ever rendered publicly unless a machine explicitly opts in
   (`priceVisible`) — default flow is "Request a Quote".
 
@@ -34,6 +42,15 @@ brand/company facts pulled from the brochure.
 
 ## Conventions
 
+- File structure: `src/components/` is split by purpose, not left flat —
+  `layout/` (Header, Footer, Logo — used on every page), `ui/` (generic
+  presentational primitives with no page knowledge — Icon, BrickWallPattern),
+  and one folder per page/feature (`home/` for the homepage sections; a future
+  page gets its own folder the same way, e.g. `products/`, `about/`). Each
+  folder has an `index.ts` barrel — import from the folder
+  (`@/components/home`), not the individual file, except within the folder
+  itself. Always use the `@/components/...` absolute path, never a relative
+  `./` import across folders.
 - Server Components by default; `"use client"` only where interactivity is needed.
 - All CMS/admin routes live under `/admin` and are protected by middleware — never
   render admin data on a page that skips the auth check.

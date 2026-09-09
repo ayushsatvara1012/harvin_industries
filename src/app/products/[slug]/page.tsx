@@ -9,11 +9,9 @@ import {
   ProductionTable,
   FeatureGroups,
   SpecTable,
-  VariantsTable,
 } from "@/components/products";
 import {
   CATEGORY_LABELS,
-  MATERIAL_LABELS,
   PRODUCTS,
   getProductBySlug,
   getRelatedProducts,
@@ -58,7 +56,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
             <div className="grid gap-4">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-brand-cream">
+              <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-brand-cream">
                 {product.images[0] ? (
                   <Image
                     src={product.images[0]}
@@ -95,9 +93,8 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
             </div>
 
             <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-brand-brick">
+              <p className="text-sm font-semibold uppercase tracking-widest text-brand-accent">
                 {CATEGORY_LABELS[product.category]}
-                {product.material ? ` · ${MATERIAL_LABELS[product.material]}` : ""}
               </p>
               <h1 className="mt-3 font-display text-4xl tracking-tight text-brand-ink sm:text-5xl">
                 {product.name}
@@ -107,7 +104,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
                 {product.description}
               </p>
 
-              {product.type === "machine" && (
+              {(product.outputCapacity || product.power) && (
                 <div className="mt-6 flex flex-wrap gap-6">
                   {product.outputCapacity && (
                     <div>
@@ -134,7 +131,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
 
               <Link
                 href={quoteHref}
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-brick px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-brand-cream transition-colors hover:bg-brand-brick-hover"
+                className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-brick px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-brand-ink transition-colors hover:bg-brand-brick-hover"
               >
                 Request a Quote
                 <Icon name="arrow_forward" className="text-base" />
@@ -157,14 +154,31 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         {product.productionTable && (
           <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
             <h2 className="font-display text-3xl tracking-tight text-brand-ink">
-              Production Specification
+              Output Products
             </h2>
             <p className="mt-2 text-sm text-brand-text-secondary">
-              Output per hour by product and mould size on the {product.name}.
+              Products the {product.name} makes, with mould size and output per hour.
             </p>
             <div className="mt-6">
               <ProductionTable summary={product.productionSummary} rows={product.productionTable} />
             </div>
+            {product.additionalOutputs && (
+              <div className="mt-6">
+                <p className="text-xs font-semibold uppercase tracking-wide text-brand-text-secondary">
+                  Also produced with optional moulds
+                </p>
+                <ul className="mt-3 flex flex-wrap gap-2">
+                  {product.additionalOutputs.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-full border border-brand-border bg-brand-surface px-4 py-2 text-xs font-semibold text-brand-ink"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </section>
         )}
 
@@ -175,20 +189,6 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
             </h2>
             <div className="mt-6">
               <FeatureGroups groups={product.featureGroups} />
-            </div>
-          </section>
-        )}
-
-        {product.variants && (
-          <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-            <h2 className="font-display text-3xl tracking-tight text-brand-ink">
-              Available Sizes &amp; Output
-            </h2>
-            <p className="mt-2 text-sm text-brand-text-secondary">
-              Mould sizes and hourly output by Harvin machine.
-            </p>
-            <div className="mt-6">
-              <VariantsTable variants={product.variants} />
             </div>
           </section>
         )}

@@ -1,22 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
-import {
-  CATEGORY_LABELS,
-  MATERIAL_LABELS,
-  type Product,
-} from "@/data/products";
+import { CATEGORY_LABELS, type Product } from "@/data/products";
 
 export function ProductCard({ product }: { product: Product }) {
   const image = product.images[0];
-  const meta =
-    product.type === "machine"
-      ? [product.outputCapacity && `Up to ${product.outputCapacity.toLocaleString()} pcs/hr`, product.power]
-          .filter(Boolean)
-          .join(" · ")
-      : product.material
-        ? MATERIAL_LABELS[product.material]
-        : undefined;
+  const meta = [
+    product.outputCapacity && `Up to ${product.outputCapacity.toLocaleString()} pcs/hr`,
+    product.power,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <Link

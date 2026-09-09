@@ -3,36 +3,29 @@ import { Suspense } from "react";
 import { Header, Footer } from "@/components/layout";
 import { IsometricLines } from "@/components/ui";
 import { ProductCard, ProductFilters } from "@/components/products";
-import {
-  PRODUCTS,
-  type Category,
-  type Material,
-  type ProductType,
-} from "@/data/products";
+import { PRODUCTS, type Category } from "@/data/products";
 
 export const metadata: Metadata = {
   title: "Products — Harvin Industries",
   description:
-    "Browse Harvin Industries' full range of brick, block, and paver making machines, batching plants, mixers, and the bricks, pavers, and blocks they produce.",
+    "Browse Harvin Industries' full range of brick, block, and paver making machines — press machines, batching plants, and mixers.",
 };
 
-function filterProducts(searchParams: {
-  q?: string;
-  type?: string;
-  category?: string;
-  material?: string;
-}) {
+function filterProducts(searchParams: { q?: string; category?: string }) {
   const q = searchParams.q?.trim().toLowerCase();
-  const type = searchParams.type as ProductType | undefined;
   const category = searchParams.category as Category | undefined;
-  const material = searchParams.material as Material | undefined;
 
   return PRODUCTS.filter((product) => {
-    if (type && product.type !== type) return false;
     if (category && product.category !== category) return false;
-    if (material && product.material !== material) return false;
     if (q) {
-      const haystack = `${product.name} ${product.tagline} ${product.description}`.toLowerCase();
+      // Output names come from the production table so a search for "paver"
+      // still finds the machines that make them.
+      const outputs = [
+        ...(product.productionTable?.map((row) => `${row.product} ${row.sizeMm}`) ?? []),
+        ...(product.additionalOutputs ?? []),
+      ].join(" ");
+      const haystack =
+        `${product.name} ${product.tagline} ${product.description} ${outputs}`.toLowerCase();
       if (!haystack.includes(q)) return false;
     }
     return true;
@@ -42,11 +35,9 @@ function filterProducts(searchParams: {
 export default async function ProductsPage(props: PageProps<"/products">) {
   const searchParams = await props.searchParams;
   const q = typeof searchParams.q === "string" ? searchParams.q : undefined;
-  const type = typeof searchParams.type === "string" ? searchParams.type : undefined;
   const category = typeof searchParams.category === "string" ? searchParams.category : undefined;
-  const material = typeof searchParams.material === "string" ? searchParams.material : undefined;
 
-  const results = filterProducts({ q, type, category, material });
+  const results = filterProducts({ q, category });
 
   return (
     <>
@@ -61,11 +52,11 @@ export default async function ProductsPage(props: PageProps<"/products">) {
               Product Portfolio
             </p>
             <h1 className="mt-3 font-display text-4xl tracking-tight text-brand-cream sm:text-5xl">
-              Machines &amp; Output Products
+              Brick Making Machines
             </h1>
             <p className="mt-4 max-w-2xl text-brand-clay/70">
-              Press machines, batching plants, and mixers — plus the bricks, pavers,
-              and blocks each one produces. Search or filter to find the right fit.
+              Press machines, batching plants, and mixers. Each machine lists the
+              bricks, pavers, and blocks it produces in its production table.
             </p>
           </div>
         </section>
@@ -80,7 +71,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
 
             <div>
               <p className="mb-6 text-sm text-brand-text-secondary">
-                {results.length} {results.length === 1 ? "product" : "products"} found
+                {results.length} {results.length === 1 ? "machine" : "machines"} found
               </p>
 
               {results.length > 0 ? (
@@ -91,7 +82,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-brand-border bg-brand-surface px-6 py-16 text-center">
-                  <p className="font-display text-xl text-brand-ink">No products found</p>
+                  <p className="font-display text-xl text-brand-ink">No machines found</p>
                   <p className="mt-2 text-sm text-brand-text-secondary">
                     Try a different search term or clear your filters.
                   </p>

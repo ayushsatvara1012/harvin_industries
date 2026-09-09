@@ -23,7 +23,7 @@ export function HowItWorks() {
   return (
     <section className="mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-7xl items-center px-4 py-20 sm:px-6 lg:px-8">
       <div className="w-full">
-        <p className="text-sm font-semibold uppercase tracking-widest text-brand-brick">
+        <p className="text-sm font-semibold uppercase tracking-widest text-brand-accent">
           Process
         </p>
         <h2 className="mt-3 font-display text-4xl tracking-tight text-brand-ink sm:text-5xl">
@@ -33,7 +33,7 @@ export function HowItWorks() {
         <div className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-8">
           {STEPS.map((step) => (
             <div key={step.number}>
-              <span className="font-display text-5xl text-brand-brick/40">
+              <span className="font-display text-5xl text-brand-accent/40">
                 {step.number}
               </span>
               <h3 className="mt-4 font-display text-2xl text-brand-ink">

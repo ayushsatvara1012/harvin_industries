@@ -13,7 +13,7 @@ export function FeatureGroups({ groups }: { groups: FeatureGroup[] }) {
           <ul className="mt-3 space-y-2">
             {group.items.map((item) => (
               <li key={item} className="flex gap-2.5 text-sm text-brand-text-secondary">
-                <Icon name="check_circle" className="mt-0.5 shrink-0 text-base text-brand-brick" />
+                <Icon name="check_circle" className="mt-0.5 shrink-0 text-base text-brand-accent" />
                 <span>{item}</span>
               </li>
             ))}

@@ -19,7 +19,7 @@ export function CtaBanner() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-brand-brick px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-brand-cream transition-colors hover:bg-brand-brick-hover"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-brick px-7 py-3.5 text-sm font-semibold uppercase tracking-wide text-brand-ink transition-colors hover:bg-brand-brick-hover"
           >
             Request a Quote
             <Icon name="arrow_forward" className="text-base" />

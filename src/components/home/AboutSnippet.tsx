@@ -3,7 +3,7 @@ export function AboutSnippet() {
     <section className="mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-7xl items-center px-4 py-20 sm:px-6 lg:px-8">
       <div className="grid gap-10 lg:grid-cols-3 lg:gap-16">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-brand-brick">
+          <p className="text-sm font-semibold uppercase tracking-widest text-brand-accent">
             About Our Company
           </p>
           <h2 className="mt-3 font-display text-4xl tracking-tight text-brand-ink sm:text-5xl">

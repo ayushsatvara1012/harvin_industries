@@ -36,7 +36,7 @@ export function LatestProducts() {
     <section className="mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 lg:px-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-brand-brick">
+          <p className="text-sm font-semibold uppercase tracking-widest text-brand-accent">
             Product Portfolio
           </p>
           <h2 className="mt-3 font-display text-4xl tracking-tight text-brand-ink sm:text-5xl">
@@ -45,7 +45,7 @@ export function LatestProducts() {
         </div>
         <Link
           href="/products"
-          className="text-sm font-semibold text-brand-ink underline decoration-brand-brick decoration-2 underline-offset-4"
+          className="text-sm font-semibold text-brand-ink underline decoration-brand-accent decoration-2 underline-offset-4"
         >
           View all products
         </Link>

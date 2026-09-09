@@ -35,7 +35,7 @@ export function ProductionTable({
                 <td className="px-5 py-3 font-medium text-brand-ink">{row.product}</td>
                 <td className="px-5 py-3 text-brand-text-secondary">{row.sizeMm}</td>
                 <td className="px-5 py-3 text-brand-text-secondary">{row.pcsPerMould}</td>
-                <td className="px-5 py-3 font-semibold text-brand-brick">
+                <td className="px-5 py-3 font-semibold text-brand-accent">
                   {row.pcsPerHour.toLocaleString()}
                 </td>
               </tr>

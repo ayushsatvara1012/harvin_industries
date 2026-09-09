@@ -16,7 +16,7 @@ export function TrustStrip() {
             key={item.label}
             className="flex flex-col items-center gap-2 text-center lg:flex-row lg:items-start lg:text-left"
           >
-            <Icon name={item.icon} className="text-2xl text-brand-brick" />
+            <Icon name={item.icon} className="text-2xl text-brand-accent" />
             <div>
               <p className="font-display text-lg text-brand-ink">{item.label}</p>
               <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-brand-text-secondary">

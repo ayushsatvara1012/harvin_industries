@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
-import { Logo } from "@/components/layout/Logo";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -15,13 +15,21 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-brand-border/60 bg-brand-cream/50 backdrop-blur-lg backdrop-saturate-150">
+    <header
+      className={`sticky top-0 z-50 border-b border-brand-border/60 bg-brand-cream/50 backdrop-blur-lg backdrop-saturate-150 md:rounded-none ${
+        open ? "rounded-b-none" : "rounded-b-2xl"
+      }`}
+    >
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5">
-          <Logo className="h-9 w-9 text-brand-ink" />
-          <span className="font-display font-semibold text-xl tracking-tight text-brand-ink">
-            HARVIN INDUSTRIES
-          </span>
+          <Image
+            src="/Harvin_brand_logo.svg"
+            alt="Harvin Industries"
+            width={904}
+            height={298}
+            priority
+            className="h-12 w-auto"
+          />
         </Link>
 
         <nav className="hidden md:flex md:items-center md:gap-10">
@@ -29,7 +37,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-base font-medium text-brand-text-secondary transition-colors hover:text-brand-ink"
+              className="text-xl font-display font-semibold text-brand-text transition-colors hover:text-brand-ink"
             >
               {link.label}
             </Link>
@@ -39,7 +47,7 @@ export function Header() {
         <div className="hidden md:flex md:items-center md:gap-5">
           <Link
             href="/contact"
-            className="rounded-full bg-brand-brick px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-brand-cream transition-colors hover:bg-brand-brick-hover"
+            className="rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ink transition-colors border border-brand-brick hover:bg-brand-brick/10 hover:text-brand-ink"
           >
             Request a Quote
           </Link>
@@ -65,13 +73,21 @@ export function Header() {
         </button>
       </div>
 
-      {open && (
-        <div className="border-t border-brand-border/60 bg-brand-cream/70 backdrop-blur-lg md:hidden">
+      {/* Overlays the page instead of sitting in flow, so opening the menu never
+          pushes the hero down. Same surface as the bar, so they read as one
+          container; grid rows animate the height without a hardcoded max. */}
+      <div
+        className={`absolute inset-x-0 top-full grid overflow-hidden rounded-b-2xl border-b border-brand-border/60 bg-brand-surface transition-[grid-template-rows,opacity] duration-300 ease-out md:hidden ${
+          open ? "grid-rows-[1fr] opacity-100" : "pointer-events-none grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="min-h-0">
           <nav className="flex flex-col gap-1 px-4 py-3">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
+                tabIndex={open ? undefined : -1}
                 onClick={() => setOpen(false)}
                 className="rounded-md px-3 py-2 text-sm font-medium text-brand-text hover:bg-brand-clay/30"
               >
@@ -80,14 +96,16 @@ export function Header() {
             ))}
             <Link
               href="/contact"
+              tabIndex={open ? undefined : -1}
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-brand-brick px-4 py-2.5 text-center text-sm font-semibold text-brand-cream"
+              className="mt-2 rounded-full border border-brand-brick px-4 py-2 text-center text-sm font-medium text-brand-ink transition-colors hover:bg-brand-brick"
             >
               Request a Quote
             </Link>
           </nav>
         </div>
-      )}
+      </div>
+
     </header>
   );
 }

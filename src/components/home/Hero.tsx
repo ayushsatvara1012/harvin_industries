@@ -24,11 +24,6 @@ export function Hero() {
       {/* Content Container */}
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-36">
         <div className="max-w-2xl">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-brick/40 bg-brand-ink/60 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-clay backdrop-blur-md">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-brick animate-pulse" />
-            Heavy-Duty Industrial Engineering
-          </div>
-
           <h1 className="font-display text-4xl leading-[1.08] tracking-tight text-brand-cream sm:text-5xl md:text-6xl lg:text-7xl">
             Built for <span className="text-brand-brick">Performance</span>
           </h1>
@@ -42,7 +37,7 @@ export function Hero() {
           <div className="mt-8 flex flex-col gap-3.5 sm:mt-10 sm:flex-row sm:items-center">
             <Link
               href="/products"
-              className="inline-flex items-center justify-center rounded-full bg-brand-brick px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-brand-cream shadow-lg shadow-brand-brick/30 transition-all duration-200 hover:bg-brand-brick-hover hover:shadow-brand-brick/50"
+              className="inline-flex items-center justify-center rounded-full bg-brand-brick px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-brand-ink transition-all duration-200 hover:bg-brand-brick-hover"
             >
               View Machines
             </Link>

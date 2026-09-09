@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "Harvin Industries — Brick & Block Making Machines",
   description:
     "ISO 9001:2015 certified manufacturer of Fly Ash Brick, Concrete Brick, and Paver Block making machines in Ahmedabad. Built for performance.",
+  icons: {
+    icon: "/harvin_logo.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

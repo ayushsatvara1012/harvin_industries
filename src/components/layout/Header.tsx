@@ -15,11 +15,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header
-      className={`sticky top-0 z-50 border-b border-brand-border/60 bg-brand-cream/50 backdrop-blur-lg backdrop-saturate-150 md:rounded-none ${
-        open ? "rounded-b-none" : "rounded-b-2xl"
-      }`}
-    >
+    <header className="sticky top-0 z-50 border-b border-brand-border/60 bg-brand-cream/50 backdrop-blur-lg backdrop-saturate-150">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5">
           <Image
@@ -77,8 +73,8 @@ export function Header() {
           pushes the hero down. Same surface as the bar, so they read as one
           container; grid rows animate the height without a hardcoded max. */}
       <div
-        className={`absolute inset-x-0 top-full grid overflow-hidden rounded-b-2xl border-b border-brand-border/60 bg-brand-surface transition-[grid-template-rows,opacity] duration-300 ease-out md:hidden ${
-          open ? "grid-rows-[1fr] opacity-100" : "pointer-events-none grid-rows-[0fr] opacity-0"
+        className={`absolute inset-x-0 top-full grid overflow-hidden rounded-b-2xl border-b border-brand-border/60 bg-brand-surface transition-[grid-template-rows] duration-300 ease-out md:hidden ${
+          open ? "grid-rows-[1fr]" : "pointer-events-none grid-rows-[0fr]"
         }`}
       >
         <div className="min-h-0">

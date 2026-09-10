@@ -1,106 +1,104 @@
 import Image from "next/image";
 
 const ADVANTAGES = [
-  {
-    icon: "verified",
-    title: "Robust & Reliable Machines",
-  },
-  {
-    icon: "memory",
-    title: "Advanced Technology",
-  },
-  {
-    icon: "eco",
-    title: "Energy Efficient Solutions",
-  },
-  {
-    icon: "build",
-    title: "Custom Engineering",
-  },
-  {
-    icon: "support_agent",
-    title: "Strong After-Sales Support",
-  },
+  { icon: "fitness_center", title: "Robust & Reliable Machines" },
+  { icon: "eco", title: "Advanced Technology" },
+  { icon: "energy_savings_leaf", title: "Energy Efficient Solutions" },
+  { icon: "handyman", title: "Custom Engineering" },
+  { icon: "support_agent", title: "Strong After-Sales Support" },
 ];
+
+function HexIcon({ icon }: { icon: string }) {
+  return (
+    <span className="relative flex h-14 w-14 items-center justify-center">
+      <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden="true">
+        <polygon
+          points="50,3 93,26.5 93,73.5 50,97 7,73.5 7,26.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="5"
+          className="text-brand-yellow"
+        />
+      </svg>
+      <span className="material-symbols-outlined relative text-2xl text-brand-yellow">{icon}</span>
+    </span>
+  );
+}
 
 export function AdvantageSection() {
   return (
-    <section id="advantage" className="relative bg-[#121417] text-white py-20 lg:py-28 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column: Tag, Headline, 5 Feature Icons */}
-          <div className="lg:col-span-6 z-10">
-            {/* Tag */}
-            <div className="flex items-center gap-2">
-              <span className="w-1 h-3.5 bg-amber-400 inline-block" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">
-                OUR ADVANTAGE
-              </span>
-            </div>
+    <section id="advantage" className="relative scroll-mt-20 bg-brand-ink text-white overflow-hidden">
+      {/* Photograph filling the right of the band */}
+      <div className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[46%]">
+        <Image
+          src="/images/mockup/advantage-warehouse-4k.webp"
+          alt="Industrial Block Inventory and Warehouse"
+          fill
+          sizes="46vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-brand-ink/30" />
+        {/* Extra shade at the top so the strapline stays legible over the roof lights */}
+        <div className="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-brand-ink/85 to-transparent" />
+      </div>
 
-            {/* Headline */}
-            <h2 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-white leading-[1.12]">
-              Engineered <br />
-              for <span className="text-amber-400">Your Advantage</span>
-            </h2>
+      {/* Yellow arrow edge, with the dark panel riding just in front of it */}
+      <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[66%] bg-brand-yellow clip-wedge-right" />
+      <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[66%] -translate-x-[9px] bg-brand-ink clip-wedge-right" />
 
-            {/* 5 Circular Gold Icon Feature Items */}
-            <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
-              {ADVANTAGES.map((item, idx) => (
-                <div
-                  key={item.title}
-                  className={`flex flex-col items-start gap-3 group ${
-                    idx === 4 ? "col-span-2 sm:col-span-1" : ""
-                  }`}
-                >
-                  {/* Hexagonal / Circular Yellow Outline Icon Container */}
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-amber-400/60 bg-amber-400/10 text-amber-400 transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-400 group-hover:text-black shadow-lg shadow-amber-400/10">
-                    <span className="material-symbols-outlined text-2xl">{item.icon}</span>
-                  </div>
-                  <p className="text-xs sm:text-sm font-bold text-gray-200 leading-snug group-hover:text-amber-400 transition-colors">
-                    {item.title}
-                  </p>
-                </div>
-              ))}
-            </div>
+      {/* Strapline sitting over the photo */}
+      <p className="absolute right-8 xl:right-16 top-20 z-20 hidden lg:block text-right text-base font-extrabold drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)] uppercase leading-[1.2] tracking-tight text-brand-yellow">
+        Stronger
+        <br />
+        Buildings
+        <br />
+        Brighter
+        <br />
+        Communities
+      </p>
+
+      <div className="relative z-20 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="lg:max-w-[58%]">
+          <div className="flex items-center gap-2.5">
+            <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
+            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-gray-400">
+              Our Advantage
+            </span>
           </div>
 
-          {/* Right Column: Angled Photographic Warehouse Visual + Accent Box */}
-          <div className="lg:col-span-6 relative">
-            <div className="relative group">
-              {/* Warehouse Stored Cured Blocks Photo with Chevron/Angled Cut */}
-              <div
-                className="relative aspect-[16/11] w-full overflow-hidden bg-gray-900 shadow-2xl border border-white/10"
-                style={{
-                  clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 8% 100%, 0% 50%)",
-                }}
-              >
-                <Image
-                  src="/images/mockup/advantage-warehouse-4k.webp"
-                  alt="Industrial Block Inventory and Warehouse"
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              </div>
+          <h2 className="mt-4 font-display text-4xl sm:text-5xl tracking-tight text-white leading-[1.05]">
+            Engineered <br />
+            for <span className="text-brand-yellow">Your Advantage</span>
+          </h2>
 
-              {/* Yellow Angle Accent Box: STRONGER BUILDINGS BRIGHTER COMMUNITIES */}
-              <div
-                className="absolute top-6 right-0 sm:-right-4 z-20 bg-amber-400 text-black py-5 px-6 font-black uppercase tracking-tight shadow-xl"
-                style={{
-                  clipPath: "polygon(18px 0%, 100% 0%, 100% 100%, 0% 100%)",
-                }}
-              >
-                <div className="text-left text-xs sm:text-sm leading-tight font-black pl-3 text-gray-950">
-                  <p className="font-extrabold text-gray-900">STRONGER</p>
-                  <p className="font-black text-black">BUILDINGS</p>
-                  <p className="font-extrabold text-gray-900 mt-1">BRIGHTER</p>
-                  <p className="font-black text-black">COMMUNITIES</p>
-                </div>
+          {/* Five pillars across a single row on desktop */}
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-8">
+            {ADVANTAGES.map((item) => (
+              <div key={item.title} className="flex flex-col items-center text-center gap-3">
+                <HexIcon icon={item.icon} />
+                <p className="text-[11px] font-semibold leading-snug text-gray-200 max-w-[110px]">
+                  {item.title}
+                </p>
               </div>
-            </div>
+            ))}
           </div>
+        </div>
+
+        {/* Small screens get the photo stacked underneath */}
+        <div className="relative mt-12 aspect-[16/9] w-full overflow-hidden lg:hidden">
+          <Image
+            src="/images/mockup/advantage-warehouse-4k.webp"
+            alt="Industrial Block Inventory and Warehouse"
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-brand-ink/80 to-transparent" />
+          <p className="absolute right-5 top-5 text-right text-sm font-extrabold uppercase leading-tight text-brand-yellow">
+            Stronger Buildings
+            <br />
+            Brighter Communities
+          </p>
         </div>
       </div>
     </section>

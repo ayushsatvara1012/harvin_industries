@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { BrandLogo } from "./BrandLogo";
 
@@ -27,6 +28,7 @@ const NAV_ITEMS = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -42,10 +44,10 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200/80 shadow-xs transition-colors">
+    <header className="sticky top-0 z-50 w-full bg-brand-ink border-b border-white/10">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <BrandLogo variant="light" />
+        <BrandLogo variant="dark" />
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-7">
@@ -62,12 +64,12 @@ export function Header() {
                   <button
                     type="button"
                     onClick={() => setProductsDropdownOpen((v) => !v)}
-                    className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-gray-800 hover:text-amber-600 transition-colors"
+                    className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-white hover:text-brand-yellow transition-colors"
                   >
                     {item.label}
                     <svg
                       className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                        productsDropdownOpen ? "rotate-180 text-amber-600" : "text-gray-500"
+                        productsDropdownOpen ? "rotate-180 text-brand-yellow" : "text-gray-400"
                       }`}
                       fill="none"
                       viewBox="0 0 24 24"
@@ -86,7 +88,7 @@ export function Header() {
                           key={subItem.label}
                           href={subItem.href}
                           onClick={() => setProductsDropdownOpen(false)}
-                          className="flex items-center px-3 py-2 text-xs font-medium text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors"
+                          className="flex items-center px-3 py-2 text-xs font-medium text-gray-700 rounded-lg hover:bg-brand-yellow/10 hover:text-brand-accent transition-colors"
                         >
                           {subItem.label}
                         </Link>
@@ -97,13 +99,21 @@ export function Header() {
               );
             }
 
+            const isActive =
+              item.href === "/" ? pathname === "/" : pathname.startsWith(item.href.split("#")[0]) && item.href !== "/";
+
             return (
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-[13.5px] font-semibold text-gray-800 hover:text-amber-600 transition-colors"
+                className={`relative py-1 text-[13.5px] font-semibold transition-colors ${
+                  isActive ? "text-white" : "text-gray-200 hover:text-brand-yellow"
+                }`}
               >
                 {item.label}
+                {isActive && (
+                  <span className="absolute -bottom-0.5 left-0 h-[2px] w-full bg-brand-yellow" />
+                )}
               </Link>
             );
           })}
@@ -113,7 +123,7 @@ export function Header() {
         <div className="hidden lg:flex items-center">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-amber-500 hover:bg-amber-600 active:bg-amber-700 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-black transition-all duration-200 shadow-sm hover:shadow-md"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-yellow hover:bg-brand-accent px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
           >
             <span>Request A Quote</span>
             <svg
@@ -132,7 +142,7 @@ export function Header() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen((v) => !v)}
-          className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100"
+          className="lg:hidden p-2 rounded-lg text-white hover:bg-white/10"
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? (
@@ -149,14 +159,14 @@ export function Header() {
 
       {/* Mobile drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-gray-100 bg-white px-4 pt-2 pb-6 shadow-xl">
+        <div className="lg:hidden border-t border-white/10 bg-brand-ink px-4 pt-2 pb-6 shadow-xl">
           <nav className="flex flex-col space-y-1">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-semibold text-gray-800 hover:bg-amber-50 hover:text-amber-700"
+                className="rounded-lg px-3 py-2 text-sm font-semibold text-gray-200 hover:bg-white/5 hover:text-brand-yellow"
               >
                 {item.label}
               </Link>
@@ -165,7 +175,7 @@ export function Header() {
               <Link
                 href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-full bg-amber-500 py-3 text-xs font-bold uppercase tracking-wider text-black hover:bg-amber-600"
+                className="flex items-center justify-center gap-2 rounded-full bg-brand-yellow py-3 text-xs font-bold uppercase tracking-wider text-brand-ink hover:bg-brand-accent"
               >
                 <span>Request A Quote</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

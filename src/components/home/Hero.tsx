@@ -31,6 +31,12 @@ const SLIDES = [
   },
 ];
 
+const BADGES = [
+  { icon: "bolt", line1: "HIGH", line2: "EFFICIENCY" },
+  { icon: "verified_user", line1: "RELIABLE", line2: "PERFORMANCE" },
+  { icon: "trending_up", line1: "BUILT", line2: "FOR LONG TERM" },
+];
+
 export function Hero() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const slide = SLIDES[currentSlideIndex];
@@ -40,8 +46,8 @@ export function Hero() {
   };
 
   return (
-    <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center overflow-hidden bg-[#121417]">
-      {/* Background 4K Ultra HD Industrial Machine Image */}
+    <section className="relative min-h-[560px] lg:min-h-[640px] flex items-center overflow-hidden bg-brand-ink">
+      {/* Full-bleed plant photograph */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/mockup/hero-plant-4k.webp"
@@ -49,140 +55,128 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[70%_center] lg:object-center brightness-90"
+          className="object-cover object-[62%_center]"
         />
-        {/* Dark readability overlays tailored to contrast text */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#121417] via-[#121417]/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121417] via-transparent to-[#121417]/40" />
+        {/* Left-weighted scrim so the headline holds contrast over the machine */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-ink via-brand-ink/85 via-40% to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/70 via-transparent to-brand-ink/30" />
       </div>
 
-      {/* Hero Content Container */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left Column: Headline, Description & CTAs */}
-          <div className="lg:col-span-8 max-w-2xl">
-            {/* Top Eyebrow Tag */}
-            <p className="text-xs sm:text-[13px] font-bold tracking-[0.25em] uppercase text-gray-300">
-              {slide.tagline}
-            </p>
+      {/* Content */}
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="max-w-2xl">
+          <p className="text-[11px] sm:text-xs font-semibold tracking-[0.28em] uppercase text-gray-300">
+            {slide.tagline}
+          </p>
 
-            {/* Main Headline */}
-            <h1 className="mt-4 font-display text-5xl sm:text-6xl lg:text-7xl font-normal tracking-tight text-white leading-[1.08]">
-              {slide.title1} <br />
-              <span className="text-amber-400 drop-shadow-[0_2px_12px_rgba(245,158,11,0.35)]">
-                {slide.title2}
-              </span>
-            </h1>
+          <h1 className="mt-5 font-display text-5xl sm:text-6xl lg:text-7xl tracking-tight text-white leading-[0.98]">
+            {slide.title1} <br />
+            <span className="text-brand-yellow-light">{slide.title2}</span>
+          </h1>
 
-            {/* Subhead Description */}
-            <p className="mt-5 max-w-xl text-base sm:text-lg text-gray-300 leading-relaxed font-normal">
-              {slide.description}
-            </p>
+          <p className="mt-5 max-w-lg text-sm sm:text-base text-gray-300 leading-relaxed">
+            {slide.description}
+          </p>
 
-            {/* Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 rounded-full bg-amber-500 hover:bg-amber-600 px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-black transition-all duration-200 shadow-lg hover:shadow-amber-500/20"
-              >
-                <span>Explore Our Machines</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </Link>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 bg-brand-yellow hover:bg-brand-accent px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
+            >
+              <span>Explore Our Machines</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
 
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-full border border-white/60 hover:border-amber-400 bg-black/30 backdrop-blur-sm px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-white hover:text-amber-400 transition-all duration-200"
-              >
-                Request A Quote
-              </Link>
-            </div>
-
-            {/* Bottom 3 Feature Badges */}
-            <div className="mt-14 pt-8 border-t border-white/15 flex flex-wrap items-center gap-8 sm:gap-12">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-amber-400/40 bg-amber-500/10 text-amber-400">
-                  <span className="material-symbols-outlined text-xl">bolt</span>
-                </div>
-                <span className="text-xs font-bold tracking-wider uppercase text-white">
-                  High Efficiency
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-amber-400/40 bg-amber-500/10 text-amber-400">
-                  <span className="material-symbols-outlined text-xl">verified</span>
-                </div>
-                <span className="text-xs font-bold tracking-wider uppercase text-white">
-                  Reliable Performance
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-amber-400/40 bg-amber-500/10 text-amber-400">
-                  <span className="material-symbols-outlined text-xl">trending_up</span>
-                </div>
-                <span className="text-xs font-bold tracking-wider uppercase text-white">
-                  Built For Long Term
-                </span>
-              </div>
-            </div>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 border border-white/70 hover:border-brand-yellow px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-white hover:text-brand-yellow transition-colors"
+            >
+              <span>Request a Quote</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
           </div>
 
-          {/* Right Column: Carousel Slide Numbers */}
-          <div className="lg:col-span-4 hidden lg:flex flex-col items-end justify-center pr-4">
-            <div className="flex flex-col items-center gap-3 text-right">
-              {SLIDES.map((s, idx) => {
-                const isActive = idx === currentSlideIndex;
-                return (
-                  <button
-                    key={s.id}
-                    onClick={() => setCurrentSlideIndex(idx)}
-                    className="flex items-center gap-2 group cursor-pointer transition-all"
-                  >
-                    {isActive && <div className="w-5 h-[2px] bg-amber-400" />}
-                    <span
-                      className={`text-sm font-bold tracking-wider transition-colors ${
-                        isActive
-                          ? "text-amber-400 font-extrabold"
-                          : "text-gray-500 group-hover:text-gray-300"
-                      }`}
-                    >
-                      {s.id}
-                    </span>
-                  </button>
-                );
-              })}
+          {/* Trust badges, separated by hairline rules as in the design */}
+          <div className="mt-14 flex flex-wrap items-center">
+            {BADGES.map((badge, idx) => (
+              <div
+                key={badge.line1}
+                className={`flex items-center gap-3 pr-6 sm:pr-10 ${
+                  idx > 0 ? "border-l border-white/20 pl-6 sm:pl-10" : ""
+                }`}
+              >
+                <span className="material-symbols-outlined text-brand-yellow text-[26px]">
+                  {badge.icon}
+                </span>
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-white leading-tight">
+                  {badge.line1}
+                  <br />
+                  {badge.line2}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-              {/* Next Slide Arrow Button */}
+      {/* Slide index rail, pinned to the right edge */}
+      <div className="absolute right-6 lg:right-12 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col items-end gap-3">
+        <div className="flex flex-col items-end gap-2.5 border-l border-white/25 pl-4">
+          {SLIDES.map((s, idx) => {
+            const isActive = idx === currentSlideIndex;
+            return (
               <button
+                key={s.id}
                 type="button"
-                onClick={handleNextSlide}
-                className="mt-3 flex h-10 w-10 items-center justify-center rounded-full border border-amber-400/50 bg-black/40 text-amber-400 hover:bg-amber-400 hover:text-black transition-colors"
-                aria-label="Next slide"
+                onClick={() => setCurrentSlideIndex(idx)}
+                className="flex items-center gap-2 cursor-pointer"
+                aria-label={`Go to slide ${s.id}`}
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
+                <span
+                  className={`h-[2px] transition-all ${
+                    isActive ? "w-4 bg-brand-yellow" : "w-2 bg-white/30"
+                  }`}
+                />
+                <span
+                  className={`text-xs font-bold tracking-wider transition-colors ${
+                    isActive ? "text-brand-yellow" : "text-gray-400"
+                  }`}
+                >
+                  {s.id}
+                </span>
               </button>
-            </div>
-          </div>
+            );
+          })}
         </div>
+
+        <button
+          type="button"
+          onClick={handleNextSlide}
+          className="mt-2 text-brand-yellow hover:text-white transition-colors cursor-pointer"
+          aria-label="Next slide"
+        >
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
       </div>
 
-      {/* Bottom Right Angled Banner: "ENGINEERING A STRONGER TOMORROW" */}
+      {/* Angled yellow strapline anchored to the bottom-right corner */}
       <div
-        className="absolute bottom-0 right-0 z-20 hidden md:block bg-amber-400 text-black py-4 px-10 font-black tracking-tight uppercase shadow-2xl"
-        style={{
-          clipPath: "polygon(36px 0%, 100% 0%, 100% 100%, 0% 100%)",
-        }}
+        className="absolute bottom-0 right-0 z-20 hidden md:block bg-brand-yellow text-brand-ink py-4 pl-14 pr-8"
+        style={{ clipPath: "polygon(44px 0%, 100% 0%, 100% 100%, 0% 100%)" }}
       >
-        <div className="text-right leading-tight pl-6">
-          <p className="text-xs sm:text-sm font-extrabold tracking-wider">ENGINEERING</p>
-          <p className="text-sm sm:text-base font-black tracking-tight">A STRONGER</p>
-          <p className="text-base sm:text-lg font-black tracking-tight text-gray-950">TOMORROW</p>
-        </div>
+        <p className="text-[13px] font-extrabold uppercase tracking-tight leading-[1.15]">
+          Engineering
+          <br />
+          A Stronger
+          <br />
+          Tomorrow
+        </p>
       </div>
     </section>
   );

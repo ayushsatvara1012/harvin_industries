@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef } from "react";
 
 const CLIENTS = [
   {
@@ -97,41 +97,52 @@ const CLIENTS = [
 ];
 
 export function ClientLogosSection() {
-  const [scrollIndex, setScrollIndex] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  const handlePrev = () => {
-    setScrollIndex((prev) => (prev > 0 ? prev - 1 : CLIENTS.length - 1));
-  };
-
-  const handleNext = () => {
-    setScrollIndex((prev) => (prev < CLIENTS.length - 1 ? prev + 1 : 0));
+  const scrollByCard = (direction: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.firstElementChild as HTMLElement | null;
+    const step = card ? card.offsetWidth + 16 : track.clientWidth / 2;
+    track.scrollBy({ left: step * direction, behavior: "smooth" });
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-white border-t border-gray-100 overflow-hidden">
+    <section className="bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="w-1 h-3.5 bg-amber-500 inline-block" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-gray-600">
-                OUR VALUED CUSTOMERS
-              </span>
-            </div>
-            <h2 className="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-gray-950">
-              Trusted Across <span className="text-amber-500">Borders</span>
-            </h2>
-          </div>
+        <div className="flex items-center gap-2.5">
+          <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
+            Our Valued Customers
+          </span>
         </div>
+        <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text">
+          Trusted Across <span className="text-brand-yellow">Borders</span>
+        </h2>
 
-        {/* Carousel Container with Left/Right Arrows */}
-        <div className="relative mt-12 flex items-center gap-3">
-          {/* Left Arrow */}
+        <div className="relative mt-10">
+          <div
+            ref={trackRef}
+            className="flex gap-4 overflow-x-auto scroll-smooth md:px-8"
+          >
+            {CLIENTS.map((client) => (
+              <div
+                key={client.name}
+                className="flex h-24 w-[46%] sm:w-[30%] lg:w-[calc((100%-4rem)/5)] shrink-0 items-center justify-center border border-brand-border bg-white p-4 transition-colors hover:border-brand-yellow"
+                title={client.fullName}
+              >
+                <div className="opacity-90 transition-opacity group-hover:opacity-100">
+                  {client.renderLogo()}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Arrows straddle the ends of the rail, as in the design */}
           <button
             type="button"
-            onClick={handlePrev}
-            className="hidden md:flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 hover:border-amber-500 hover:text-amber-600 shadow-xs transition-colors cursor-pointer"
+            onClick={() => scrollByCard(-1)}
+            className="absolute -left-2 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border bg-white text-brand-text transition-colors hover:border-brand-yellow hover:text-brand-accent md:flex cursor-pointer"
             aria-label="Previous client logos"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -139,26 +150,10 @@ export function ClientLogosSection() {
             </svg>
           </button>
 
-          {/* Logos Row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4 w-full">
-            {CLIENTS.map((client) => (
-              <div
-                key={client.name}
-                className="group flex h-24 items-center justify-center rounded-xl bg-white border border-gray-200/90 p-4 shadow-xs hover:border-amber-400 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
-                title={client.fullName}
-              >
-                <div className="transition-transform duration-300 group-hover:scale-105 filter grayscale group-hover:grayscale-0 opacity-85 group-hover:opacity-100">
-                  {client.renderLogo()}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Right Arrow */}
           <button
             type="button"
-            onClick={handleNext}
-            className="hidden md:flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 hover:border-amber-500 hover:text-amber-600 shadow-xs transition-colors cursor-pointer"
+            onClick={() => scrollByCard(1)}
+            className="absolute -right-2 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border bg-white text-brand-text transition-colors hover:border-brand-yellow hover:text-brand-accent md:flex cursor-pointer"
             aria-label="Next client logos"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

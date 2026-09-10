@@ -4,7 +4,7 @@ const INDUSTRIES = [
     title: "Construction",
   },
   {
-    icon: "bridge",
+    icon: "road",
     title: "Infrastructure",
   },
   {
@@ -27,35 +27,31 @@ const INDUSTRIES = [
 
 export function IndustriesSection() {
   return (
-    <section id="industries" className="py-20 lg:py-28 bg-white border-t border-gray-100">
+    <section id="industries" className="scroll-mt-20 bg-[#f4f4f2] py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Tag & Headline */}
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="w-1 h-3.5 bg-amber-500 inline-block" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-gray-600">
-              INDUSTRIES WE SERVE
-            </span>
-          </div>
-          <h2 className="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-gray-950">
-            Powering Multiple <span className="text-amber-500">Industries</span>
-          </h2>
+        <div className="flex items-center gap-2.5">
+          <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
+            Industries We Serve
+          </span>
         </div>
+        <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text">
+          Powering Multiple <span className="text-brand-yellow">Industries</span>
+        </h2>
 
-        {/* 6 Industry Cards Grid */}
-        <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
-          {INDUSTRIES.map((ind) => (
+        {/* One flat white strip, the six sectors divided by hairlines */}
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 bg-white">
+          {INDUSTRIES.map((ind, idx) => (
             <div
               key={ind.title}
-              className="group flex flex-col items-center justify-center p-6 sm:p-8 rounded-xl bg-white border border-gray-200/80 shadow-xs hover:border-amber-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center"
+              className={`group flex flex-col items-center justify-center gap-3.5 px-4 py-9 text-center transition-colors hover:bg-brand-yellow/5 ${
+                idx > 0 ? "lg:border-l lg:border-brand-border" : ""
+              }`}
             >
-              {/* Icon */}
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-50 text-gray-800 group-hover:bg-amber-500 group-hover:text-black transition-all duration-300">
-                <span className="material-symbols-outlined text-3xl">{ind.icon}</span>
-              </div>
-
-              {/* Title */}
-              <h3 className="mt-4 text-sm font-bold text-gray-900 group-hover:text-amber-600 transition-colors leading-tight">
+              <span className="material-symbols-outlined text-[38px] text-brand-text group-hover:text-brand-accent transition-colors">
+                {ind.icon}
+              </span>
+              <h3 className="text-[12px] font-semibold text-brand-text leading-tight">
                 {ind.title}
               </h3>
             </div>

@@ -3,60 +3,58 @@ import Image from "next/image";
 
 export function CtaBanner() {
   return (
-    <section className="bg-white py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl bg-[#121417] shadow-2xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[320px]">
-            {/* Left Side: Text & Button on Dark Angled Background */}
-            <div className="lg:col-span-7 z-10 flex flex-col justify-center p-8 sm:p-12 lg:p-16">
-              <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-white leading-[1.1]">
-                Let&apos;s Build <br />
-                <span className="text-amber-400">Together</span>
-              </h2>
+    <section className="relative overflow-hidden bg-brand-ink">
+      {/* Full-bleed photo anchored to the right edge */}
+      <div className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[42%]">
+        <Image
+          src="/images/mockup/cta-blocks-4k.webp"
+          alt="Manufactured Concrete Blocks Ready For Dispatch"
+          fill
+          sizes="42vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-brand-ink/20" />
+      </div>
 
-              <p className="mt-4 max-w-md text-sm sm:text-base text-gray-300 leading-relaxed font-normal">
-                Get the right machine for your business. Our team is ready to help you with the best
-                solution.
-              </p>
+      {/* Yellow arrow edge cutting between the copy and the photo */}
+      <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[64%] bg-brand-yellow clip-wedge-right" />
+      <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[64%] -translate-x-[9px] bg-brand-ink clip-wedge-right" />
 
-              <div className="mt-8">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-sm bg-amber-500 hover:bg-amber-600 px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-black transition-all shadow-md hover:shadow-lg"
-                >
-                  <span>Request a Quote</span>
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
+      <div className="relative z-20 mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-14 lg:max-w-[62%]">
+          <h2 className="font-display text-4xl sm:text-5xl tracking-tight text-white leading-[1.05] shrink-0">
+            Let&apos;s Build <br />
+            <span className="text-brand-yellow">Together</span>
+          </h2>
 
-            {/* Right Side: Palletized Finished Blocks Photo */}
-            <div className="lg:col-span-5 relative min-h-[260px] lg:min-h-full">
-              <div
-                className="absolute inset-0 w-full h-full"
-                style={{
-                  clipPath: "polygon(14% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                }}
-              >
-                <Image
-                  src="/images/mockup/cta-blocks-4k.webp"
-                  alt="Manufactured Concrete Blocks Ready For Dispatch"
-                  fill
-                  sizes="(min-width: 1024px) 45vw, 100vw"
-                  className="object-cover brightness-90"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#121417]/80 via-transparent to-transparent lg:hidden" />
-              </div>
-            </div>
+          <div>
+            <p className="max-w-sm text-sm text-gray-300 leading-relaxed">
+              Get the right machine for your business.
+              <br />
+              Our team is ready to help you with the best solution.
+            </p>
+
+            <Link
+              href="/contact"
+              className="mt-6 inline-flex items-center gap-2 bg-brand-yellow hover:bg-brand-accent px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
+            >
+              <span>Request a Quote</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
           </div>
+        </div>
+
+        {/* Photo stacks beneath the copy on small screens */}
+        <div className="relative mt-10 aspect-[16/7] w-full overflow-hidden lg:hidden">
+          <Image
+            src="/images/mockup/cta-blocks-4k.webp"
+            alt="Manufactured Concrete Blocks Ready For Dispatch"
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
         </div>
       </div>
     </section>

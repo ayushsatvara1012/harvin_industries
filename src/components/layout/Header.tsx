@@ -1,107 +1,181 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { BrandLogo } from "./BrandLogo";
 
-const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/products", label: "Products" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+const NAV_ITEMS = [
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/#about" },
+  {
+    label: "Products",
+    href: "/products",
+    hasDropdown: true,
+    children: [
+      { label: "Fly Ash Brick Machines", href: "/products#fly-ash" },
+      { label: "Concrete Block Machines", href: "/products#concrete-blocks" },
+      { label: "Paver Block Machines", href: "/products#paver-blocks" },
+      { label: "Automatic Plant Solutions", href: "/products#automatic-plants" },
+      { label: "Material Handling Equipment", href: "/products#material-handling" },
+    ],
+  },
+  { label: "Manufacturing", href: "/#manufacturing" },
+  { label: "Technology", href: "/#advantage" },
+  { label: "Projects", href: "/#industries" },
+  { label: "Resources", href: "/#resources" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Header() {
-  const [open, setOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setProductsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-brand-border/60 bg-brand-cream/50 backdrop-blur-lg backdrop-saturate-150">
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
-          <Image
-            src="/Harvin_brand_logo.svg"
-            alt="Harvin Industries"
-            width={904}
-            height={298}
-            priority
-            className="h-12 w-auto"
-          />
-        </Link>
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200/80 shadow-xs transition-colors">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <BrandLogo variant="light" />
 
-        <nav className="hidden md:flex md:items-center md:gap-10">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-xl font-display font-semibold text-brand-text transition-colors hover:text-brand-ink"
-            >
-              {link.label}
-            </Link>
-          ))}
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-7">
+          {NAV_ITEMS.map((item) => {
+            if (item.hasDropdown) {
+              return (
+                <div
+                  key={item.label}
+                  ref={dropdownRef}
+                  className="relative"
+                  onMouseEnter={() => setProductsDropdownOpen(true)}
+                  onMouseLeave={() => setProductsDropdownOpen(false)}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setProductsDropdownOpen((v) => !v)}
+                    className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-gray-800 hover:text-amber-600 transition-colors"
+                  >
+                    {item.label}
+                    <svg
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                        productsDropdownOpen ? "rotate-180 text-amber-600" : "text-gray-500"
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {productsDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-2 w-64 rounded-xl bg-white border border-gray-100 p-2 shadow-xl ring-1 ring-black/5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                      {item.children?.map((subItem) => (
+                        <Link
+                          key={subItem.label}
+                          href={subItem.href}
+                          onClick={() => setProductsDropdownOpen(false)}
+                          className="flex items-center px-3 py-2 text-xs font-medium text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors"
+                        >
+                          {subItem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="text-[13.5px] font-semibold text-gray-800 hover:text-amber-600 transition-colors"
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="hidden md:flex md:items-center md:gap-5">
+        {/* Right Action: Request A Quote CTA */}
+        <div className="hidden lg:flex items-center">
           <Link
             href="/contact"
-            className="rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ink transition-colors border border-brand-brick hover:bg-brand-brick/10 hover:text-brand-ink"
+            className="inline-flex items-center gap-2 rounded-full bg-amber-500 hover:bg-amber-600 active:bg-amber-700 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-black transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            Request a Quote
+            <span>Request A Quote</span>
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
           </Link>
         </div>
 
+        {/* Mobile menu button */}
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md text-brand-ink"
+          onClick={() => setMobileMenuOpen((v) => !v)}
+          className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100"
           aria-label="Toggle menu"
-          aria-expanded={open}
         >
-          <span className="sr-only">Toggle menu</span>
-          {open ? (
-            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+          {mobileMenuOpen ? (
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M3 6h18M3 12h18M3 18h18" strokeLinecap="round" />
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           )}
         </button>
       </div>
 
-      {/* Overlays the page instead of sitting in flow, so opening the menu never
-          pushes the hero down. Same surface as the bar, so they read as one
-          container; grid rows animate the height without a hardcoded max. */}
-      <div
-        className={`absolute inset-x-0 top-full grid overflow-hidden rounded-b-2xl border-b border-brand-border/60 bg-brand-surface transition-[grid-template-rows] duration-300 ease-out md:hidden ${
-          open ? "grid-rows-[1fr]" : "pointer-events-none grid-rows-[0fr]"
-        }`}
-      >
-        <div className="min-h-0">
-          <nav className="flex flex-col gap-1 px-4 py-3">
-            {NAV_LINKS.map((link) => (
+      {/* Mobile drawer */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden border-t border-gray-100 bg-white px-4 pt-2 pb-6 shadow-xl">
+          <nav className="flex flex-col space-y-1">
+            {NAV_ITEMS.map((item) => (
               <Link
-                key={link.href}
-                href={link.href}
-                tabIndex={open ? undefined : -1}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-brand-text hover:bg-brand-clay/30"
+                key={item.label}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-lg px-3 py-2 text-sm font-semibold text-gray-800 hover:bg-amber-50 hover:text-amber-700"
               >
-                {link.label}
+                {item.label}
               </Link>
             ))}
-            <Link
-              href="/contact"
-              tabIndex={open ? undefined : -1}
-              onClick={() => setOpen(false)}
-              className="mt-2 rounded-full border border-brand-brick px-4 py-2 text-center text-sm font-medium text-brand-ink transition-colors hover:bg-brand-brick"
-            >
-              Request a Quote
-            </Link>
+            <div className="pt-3">
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-full bg-amber-500 py-3 text-xs font-bold uppercase tracking-wider text-black hover:bg-amber-600"
+              >
+                <span>Request A Quote</span>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </div>
           </nav>
         </div>
-      </div>
-
+      )}
     </header>
   );
 }

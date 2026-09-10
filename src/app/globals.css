@@ -5,24 +5,34 @@
    carries text on a light background (1.8:1), so `brand-accent` is the deep
    amber used for eyebrows/icons on cream, and yellow fills take ink text. */
 :root {
-  --color-brand-ink: #212121;
+  --color-brand-ink: #121417;
+  --color-brand-dark: #121417;
+  --color-brand-dark-card: #181b20;
+  --color-brand-dark-surface: #1e2229;
   --color-brand-umber: #33322e;
-  --color-brand-brick: #fbc02d;
-  --color-brand-brick-hover: #ff8f00;
-  --color-brand-accent: #9a5b00;
-  --color-brand-clay: #ffecb3;
-  --color-brand-cream: #faf8f2;
+  --color-brand-brick: #f59e0b;
+  --color-brand-brick-hover: #d97706;
+  --color-brand-yellow: #f59e0b;
+  --color-brand-yellow-light: #fbbf24;
+  --color-brand-accent: #d97706;
+  --color-brand-clay: #fef3c7;
+  --color-brand-cream: #ffffff;
   --color-brand-surface: #ffffff;
-  --color-brand-text: #212121;
-  --color-brand-text-secondary: #5b5b5b;
-  --color-brand-border: #e8e2d6;
+  --color-brand-text: #111827;
+  --color-brand-text-secondary: #6b7280;
+  --color-brand-border: #e5e7eb;
 }
 
 @theme inline {
   --color-brand-ink: var(--color-brand-ink);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-dark-card: var(--color-brand-dark-card);
+  --color-brand-dark-surface: var(--color-brand-dark-surface);
   --color-brand-umber: var(--color-brand-umber);
   --color-brand-brick: var(--color-brand-brick);
   --color-brand-brick-hover: var(--color-brand-brick-hover);
+  --color-brand-yellow: var(--color-brand-yellow);
+  --color-brand-yellow-light: var(--color-brand-yellow-light);
   --color-brand-accent: var(--color-brand-accent);
   --color-brand-clay: var(--color-brand-clay);
   --color-brand-cream: var(--color-brand-cream);

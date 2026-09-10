@@ -75,13 +75,25 @@ body {
 }
 
 /* Angled section shapes from the design: a yellow wedge driving right across a
-   dark band, and the matching notch the adjacent photo is cut with. */
+   dark band, and the matching notch the adjacent photo is cut with. The bite
+   shrinks below lg, where 120px would swallow the content sitting inside the
+   photo. */
+:root {
+  --notch: 56px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --notch: 120px;
+  }
+}
+
 .clip-wedge-right {
-  clip-path: polygon(0 0, calc(100% - 120px) 0, 100% 50%, calc(100% - 120px) 100%, 0 100%);
+  clip-path: polygon(0 0, calc(100% - var(--notch)) 0, 100% 50%, calc(100% - var(--notch)) 100%, 0 100%);
 }
 
 .clip-notch-left {
-  clip-path: polygon(120px 0, 100% 0, 100% 100%, 120px 100%, 0 50%);
+  clip-path: polygon(var(--notch) 0, 100% 0, 100% 100%, var(--notch) 100%, 0 50%);
 }
 
 .clip-hexagon {

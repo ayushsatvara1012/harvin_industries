@@ -65,7 +65,7 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
-          <p className="text-[11px] sm:text-xs font-semibold tracking-[0.28em] uppercase text-gray-300">
+          <p className="text-xs sm:text-[13px] font-semibold tracking-[0.28em] uppercase text-gray-300">
             {slide.tagline}
           </p>
 
@@ -74,14 +74,14 @@ export function Hero() {
             <span className="text-brand-yellow-light">{slide.title2}</span>
           </h1>
 
-          <p className="mt-5 max-w-lg text-sm sm:text-base text-gray-300 leading-relaxed">
+          <p className="mt-5 max-w-xl text-base sm:text-lg text-gray-300 leading-relaxed">
             {slide.description}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 bg-brand-yellow hover:bg-brand-accent px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
+              className="inline-flex items-center gap-2 bg-brand-yellow hover:bg-brand-accent px-6 py-3 text-xs sm:text-[13px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
             >
               <span>Explore Our Machines</span>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -91,7 +91,7 @@ export function Hero() {
 
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 border border-white/70 hover:border-brand-yellow px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-white hover:text-brand-yellow transition-colors"
+              className="inline-flex items-center gap-2 border border-white/70 hover:border-brand-yellow px-6 py-3 text-xs sm:text-[13px] font-bold uppercase tracking-wider text-white hover:text-brand-yellow transition-colors"
             >
               <span>Request a Quote</span>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -109,10 +109,10 @@ export function Hero() {
                   idx > 0 ? "border-l border-white/20 pl-6 sm:pl-10" : ""
                 }`}
               >
-                <span className="material-symbols-outlined text-brand-yellow text-[26px]">
+                <span className="material-symbols-outlined text-brand-yellow text-[28px] sm:text-[32px]">
                   {badge.icon}
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-white leading-tight">
+                <span className="text-xs sm:text-[13px] font-bold tracking-wider uppercase text-white leading-tight">
                   {badge.line1}
                   <br />
                   {badge.line2}
@@ -124,7 +124,7 @@ export function Hero() {
       </div>
 
       {/* Slide index rail, pinned to the right edge */}
-      <div className="absolute right-6 lg:right-12 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col items-end gap-3">
+      <div className="absolute right-6 lg:right-12 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col items-end gap-3">
         <div className="flex flex-col items-end gap-2.5 border-l border-white/25 pl-4">
           {SLIDES.map((s, idx) => {
             const isActive = idx === currentSlideIndex;
@@ -142,7 +142,7 @@ export function Hero() {
                   }`}
                 />
                 <span
-                  className={`text-xs font-bold tracking-wider transition-colors ${
+                  className={`text-sm font-bold tracking-wider transition-colors ${
                     isActive ? "text-brand-yellow" : "text-gray-400"
                   }`}
                 >
@@ -167,10 +167,10 @@ export function Hero() {
 
       {/* Angled yellow strapline anchored to the bottom-right corner */}
       <div
-        className="absolute bottom-0 right-0 z-20 hidden md:block bg-brand-yellow text-brand-ink py-4 pl-14 pr-8"
+        className="absolute bottom-0 right-0 z-20 hidden lg:block bg-brand-yellow text-brand-ink py-4 pl-14 pr-8"
         style={{ clipPath: "polygon(44px 0%, 100% 0%, 100% 100%, 0% 100%)" }}
       >
-        <p className="text-[13px] font-extrabold uppercase tracking-tight leading-[1.15]">
+        <p className="text-sm sm:text-[15px] font-extrabold uppercase tracking-tight leading-[1.15]">
           Engineering
           <br />
           A Stronger

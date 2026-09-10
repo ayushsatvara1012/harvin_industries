@@ -31,7 +31,7 @@ export function IndustriesSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2.5">
           <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
-          <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
+          <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
             Industries We Serve
           </span>
         </div>
@@ -48,10 +48,10 @@ export function IndustriesSection() {
                 idx > 0 ? "lg:border-l lg:border-brand-border" : ""
               }`}
             >
-              <span className="material-symbols-outlined text-[38px] text-brand-text group-hover:text-brand-accent transition-colors">
+              <span className="material-symbols-outlined text-[40px] text-brand-text group-hover:text-brand-accent transition-colors">
                 {ind.icon}
               </span>
-              <h3 className="text-[12px] font-semibold text-brand-text leading-tight">
+              <h3 className="text-sm sm:text-[15px] font-semibold text-brand-text leading-tight">
                 {ind.title}
               </h3>
             </div>

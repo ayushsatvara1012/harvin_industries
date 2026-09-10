@@ -9,7 +9,7 @@ export function Footer() {
           {/* Column 1: Brand & Social */}
           <div className="lg:col-span-4">
             <BrandLogo variant="dark" />
-            <p className="mt-4 max-w-sm text-xs sm:text-sm text-gray-400 leading-relaxed">
+            <p className="mt-4 max-w-sm text-sm sm:text-base text-gray-400 leading-relaxed">
               Manufacturing high-performance machinery for a stronger, more sustainable construction
               industry.
             </p>
@@ -20,36 +20,36 @@ export function Footer() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
+                className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
                 aria-label="LinkedIn"
               >
-                <span className="text-xs font-bold">in</span>
+                <span className="text-sm font-bold">in</span>
               </a>
               <a
                 href="https://youtube.com"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
+                className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
                 aria-label="YouTube"
               >
-                <span className="material-symbols-outlined text-sm">smart_display</span>
+                <span className="material-symbols-outlined text-base">smart_display</span>
               </a>
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
+                className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
                 aria-label="Instagram"
               >
-                <span className="material-symbols-outlined text-sm">photo_camera</span>
+                <span className="material-symbols-outlined text-base">photo_camera</span>
               </a>
             </div>
           </div>
 
           {/* Column 2: Quick Links */}
           <div className="lg:col-span-2 sm:pl-4">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-white">Quick Links</h3>
-            <ul className="mt-4 space-y-2 text-xs font-medium text-gray-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-white">Quick Links</h3>
+            <ul className="mt-4 space-y-2.5 text-sm font-medium text-gray-400">
               <li>
                 <Link href="/" className="hover:text-brand-yellow transition-colors">
                   Home
@@ -95,8 +95,8 @@ export function Footer() {
 
           {/* Column 3: Our Products */}
           <div className="lg:col-span-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-white">Our Products</h3>
-            <ul className="mt-4 space-y-2 text-xs font-medium text-gray-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-white">Our Products</h3>
+            <ul className="mt-4 space-y-2.5 text-sm font-medium text-gray-400">
               <li>
                 <Link href="/products#fly-ash" className="hover:text-brand-yellow transition-colors">
                   Fly Ash Brick Machines
@@ -139,16 +139,16 @@ export function Footer() {
 
           {/* Column 4: Contact Us */}
           <div className="lg:col-span-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-white">Contact Us</h3>
-            <ul className="mt-4 space-y-3 text-xs text-gray-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-white">Contact Us</h3>
+            <ul className="mt-4 space-y-3.5 text-sm text-gray-400">
               <li className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-brand-yellow text-base shrink-0 mt-0.5">
+                <span className="material-symbols-outlined text-brand-yellow text-lg shrink-0 mt-0.5">
                   location_on
                 </span>
                 <span>Ahmedabad, Gujarat, India</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-brand-yellow text-base shrink-0">
+                <span className="material-symbols-outlined text-brand-yellow text-lg shrink-0">
                   call
                 </span>
                 <a href="tel:+919898575358" className="hover:text-brand-yellow transition-colors">
@@ -156,7 +156,7 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-brand-yellow text-base shrink-0">
+                <span className="material-symbols-outlined text-brand-yellow text-lg shrink-0">
                   mail
                 </span>
                 <a
@@ -171,7 +171,7 @@ export function Footer() {
             <div className="mt-5">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-sm bg-brand-yellow hover:bg-brand-accent px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-brand-ink transition-colors"
+                className="inline-flex items-center gap-2 rounded-sm bg-brand-yellow hover:bg-brand-accent px-5 py-3 text-[13px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
               >
                 <span>Request a Quote</span>
                 <svg
@@ -189,7 +189,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Sub-footer */}
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
           <p>© 2026 HARVIN INDUSTRIES. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-gray-400 transition-colors">

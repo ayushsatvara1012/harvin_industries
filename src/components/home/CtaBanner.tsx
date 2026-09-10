@@ -28,7 +28,7 @@ export function CtaBanner() {
           </h2>
 
           <div>
-            <p className="max-w-sm text-sm text-gray-300 leading-relaxed">
+            <p className="max-w-md text-base lg:text-lg text-gray-300 leading-relaxed">
               Get the right machine for your business.
               <br />
               Our team is ready to help you with the best solution.
@@ -36,7 +36,7 @@ export function CtaBanner() {
 
             <Link
               href="/contact"
-              className="mt-6 inline-flex items-center gap-2 bg-brand-yellow hover:bg-brand-accent px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
+              className="mt-6 inline-flex items-center gap-2 bg-brand-yellow hover:bg-brand-accent px-6 py-3 text-xs sm:text-[13px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
             >
               <span>Request a Quote</span>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

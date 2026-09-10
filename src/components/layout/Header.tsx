@@ -45,12 +45,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-brand-ink border-b border-white/10">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <BrandLogo variant="dark" />
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-7">
           {NAV_ITEMS.map((item) => {
             if (item.hasDropdown) {
               return (
@@ -64,7 +64,7 @@ export function Header() {
                   <button
                     type="button"
                     onClick={() => setProductsDropdownOpen((v) => !v)}
-                    className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-white hover:text-brand-yellow transition-colors"
+                    className="inline-flex items-center gap-1 text-[13px] xl:text-[15px] font-semibold text-white hover:text-brand-yellow transition-colors whitespace-nowrap"
                   >
                     {item.label}
                     <svg
@@ -88,7 +88,7 @@ export function Header() {
                           key={subItem.label}
                           href={subItem.href}
                           onClick={() => setProductsDropdownOpen(false)}
-                          className="flex items-center px-3 py-2 text-xs font-medium text-gray-700 rounded-lg hover:bg-brand-yellow/10 hover:text-brand-accent transition-colors"
+                          className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-brand-yellow/10 hover:text-brand-accent transition-colors"
                         >
                           {subItem.label}
                         </Link>
@@ -106,7 +106,7 @@ export function Header() {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`relative py-1 text-[13.5px] font-semibold transition-colors ${
+                className={`relative py-1 text-[13px] xl:text-[15px] font-semibold whitespace-nowrap transition-colors ${
                   isActive ? "text-white" : "text-gray-200 hover:text-brand-yellow"
                 }`}
               >
@@ -120,10 +120,10 @@ export function Header() {
         </nav>
 
         {/* Right Action: Request A Quote CTA */}
-        <div className="hidden lg:flex items-center">
+        <div className="hidden lg:flex items-center shrink-0">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-brand-yellow hover:bg-brand-accent px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-yellow hover:bg-brand-accent px-4 xl:px-6 py-2.5 text-[11px] xl:text-[13px] font-bold uppercase tracking-wider text-brand-ink whitespace-nowrap transition-colors"
           >
             <span>Request A Quote</span>
             <svg

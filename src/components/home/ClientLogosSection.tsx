@@ -112,7 +112,7 @@ export function ClientLogosSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2.5">
           <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
-          <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
+          <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
             Our Valued Customers
           </span>
         </div>

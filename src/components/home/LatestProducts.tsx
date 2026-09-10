@@ -66,7 +66,7 @@ export function LatestProducts() {
           <div>
             <div className="flex items-center gap-2.5">
               <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
+              <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
                 Our Products
               </span>
             </div>
@@ -78,7 +78,7 @@ export function LatestProducts() {
 
           <Link
             href="/products"
-            className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-brand-accent hover:text-brand-yellow transition-colors group"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-bold uppercase tracking-wider text-brand-accent hover:text-brand-yellow transition-colors group"
           >
             <span>View All Products</span>
             <svg
@@ -114,7 +114,7 @@ export function LatestProducts() {
 
               {/* Title above, arrow tucked into the bottom-right corner */}
               <div className="flex flex-1 flex-col justify-between gap-2 pt-3.5 pb-3">
-                <h3 className="text-[13px] font-bold uppercase tracking-tight text-brand-text group-hover:text-brand-accent transition-colors leading-[1.3] whitespace-pre-line">
+                <h3 className="text-sm sm:text-[15px] font-bold uppercase tracking-tight text-brand-text group-hover:text-brand-accent transition-colors leading-[1.3] whitespace-pre-line">
                   {category.title}
                 </h3>
                 <span className="self-end text-brand-yellow transition-transform group-hover:translate-x-1">
@@ -139,14 +139,14 @@ export function LatestProducts() {
                   idx > 0 ? "lg:border-l lg:border-white/15" : ""
                 }`}
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-brand-yellow text-brand-yellow">
-                  <span className="material-symbols-outlined text-2xl">{stat.icon}</span>
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-brand-yellow text-brand-yellow">
+                  <span className="material-symbols-outlined text-[28px]">{stat.icon}</span>
                 </span>
                 <div>
-                  <p className="text-2xl font-extrabold text-brand-yellow leading-none">
+                  <p className="text-3xl font-extrabold text-brand-yellow leading-none">
                     {stat.value}
                   </p>
-                  <p className="mt-1.5 text-[11px] font-medium text-gray-300">{stat.label}</p>
+                  <p className="mt-1.5 text-sm font-medium text-gray-300">{stat.label}</p>
                 </div>
               </div>
             ))}

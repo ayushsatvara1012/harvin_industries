@@ -39,19 +39,27 @@ export function IndustriesSection() {
           Powering Multiple <span className="text-brand-yellow">Industries</span>
         </h2>
 
-        {/* One flat white strip, the six sectors divided by hairlines */}
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 bg-white">
+        {/* Spec-sheet grid: indexed panels with blueprint corner marks */}
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-brand-border">
           {INDUSTRIES.map((ind, idx) => (
             <div
               key={ind.title}
-              className={`group flex flex-col items-center justify-center gap-3.5 px-4 py-9 text-center transition-colors hover:bg-brand-yellow/5 ${
-                idx > 0 ? "lg:border-l lg:border-brand-border" : ""
-              }`}
+              className="group relative flex flex-col justify-between gap-8 bg-white px-5 py-8 text-left transition-colors duration-300 hover:bg-brand-ink"
             >
-              <span className="material-symbols-outlined text-[40px] text-brand-text group-hover:text-brand-accent transition-colors">
-                {ind.icon}
-              </span>
-              <h3 className="text-sm sm:text-[15px] font-semibold text-brand-text leading-tight">
+              {/* Blueprint corner marks, revealed on hover */}
+              <span className="pointer-events-none absolute left-2.5 top-2.5 h-3 w-3 border-l-2 border-t-2 border-brand-yellow opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <span className="pointer-events-none absolute bottom-2.5 right-2.5 h-3 w-3 border-b-2 border-r-2 border-brand-yellow opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+              <div className="flex items-start justify-between">
+                <span className="font-stat text-xs tracking-[0.2em] text-brand-text-secondary/60 transition-colors duration-300 group-hover:text-brand-yellow">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <span className="material-symbols-outlined text-[28px] text-brand-text-secondary/70 transition-colors duration-300 group-hover:text-white">
+                  {ind.icon}
+                </span>
+              </div>
+
+              <h3 className="text-sm sm:text-[15px] font-semibold text-brand-text leading-tight transition-colors duration-300 group-hover:text-white">
                 {ind.title}
               </h3>
             </div>

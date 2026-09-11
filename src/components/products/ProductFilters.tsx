@@ -67,10 +67,10 @@ export function ProductFilters() {
               key={value}
               type="button"
               onClick={() => update({ category: category === value ? null : value })}
-              className={`rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-colors ${
+              className={`rounded-full px-4 py-2 font-display text-sm tracking-wide transition-all ${
                 category === value
-                  ? "bg-brand-brick text-brand-ink"
-                  : "border border-brand-border bg-brand-surface text-brand-text-secondary hover:border-brand-brick hover:text-brand-ink"
+                  ? "bg-rusted-yellow text-white"
+                  : "border border-brand-border bg-brand-surface text-brand-text-secondary hover:border-brand-yellow-light hover:text-brand-ink"
               }`}
             >
               {CATEGORY_LABELS[value]}

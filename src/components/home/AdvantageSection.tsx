@@ -1,29 +1,12 @@
 import Image from "next/image";
 
 const ADVANTAGES = [
-  { icon: "fitness_center", title: "Robust & Reliable Machines" },
-  { icon: "eco", title: "Advanced Technology" },
-  { icon: "energy_savings_leaf", title: "Energy Efficient Solutions" },
-  { icon: "handyman", title: "Custom Engineering" },
-  { icon: "support_agent", title: "Strong After-Sales Support" },
+  { icon: "shield", title: "Robust & Reliable Machines" },
+  { icon: "memory", title: "Advanced Technology" },
+  { icon: "bolt", title: "Energy Efficient Solutions" },
+  { icon: "tune", title: "Custom Engineering" },
+  { icon: "headset_mic", title: "Strong After-Sales Support" },
 ];
-
-function HexIcon({ icon }: { icon: string }) {
-  return (
-    <span className="relative flex h-16 w-16 items-center justify-center">
-      <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden="true">
-        <polygon
-          points="50,3 93,26.5 93,73.5 50,97 7,73.5 7,26.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="5"
-          className="text-brand-yellow"
-        />
-      </svg>
-      <span className="material-symbols-outlined relative text-[28px] text-brand-yellow">{icon}</span>
-    </span>
-  );
-}
 
 export function AdvantageSection() {
   return (
@@ -44,7 +27,7 @@ export function AdvantageSection() {
 
       {/* Yellow arrow edge, with the dark panel riding just in front of it */}
       <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[66%] bg-brand-yellow clip-wedge-right" />
-      <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[66%] -translate-x-[9px] bg-brand-ink clip-wedge-right" />
+      <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[66%] -translate-x-[9px] bg-gradient-to-br from-brand-ink via-brand-ink to-[#1c1f24] clip-wedge-right" />
 
       {/* Strapline sitting over the photo */}
       <p className="absolute right-8 xl:right-16 top-20 z-20 hidden lg:block text-right text-lg xl:text-xl font-extrabold drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)] uppercase leading-[1.2] tracking-tight text-brand-yellow">
@@ -71,12 +54,32 @@ export function AdvantageSection() {
             for <span className="text-brand-yellow">Your Advantage</span>
           </h2>
 
-          {/* Five pillars across a single row on desktop */}
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-8">
-            {ADVANTAGES.map((item) => (
-              <div key={item.title} className="flex flex-col items-center text-center gap-3">
-                <HexIcon icon={item.icon} />
-                <p className="text-xs sm:text-[13px] font-semibold leading-snug text-gray-200 max-w-[130px]">
+          {/* Five pillars as glass panels on the dark ground */}
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+            {ADVANTAGES.map((item, idx) => (
+              <div
+                key={item.title}
+                className="group relative flex flex-col gap-6 overflow-hidden rounded-sm border border-white/10 bg-white/[0.03] p-5 cursor-default transition-colors duration-300 hover:border-brand-yellow/40 hover:bg-white/[0.06]"
+              >
+                {/* Giant outlined watermark number, bleeding off the card edge */}
+                <span
+                  className="font-stat pointer-events-none absolute -right-2 -top-6 text-[88px] leading-none text-transparent transition-opacity duration-300 group-hover:opacity-0"
+                  style={{ WebkitTextStroke: "1px rgba(255,255,255,0.08)" }}
+                >
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <span
+                  className="font-stat pointer-events-none absolute -right-2 -top-6 text-[88px] leading-none text-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{ WebkitTextStroke: "1px rgba(245,158,11,0.4)" }}
+                >
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+
+                <span className="relative flex h-11 w-11 items-center justify-center rounded-sm border border-brand-yellow/30 text-brand-yellow transition-colors duration-300 group-hover:border-brand-yellow group-hover:bg-brand-yellow/10">
+                  <span className="material-symbols-outlined text-[22px]">{item.icon}</span>
+                </span>
+
+                <p className="relative text-sm sm:text-[15px] font-semibold leading-snug text-gray-200 transition-colors duration-300 group-hover:text-white">
                   {item.title}
                 </p>
               </div>

@@ -1,4 +1,4 @@
-import { Header, Footer } from "@/components/layout";
+import { Navbar, Footer } from "@/components/layout";
 import {
   Hero,
   AboutSnippet,
@@ -13,8 +13,8 @@ import {
 export default function Home() {
   return (
     <>
-      <Header />
-      <main className="min-h-screen bg-white">
+      <Navbar />
+      <main className="min-h-screen">
         {/* 1. Hero Section */}
         <Hero />
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Header, Footer } from "@/components/layout";
+import { Navbar, Footer } from "@/components/layout";
 import { IsometricLines } from "@/components/ui";
 import { ProductCard, ProductFilters } from "@/components/products";
 import { PRODUCTS, type Category } from "@/data/products";
@@ -41,27 +41,31 @@ export default async function ProductsPage(props: PageProps<"/products">) {
 
   return (
     <>
-      <Header />
-      <main>
-        <section className="relative overflow-hidden border-b border-brand-border bg-brand-umber">
-          <IsometricLines className="absolute inset-0 h-full w-full" />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-umber from-35% via-brand-umber/55 via-60% to-transparent" />
+      <Navbar />
+      <main className="bg-white">
+        <section className="relative overflow-hidden border-b border-white/10 bg-brand-ink">
+          <IsometricLines className="absolute inset-0 h-full w-full opacity-35" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-ink via-brand-ink/90 via-50% to-brand-ink/40 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-transparent to-brand-ink/50 pointer-events-none" />
 
-          <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            <p className="text-sm font-semibold uppercase tracking-widest text-brand-brick">
-              Product Portfolio
-            </p>
-            <h1 className="mt-3 font-display text-4xl tracking-tight text-brand-cream sm:text-5xl">
-              Brick Making Machines
+          <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div className="flex items-center gap-2.5">
+              <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
+              <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-brand-yellow">
+                Product Portfolio
+              </span>
+            </div>
+            <h1 className="mt-3 font-display text-4xl tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Brick & Block Making <span className="text-brand-yellow">Machines</span>
             </h1>
-            <p className="mt-4 max-w-2xl text-brand-clay/70">
-              Press machines, batching plants, and mixers. Each machine lists the
-              bricks, pavers, and blocks it produces in its production table.
+            <p className="mt-4 max-w-2xl text-base sm:text-lg text-gray-300 leading-relaxed">
+              Industrial press machines, automated batching plants, and heavy-duty mixers engineered for maximum throughput and structural consistency.
             </p>
           </div>
         </section>
 
-        <section className="mx-auto max-w-8xl px-4 py-12 sm:px-6 lg:px-8">
+        <section className="bg-white">
+          <div className="mx-auto max-w-8xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[260px_1fr]">
             <aside className="lg:sticky lg:top-24 lg:self-start">
               <Suspense fallback={null}>
@@ -89,6 +93,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
                 </div>
               )}
             </div>
+          </div>
           </div>
         </section>
       </main>

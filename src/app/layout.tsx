@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Forum } from "next/font/google";
+import { Inter, Forum, Oswald } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,6 +11,12 @@ const forum = Forum({
   variable: "--font-forum",
   subsets: ["latin"],
   weight: "400",
+});
+
+const oswald = Oswald({
+  variable: "--font-oswald",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -26,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${forum.variable} h-full antialiased`}
+      className={`${inter.variable} ${forum.variable} ${oswald.variable} h-full antialiased`}
     >
       <head>
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- icon font, not a page font; root layout is the correct place for a site-wide stylesheet link */}

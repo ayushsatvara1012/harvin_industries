@@ -10,27 +10,44 @@ const PILLARS = [
 function FacilityVisual() {
   return (
     <div className="relative h-full w-full">
-      {/* Yellow wedge sitting behind the photo, offset left to read as an edge */}
+      {/* Yellow wedge sitting behind the video, offset left to read as an edge */}
       <div className="absolute inset-0 -translate-x-3 lg:-translate-x-4 bg-brand-yellow clip-notch-left" />
 
       <div className="relative h-full w-full overflow-hidden bg-brand-ink clip-notch-left">
-        <Image
-          src="/images/mockup/factory-hq-4k.webp"
-          alt="Harvin Industries Modern Manufacturing Facility"
-          fill
-          sizes="(min-width: 1024px) 55vw, 100vw"
-          className="object-cover"
+        {/* Timeline Evolution Video */}
+        <video
+          src="/Harvin_animation_timeline.mp4"
+          poster="/images/mockup/factory-hq-4k.webp"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-full w-full object-cover"
         />
 
-        {/* Pillars overlaid across the foot of the photo */}
+        {/* Top Floating Badge */}
+        <div className="absolute top-4 right-5 z-10 hidden sm:flex items-center gap-2 rounded-full bg-black/65 backdrop-blur-md px-3 py-1.5 border border-white/15">
+          <span className="h-2 w-2 rounded-full bg-brand-yellow animate-pulse" />
+          <span className="text-[11px] font-bold tracking-wider uppercase text-white/90">
+            Timeline • Kiln to High-Tech Automation
+          </span>
+        </div>
+
+        {/* Ambient Dark Gradient Scrim across foot */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-ink/95 via-brand-ink/60 to-transparent pointer-events-none" />
+
+        {/* Pillars overlaid across the foot of the video */}
         <div className="absolute inset-x-0 bottom-0 bg-brand-ink/85 backdrop-blur-[2px] py-3.5 pr-6 pl-[calc(var(--notch)+1rem)]">
           <div className="flex items-center justify-start gap-5 lg:gap-8">
             {PILLARS.map((pillar) => (
-              <div key={pillar.label} className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-brand-yellow text-lg shrink-0">
+              <div key={pillar.label} className="flex items-center gap-3">
+                <span
+                  className="material-symbols-outlined text-brand-yellow shrink-0"
+                  style={{ fontSize: "36px", width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center" }}
+                >
                   {pillar.icon}
                 </span>
-                <span className="text-xs sm:text-[13px] font-semibold leading-tight text-gray-100 max-w-[110px]">
+                <span className="text-xs sm:text-[13px] font-semibold leading-tight text-gray-100 max-w-[120px]">
                   {pillar.label}
                 </span>
               </div>
@@ -76,10 +93,10 @@ export function AboutSnippet() {
             <div className="mt-8">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 bg-brand-yellow hover:bg-brand-accent px-6 py-3 text-xs sm:text-[13px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
+                className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-white transition-all font-semibold"
               >
                 <span>More About Us</span>
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </Link>

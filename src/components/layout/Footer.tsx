@@ -170,12 +170,12 @@ export function Footer() {
 
             <div className="mt-5">
               <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-sm bg-brand-yellow hover:bg-brand-accent px-5 py-3 text-[13px] font-bold uppercase tracking-wider text-brand-ink transition-colors"
+                href="/#quote"
+                className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-5 py-3 font-display text-[17px] tracking-wider text-white transition-all font-semibold"
               >
                 <span>Request a Quote</span>
                 <svg
-                  className="w-3.5 h-3.5"
+                  className="w-4 h-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

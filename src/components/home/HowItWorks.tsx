@@ -21,7 +21,8 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section className="mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-7xl items-center px-4 py-20 sm:px-6 lg:px-8">
+    <section className="bg-white">
+      <div className="mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-7xl items-center px-4 py-20 sm:px-6 lg:px-8">
       <div className="w-full">
         <p className="text-sm font-semibold uppercase tracking-widest text-brand-accent">
           Process
@@ -45,6 +46,7 @@ export function HowItWorks() {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </section>
   );

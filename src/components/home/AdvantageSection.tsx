@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Icon } from "@/components/ui";
 
 const ADVANTAGES = [
   { icon: "shield", title: "Robust & Reliable Machines" },
@@ -76,7 +77,7 @@ export function AdvantageSection() {
                 </span>
 
                 <span className="relative flex h-11 w-11 items-center justify-center rounded-sm border border-brand-yellow/30 text-brand-yellow transition-colors duration-300 group-hover:border-brand-yellow group-hover:bg-brand-yellow/10">
-                  <span className="material-symbols-outlined text-[22px]">{item.icon}</span>
+                  <Icon name={item.icon} className="text-[22px]" />
                 </span>
 
                 <p className="relative text-sm sm:text-[15px] font-semibold leading-snug text-gray-200 transition-colors duration-300 group-hover:text-white">

@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen">
+      <main id="main" className="min-h-screen">
         {/* 1. Hero Section */}
         <Hero />
 

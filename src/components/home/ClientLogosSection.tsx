@@ -117,7 +117,7 @@ export function ClientLogosSection() {
           </span>
         </div>
         <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text">
-          Trusted Across <span className="text-brand-yellow">Borders</span>
+          Trusted Across <span className="text-brand-accent-text">Borders</span>
         </h2>
 
         <div className="relative mt-10">

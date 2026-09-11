@@ -4,11 +4,30 @@ import { Navbar, Footer } from "@/components/layout";
 import { IsometricLines } from "@/components/ui";
 import { ProductCard, ProductFilters } from "@/components/products";
 import { PRODUCTS, type Category } from "@/data/products";
+import { SITE_NAME } from "@/lib/site";
+
+const title = "Products — Harvin Industries";
+const description =
+  "Browse Harvin Industries' full range of brick, block, and paver making machines — press machines, batching plants, and mixers.";
 
 export const metadata: Metadata = {
-  title: "Products — Harvin Industries",
-  description:
-    "Browse Harvin Industries' full range of brick, block, and paver making machines — press machines, batching plants, and mixers.",
+  title,
+  description,
+  alternates: {
+    canonical: "/products",
+  },
+  openGraph: {
+    title,
+    description,
+    url: "/products",
+    siteName: SITE_NAME,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 function filterProducts(searchParams: { q?: string; category?: string }) {
@@ -42,7 +61,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
   return (
     <>
       <Navbar />
-      <main className="bg-white">
+      <main id="main" className="bg-white">
         <section className="relative overflow-hidden border-b border-white/10 bg-brand-ink">
           <IsometricLines className="absolute inset-0 h-full w-full opacity-35" />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-ink via-brand-ink/90 via-50% to-brand-ink/40 pointer-events-none" />
@@ -65,7 +84,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
         </section>
 
         <section className="bg-white">
-          <div className="mx-auto max-w-8xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[260px_1fr]">
             <aside className="lg:sticky lg:top-24 lg:self-start">
               <Suspense fallback={null}>

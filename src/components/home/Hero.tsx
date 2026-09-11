@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { Icon } from "@/components/ui";
 
 const SLIDES = [
   {
@@ -122,17 +123,19 @@ export function Hero() {
             </Link>
           </div>
 
-          {/* Trust badges, separated by hairline rules as in the design */}
-          <div className="mt-10 lg:mt-14 flex flex-wrap items-center">
+          {/* Trust badges. Grid instead of a wrapping flex row so the divider,
+              keyed to "not first", never lands on a row it didn't wrap into. */}
+          <div className="mt-10 lg:mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0">
             {BADGES.map((badge, idx) => (
               <div
                 key={badge.line1}
-                className={`flex items-center gap-3 pr-6 sm:pr-10 ${idx > 0 ? "border-l border-white/20 pl-6 sm:pl-10" : ""
-                  }`}
+                className={`flex items-center gap-3 sm:pr-6 lg:pr-10 ${
+                  idx > 0
+                    ? "border-t sm:border-t-0 sm:border-l border-white/20 pt-4 sm:pt-0 sm:pl-6 lg:pl-10"
+                    : ""
+                }`}
               >
-                <span className="material-symbols-outlined text-brand-yellow text-[28px] sm:text-[32px]">
-                  {badge.icon}
-                </span>
+                <Icon name={badge.icon} className="text-brand-yellow text-[28px] sm:text-[32px]" />
                 <span className="text-xs sm:text-[13px] font-bold tracking-wider uppercase text-white leading-tight">
                   {badge.line1}
                   <br />

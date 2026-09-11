@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LazyVideo } from "@/components/ui";
+import { Icon, LazyVideo } from "@/components/ui";
 
 const PILLARS = [
   { icon: "precision_manufacturing", label: "Modern Manufacturing Facility" },
@@ -39,12 +39,11 @@ function FacilityVisual() {
           <div className="flex items-center justify-start gap-5 lg:gap-8">
             {PILLARS.map((pillar) => (
               <div key={pillar.label} className="flex items-center gap-3">
-                <span
-                  className="material-symbols-outlined text-brand-yellow shrink-0"
+                <Icon
+                  name={pillar.icon}
+                  className="text-brand-yellow shrink-0"
                   style={{ fontSize: "36px", width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center" }}
-                >
-                  {pillar.icon}
-                </span>
+                />
                 <span className="text-xs sm:text-[13px] font-semibold leading-tight text-gray-100 max-w-[120px]">
                   {pillar.label}
                 </span>
@@ -77,7 +76,7 @@ export function AboutSnippet() {
 
             <h2 className="mt-4 font-display text-4xl sm:text-5xl tracking-tight text-brand-text leading-[1.05]">
               Engineering Machines <br />
-              for <span className="text-brand-yellow">a Better Tomorrow</span>
+              for <span className="text-brand-accent-text">a Better Tomorrow</span>
             </h2>
 
             <p className="mt-6 max-w-lg text-base lg:text-[17px] text-brand-text-secondary leading-relaxed">

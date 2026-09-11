@@ -56,7 +56,7 @@ export function ManufacturingSection() {
             </div>
 
             <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text leading-[1.05]">
-              Precision in <span className="text-brand-yellow">Every Part</span>
+              Precision in <span className="text-brand-accent-text">Every Part</span>
             </h2>
 
             <p className="mt-4 text-base lg:text-[17px] text-brand-text-secondary leading-relaxed max-w-2xl">

@@ -1,3 +1,5 @@
+import { Icon } from "@/components/ui";
+
 const INDUSTRIES = [
   {
     icon: "construction",
@@ -36,7 +38,7 @@ export function IndustriesSection() {
           </span>
         </div>
         <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text">
-          Powering Multiple <span className="text-brand-yellow">Industries</span>
+          Powering Multiple <span className="text-brand-accent-text">Industries</span>
         </h2>
 
         {/* Spec-sheet grid: indexed panels with blueprint corner marks */}
@@ -54,9 +56,10 @@ export function IndustriesSection() {
                 <span className="font-stat text-xs tracking-[0.2em] text-brand-text-secondary/60 transition-colors duration-300 group-hover:text-brand-yellow">
                   {String(idx + 1).padStart(2, "0")}
                 </span>
-                <span className="material-symbols-outlined text-[28px] text-brand-text-secondary/70 transition-colors duration-300 group-hover:text-white">
-                  {ind.icon}
-                </span>
+                <Icon
+                  name={ind.icon}
+                  className="text-[28px] text-brand-text-secondary/70 transition-colors duration-300 group-hover:text-white"
+                />
               </div>
 
               <h3 className="text-sm sm:text-[15px] font-semibold text-brand-text leading-tight transition-colors duration-300 group-hover:text-white">

@@ -15,7 +15,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="rounded-xl border border-brand-border bg-brand-surface p-6"
+      className="group rounded-xl border border-brand-border bg-brand-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand-accent/40 hover:shadow-lg"
     >
       <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg bg-brand-cream">
         {image ? (
@@ -36,13 +36,15 @@ export function ProductCard({ product }: { product: Product }) {
       <p className="text-xs font-semibold uppercase tracking-wide text-brand-text-secondary">
         {CATEGORY_LABELS[product.category]}
       </p>
-      <h3 className="mt-1 font-display text-2xl text-brand-ink">{product.name}</h3>
+      <h3 className="mt-1 font-display text-2xl text-brand-ink transition-colors group-hover:text-brand-accent">
+        {product.name}
+      </h3>
       <p className="mt-2 text-sm text-brand-text-secondary">
         {meta || product.tagline}
       </p>
       <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-ink">
         View details
-        <Icon name="arrow_forward" className="text-base" />
+        <Icon name="arrow_forward" className="text-base transition-transform duration-300 group-hover:translate-x-1" />
       </span>
     </Link>
   );

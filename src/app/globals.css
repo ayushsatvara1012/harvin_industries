@@ -15,11 +15,14 @@
   --color-brand-yellow: #f59e0b;
   --color-brand-yellow-light: #fbbf24;
   --color-brand-accent: #d97706;
+  /* Text-only amber for yellow copy on light backgrounds — #f59e0b/#d97706 both
+     fail 3:1/4.5:1 there. 5.1:1 on white, 4.9:1 on #f4f4f2. */
+  --color-brand-accent-text: #9a5b06;
   --color-brand-clay: #fef3c7;
   --color-brand-cream: #ffffff;
   --color-brand-surface: #ffffff;
   --color-brand-text: #111827;
-  --color-brand-text-secondary: #6b7280;
+  --color-brand-text-secondary: #5b6470;
   --color-brand-border: #e5e7eb;
 }
 
@@ -34,6 +37,7 @@
   --color-brand-yellow: var(--color-brand-yellow);
   --color-brand-yellow-light: var(--color-brand-yellow-light);
   --color-brand-accent: var(--color-brand-accent);
+  --color-brand-accent-text: var(--color-brand-accent-text);
   --color-brand-clay: var(--color-brand-clay);
   --color-brand-cream: var(--color-brand-cream);
   --color-brand-surface: var(--color-brand-surface);
@@ -44,8 +48,6 @@
   --font-sans: var(--font-inter);
   --font-display: var(--font-forum);
   --font-stat: var(--font-oswald);
-
-  --container-8xl: 90rem;
 }
 
 body {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "@/components/ui";
 import { BrandLogo } from "./BrandLogo";
 
 export function Footer() {
@@ -32,7 +33,7 @@ export function Footer() {
                 className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
                 aria-label="YouTube"
               >
-                <span className="material-symbols-outlined text-base">smart_display</span>
+                <Icon name="smart_display" className="text-base" />
               </a>
               <a
                 href="https://instagram.com"
@@ -41,7 +42,7 @@ export function Footer() {
                 className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
                 aria-label="Instagram"
               >
-                <span className="material-symbols-outlined text-base">photo_camera</span>
+                <Icon name="photo_camera" className="text-base" />
               </a>
             </div>
           </div>
@@ -142,23 +143,17 @@ export function Footer() {
             <h3 className="text-sm font-bold uppercase tracking-wider text-white">Contact Us</h3>
             <ul className="mt-4 space-y-3.5 text-sm text-gray-400">
               <li className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-brand-yellow text-lg shrink-0 mt-0.5">
-                  location_on
-                </span>
+                <Icon name="location_on" className="text-brand-yellow text-lg shrink-0 mt-0.5" />
                 <span>Ahmedabad, Gujarat, India</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-brand-yellow text-lg shrink-0">
-                  call
-                </span>
+                <Icon name="call" className="text-brand-yellow text-lg shrink-0" />
                 <a href="tel:+919898575358" className="hover:text-brand-yellow transition-colors">
                   +91 98985 75358
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-brand-yellow text-lg shrink-0">
-                  mail
-                </span>
+                <Icon name="mail" className="text-brand-yellow text-lg shrink-0" />
                 <a
                   href="mailto:info@harvinindustries.com"
                   className="hover:text-brand-yellow transition-colors"

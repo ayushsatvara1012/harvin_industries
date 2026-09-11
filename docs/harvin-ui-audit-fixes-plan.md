@@ -55,16 +55,60 @@ Also fixed in passing (pre-existing lint warning + related audit finding, both t
 
 New file: `src/components/ui/LazyVideo.tsx`, exported from `src/components/ui/index.ts`.
 
-## Not done yet — Phase 2 (High Impact)
+## Status: Phase 2 (High Impact) — DONE, verified, uncommitted
 
-Not started. From the audit roadmap:
-- H-3 — accessible text-yellow token (`~#9a5b06`) for yellow-on-light headings (currently 2.15:1/1.95:1)
-- H-4 — mobile drawer doesn't render `item.children`; 5 product categories unreachable on mobile
-- H-5 — `router.push` -> `router.replace` in `ProductFilters.tsx` debounced search (history-entry-per-keystroke)
-- H-7 — 10 raw `material-symbols-outlined` spans bypass the `Icon` wrapper, announced as text by screen readers
-- M-1, M-2, M-6, M-10, M-11 — products grid 80px misalignment, badge divider survives wrap, `ProductCard`
-  has no hover/focus states, mobile toggle `aria-expanded` missing, no skip link
-- M-9 — OG/Twitter/canonical/sitemap.ts/robots.ts/JSON-LD (all currently absent)
+All items implemented and verified (`tsc --noEmit` clean, `npm run lint` zero warnings, `npm run build`
+passes, manually verified in a live Chrome DevTools session against `next dev`):
+
+- **H-3** (yellow heading accent fails contrast on light sections) — added `--color-brand-accent-text:
+  #9a5b06` token (5.1:1 on white, 4.9:1 on `#f4f4f2`) in `globals.css`, used for the yellow half of every
+  heading that sits on a light background: `AboutSnippet.tsx`, `LatestProducts.tsx` (heading + "View All
+  Products" link, which switched from a hover color change to `hover:underline` since no yellow hover
+  state clears 4.5:1), `ManufacturingSection.tsx`, `IndustriesSection.tsx`, `ClientLogosSection.tsx`.
+  Headings already on dark sections (`products/page.tsx`, `AdvantageSection.tsx`, `CtaBanner.tsx`, `Navbar`)
+  were left on `text-brand-yellow` — they already clear 8.9:1 there, per the audit's own finding. Also
+  darkened `--color-brand-text-secondary` from `#6b7280` to `#5b6470`, fixing the "Industries We Serve"
+  eyebrow's separately-flagged 4.39:1 near-miss on `#f4f4f2` (now 5.45:1) without regressing any other use.
+- **H-4** (mobile nav drops the 5 product categories) — `Navbar.tsx` mobile drawer now renders a disclosure
+  for `item.hasDropdown` items: a toggle button (`aria-expanded`/`aria-controls`) revealing `item.children`
+  as indented sub-links. Verified live: all 5 categories (Fly Ash, Concrete Block, Paver Block, Automatic
+  Plant, Material Handling) reachable from the mobile drawer.
+- **H-5** (search pushes a history entry per keystroke) — `ProductFilters.tsx`: both `update()` (debounced
+  search + category toggle) and the "Clear all filters" handler switched from `router.push` to
+  `router.replace`.
+- **H-7** (icon ligature names leak to the a11y tree) — `Icon.tsx` gained a `style` prop (several call
+  sites needed inline sizing). All 10 raw `material-symbols-outlined` spans replaced with `<Icon />` across
+  `Hero.tsx`, `AboutSnippet.tsx`, `LatestProducts.tsx`, `IndustriesSection.tsx`, `AdvantageSection.tsx`,
+  `Footer.tsx` (5 sites). Verified live: no ligature name (`location_on`, `call`, `smart_display`, etc.)
+  appears as `StaticText` in the accessibility tree. Added an `eslint.config.mjs` `no-restricted-syntax`
+  rule forbidding the raw class outside `Icon.tsx` (and the config file itself, to avoid the rule matching
+  its own message string) so it can't regress.
+- **M-1** (products grid 80px out of alignment) — `products/page.tsx` `max-w-8xl` -> `max-w-7xl`; deleted
+  the now-unused `--container-8xl` token from `globals.css`. Verified live at 1440px: navbar, grid
+  container and footer all left-align at 80px.
+- **M-2** (hero trust badge divider survives wrap) — `Hero.tsx` badges switched from a wrapping flex row
+  keyed on array index to `grid grid-cols-1 sm:grid-cols-3` (never wraps unpredictably at either
+  breakpoint), with `border-t` dividers below `sm` and `border-l` at `sm`+. Verified live at 390px: all
+  three badges stack in one column, dividers render as `border-top`, no stray left border.
+- **M-6** (`ProductCard` has no hover/focus state) — added `group`, `hover:-translate-y-1`,
+  `hover:border-brand-accent/40`, `hover:shadow-lg`, title color transition and arrow translate on hover,
+  matching the homepage card treatment. The H-6 `:focus-visible` token already covers the focus ring.
+- **M-9** (no OG/canonical/structured data/robots/sitemap) — new `src/lib/site.ts` (`SITE_URL`
+  `https://harvinindustries.com`, inferred from the brochure's contact email domain — **not yet confirmed
+  as the connected domain**, flagged for whoever connects Vercel to a real domain). Added `openGraph`/
+  `twitter`/`alternates.canonical` metadata to the root layout, `/products`, and `/products/[slug]`;
+  `Organization` JSON-LD in the root layout; `Product` + `BreadcrumbList` JSON-LD on product detail pages;
+  `src/app/sitemap.ts` and `src/app/robots.ts` (only the 3 routes that actually exist: `/`, `/products`,
+  the 5 `/products/[slug]`). OG image reuses the real `hero_Image.webp` (1600x900) — TODO in `site.ts` to
+  swap for a proper 1200x630 crop once one exists.
+- **M-10** (mobile toggle exposes no state to AT) — `Navbar.tsx` mobile toggle now has `aria-expanded`,
+  `aria-controls="mobile-nav"`, a state-dependent label ("Open menu"/"Close menu"), drawer given
+  `id="mobile-nav"`; `Escape` now also closes the mobile drawer (previously only closed the desktop
+  dropdown).
+- **M-11** (no skip-to-content link) — added a visually-hidden-until-focused skip link as the first child
+  of `<body>` in the root layout, targeting `id="main"` added to every page's `<main>`.
+
+New file: `src/lib/site.ts`. New routes: `src/app/sitemap.ts`, `src/app/robots.ts`.
 
 ## Not done — Phases 3-5
 
@@ -76,8 +120,10 @@ See `docs/harvin-ui-audit-report.md` sections 24-25 for the full itemized list.
 ## For a new session picking this up
 
 1. Confirm current branch is `bugfix/critical-ui-audit-fixes` (`git branch --show-current`).
-2. Confirm Phase 1 changes are still there and uncommitted (`git status --short` should show the same
-   ~12 modified files + `src/components/ui/LazyVideo.tsx` untracked, unless the user has since committed).
-3. Ask the user whether to commit Phase 1 now, and whether to proceed into Phase 2 — don't assume either.
-4. If proceeding to Phase 2, re-read `docs/harvin-ui-audit-report.md` sections 5-6 (H-3 through M-12) for
-   full finding detail — this plan doc only summarizes.
+2. Confirm Phase 2 changes are still there (`git status --short`) unless the user has since committed —
+   Phase 1 was committed as `855a560` before Phase 2 started.
+3. Ask the user whether to commit Phase 2 now, and whether to proceed into Phase 3 — don't assume either.
+4. Before Phase 3, confirm the `SITE_URL` in `src/lib/site.ts` against whatever domain actually gets
+   connected in Vercel — it's currently an inferred placeholder, not a confirmed production domain.
+5. If proceeding to Phase 3, re-read `docs/harvin-ui-audit-report.md` sections 6-7 and 21-22 (M-3 through
+   M-5, M-12, and the Low findings) for full finding detail — this plan doc only summarizes.

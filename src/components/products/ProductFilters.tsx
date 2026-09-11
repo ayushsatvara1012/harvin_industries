@@ -29,7 +29,7 @@ export function ProductFilters() {
       if (value) params.set(key, value);
       else params.delete(key);
     }
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export function ProductFilters() {
           type="button"
           onClick={() => {
             setQuery("");
-            router.push(pathname, { scroll: false });
+            router.replace(pathname, { scroll: false });
           }}
           className="inline-flex items-center gap-1.5 self-start text-xs font-semibold text-brand-text-secondary hover:text-brand-accent"
         >

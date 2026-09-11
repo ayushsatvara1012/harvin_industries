@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Icon } from "@/components/ui";
 
 const PRODUCT_CATEGORIES = [
   {
@@ -72,13 +73,13 @@ export function LatestProducts() {
             </div>
             <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text">
               Machines That Build{" "}
-              <span className="text-brand-yellow">Possibilities</span>
+              <span className="text-brand-accent-text">Possibilities</span>
             </h2>
           </div>
 
           <Link
             href="/products"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-bold uppercase tracking-wider text-brand-accent hover:text-brand-yellow transition-colors group"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-bold uppercase tracking-wider text-brand-accent-text hover:underline transition-colors group"
           >
             <span>View All Products</span>
             <svg
@@ -187,8 +188,9 @@ export function LatestProducts() {
                 }`}
               >
                 {/* Enlarged white icon with no rounded border */}
-                <span
-                  className="material-symbols-outlined text-white shrink-0 transition-transform duration-300 hover:scale-110 drop-shadow-[0_2px_8px_rgba(255,255,255,0.2)]"
+                <Icon
+                  name={stat.icon}
+                  className="text-white shrink-0 transition-transform duration-300 hover:scale-110 drop-shadow-[0_2px_8px_rgba(255,255,255,0.2)]"
                   style={{
                     fontSize: "44px",
                     width: "44px",
@@ -197,9 +199,7 @@ export function LatestProducts() {
                     alignItems: "center",
                     justifyContent: "center",
                   }}
-                >
-                  {stat.icon}
-                </span>
+                />
 
                 <div>
                   {/* Distinct industrial font with tracking and high-impact numerals */}

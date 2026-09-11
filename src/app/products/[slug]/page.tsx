@@ -16,6 +16,7 @@ import {
   getProductBySlug,
   getRelatedProducts,
 } from "@/data/products";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
   return PRODUCTS.map((product) => ({ slug: product.slug }));
@@ -27,9 +28,28 @@ export async function generateMetadata(
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product) return {};
+  const title = `${product.name} — Harvin Industries`;
+  const url = `/products/${product.slug}`;
   return {
-    title: `${product.name} — Harvin Industries`,
+    title,
     description: product.tagline,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description: product.tagline,
+      url,
+      siteName: SITE_NAME,
+      type: "website",
+      images: product.images[0] ? [{ url: product.images[0] }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: product.tagline,
+      images: product.images[0] ? [product.images[0]] : undefined,
+    },
   };
 }
 
@@ -41,10 +61,37 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
   const related = getRelatedProducts(product);
   const quoteHref = `/contact?product=${product.slug}`;
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.tagline,
+    image: product.images.map((image) => `${SITE_URL}${image}`),
+    category: CATEGORY_LABELS[product.category],
+    brand: { "@type": "Brand", name: SITE_NAME },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Products", item: `${SITE_URL}/products` },
+      { "@type": "ListItem", position: 2, name: product.name, item: `${SITE_URL}/products/${product.slug}` },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Navbar />
-      <main className="min-h-screen bg-white">
+      <main id="main" className="min-h-screen bg-white">
         <section className="bg-white">
           <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-1.5 text-xs text-brand-text-secondary">

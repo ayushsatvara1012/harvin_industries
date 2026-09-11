@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Icon } from "@/components/ui";
+import { Eyebrow, Icon } from "@/components/ui";
 
 const ADVANTAGES = [
   { icon: "shield", title: "Robust & Reliable Machines" },
@@ -43,12 +43,7 @@ export function AdvantageSection() {
 
       <div className="relative z-20 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="lg:max-w-[58%]">
-          <div className="flex items-center gap-2.5">
-            <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
-            <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-gray-400">
-              Our Advantage
-            </span>
-          </div>
+          <Eyebrow tone="dark">Our Advantage</Eyebrow>
 
           <h2 className="mt-4 font-display text-4xl sm:text-5xl tracking-tight text-white leading-[1.05]">
             Engineered <br />

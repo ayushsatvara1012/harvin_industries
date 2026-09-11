@@ -52,7 +52,7 @@ export function ProductFilters() {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search machines by name or output…"
+          placeholder="Search machines…"
           className="w-full rounded-full border border-brand-border bg-brand-surface py-3 pl-12 pr-4 text-sm text-brand-text placeholder:text-brand-text-secondary focus:border-brand-brick"
         />
       </label>

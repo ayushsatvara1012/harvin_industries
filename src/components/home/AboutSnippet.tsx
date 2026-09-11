@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Icon, LazyVideo } from "@/components/ui";
+import { Eyebrow, Icon, LazyVideo } from "@/components/ui";
 
 const PILLARS = [
   { icon: "precision_manufacturing", label: "Modern Manufacturing Facility" },
@@ -67,12 +67,7 @@ export function AboutSnippet() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-6 lg:py-10 lg:pr-16 xl:pr-24">
-            <div className="flex items-center gap-2.5">
-              <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
-              <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
-                Who We Are
-              </span>
-            </div>
+            <Eyebrow>Who We Are</Eyebrow>
 
             <h2 className="mt-4 font-display text-4xl sm:text-5xl tracking-tight text-brand-text leading-[1.05]">
               Engineering Machines <br />

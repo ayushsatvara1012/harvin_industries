@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Navbar, Footer } from "@/components/layout";
-import { IsometricLines } from "@/components/ui";
+import { Eyebrow, IsometricLines } from "@/components/ui";
 import { ProductCard, ProductFilters } from "@/components/products";
 import { PRODUCTS, type Category } from "@/data/products";
 import { SITE_NAME } from "@/lib/site";
@@ -29,6 +29,22 @@ export const metadata: Metadata = {
     description,
   },
 };
+
+function ProductFiltersSkeleton() {
+  return (
+    <div className="flex flex-col gap-8 animate-pulse" aria-hidden="true">
+      <div className="h-12 rounded-full bg-brand-border/60" />
+      <div>
+        <div className="h-3 w-16 rounded bg-brand-border/60" />
+        <div className="mt-3 flex flex-wrap gap-2">
+          <div className="h-9 w-24 rounded-full bg-brand-border/60" />
+          <div className="h-9 w-28 rounded-full bg-brand-border/60" />
+          <div className="h-9 w-20 rounded-full bg-brand-border/60" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function filterProducts(searchParams: { q?: string; category?: string }) {
   const q = searchParams.q?.trim().toLowerCase();
@@ -68,12 +84,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
           <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-transparent to-brand-ink/50 pointer-events-none" />
 
           <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-            <div className="flex items-center gap-2.5">
-              <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
-              <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-brand-yellow">
-                Product Portfolio
-              </span>
-            </div>
+            <Eyebrow tone="accent">Product Portfolio</Eyebrow>
             <h1 className="mt-3 font-display text-4xl tracking-tight text-white sm:text-5xl lg:text-6xl">
               Brick & Block Making <span className="text-brand-yellow">Machines</span>
             </h1>
@@ -83,11 +94,11 @@ export default async function ProductsPage(props: PageProps<"/products">) {
           </div>
         </section>
 
-        <section className="bg-white">
+        <section className="bg-[#f4f4f2]">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[260px_1fr]">
             <aside className="lg:sticky lg:top-24 lg:self-start">
-              <Suspense fallback={null}>
+              <Suspense fallback={<ProductFiltersSkeleton />}>
                 <ProductFilters />
               </Suspense>
             </aside>

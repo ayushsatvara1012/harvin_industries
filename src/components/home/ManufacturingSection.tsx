@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRef } from "react";
-import { LazyVideo, type LazyVideoHandle } from "@/components/ui";
+import { Eyebrow, LazyVideo, type LazyVideoHandle } from "@/components/ui";
 
 const PROCESS_STEPS = [
   {
@@ -48,12 +48,7 @@ export function ManufacturingSection() {
         <div className="flex flex-col gap-10 lg:gap-12">
           {/* 1. Header & Description */}
           <div className="max-w-3xl">
-            <div className="flex items-center gap-2.5">
-              <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
-              <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
-                Our Manufacturing
-              </span>
-            </div>
+            <Eyebrow>Our Manufacturing</Eyebrow>
 
             <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text leading-[1.05]">
               Precision in <span className="text-brand-accent-text">Every Part</span>

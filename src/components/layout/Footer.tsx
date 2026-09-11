@@ -52,42 +52,42 @@ export function Footer() {
             <h3 className="text-sm font-bold uppercase tracking-wider text-white">Quick Links</h3>
             <ul className="mt-4 space-y-2.5 text-sm font-medium text-gray-400">
               <li>
-                <Link href="/" className="hover:text-brand-yellow transition-colors">
+                <Link href="/" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-brand-yellow transition-colors">
+                <Link href="/about" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-brand-yellow transition-colors">
+                <Link href="/products" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   Products
                 </Link>
               </li>
               <li>
-                <Link href="/#manufacturing" className="hover:text-brand-yellow transition-colors">
+                <Link href="/#manufacturing" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   Manufacturing
                 </Link>
               </li>
               <li>
-                <Link href="/#advantage" className="hover:text-brand-yellow transition-colors">
+                <Link href="/#advantage" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   Technology
                 </Link>
               </li>
               <li>
-                <Link href="/#industries" className="hover:text-brand-yellow transition-colors">
+                <Link href="/#industries" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   Projects
                 </Link>
               </li>
               <li>
-                <Link href="/#resources" className="hover:text-brand-yellow transition-colors">
+                <Link href="/#resources" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   Resources
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-brand-yellow transition-colors">
+                <Link href="/contact" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   Contact
                 </Link>
               </li>
@@ -99,14 +99,14 @@ export function Footer() {
             <h3 className="text-sm font-bold uppercase tracking-wider text-white">Our Products</h3>
             <ul className="mt-4 space-y-2.5 text-sm font-medium text-gray-400">
               <li>
-                <Link href="/products#fly-ash" className="hover:text-brand-yellow transition-colors">
+                <Link href="/products#fly-ash" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   Fly Ash Brick Machines
                 </Link>
               </li>
               <li>
                 <Link
                   href="/products#concrete-blocks"
-                  className="hover:text-brand-yellow transition-colors"
+                  className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
                 >
                   Concrete Block Machines
                 </Link>
@@ -114,7 +114,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/products#paver-blocks"
-                  className="hover:text-brand-yellow transition-colors"
+                  className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
                 >
                   Paver Block Machines
                 </Link>
@@ -122,7 +122,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/products#automatic-plants"
-                  className="hover:text-brand-yellow transition-colors"
+                  className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
                 >
                   Automatic Plant Solutions
                 </Link>
@@ -130,7 +130,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/products#material-handling"
-                  className="hover:text-brand-yellow transition-colors"
+                  className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
                 >
                   Material Handling Equipment
                 </Link>
@@ -148,7 +148,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Icon name="call" className="text-brand-yellow text-lg shrink-0" />
-                <a href="tel:+919898575358" className="hover:text-brand-yellow transition-colors">
+                <a href="tel:+919898575358" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
                   +91 98985 75358
                 </a>
               </li>
@@ -156,7 +156,7 @@ export function Footer() {
                 <Icon name="mail" className="text-brand-yellow text-lg shrink-0" />
                 <a
                   href="mailto:info@harvinindustries.com"
-                  className="hover:text-brand-yellow transition-colors"
+                  className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
                 >
                   info@harvinindustries.com
                 </a>
@@ -165,7 +165,7 @@ export function Footer() {
 
             <div className="mt-5">
               <Link
-                href="/#quote"
+                href="/contact"
                 className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-5 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
               >
                 <span>Request a Quote</span>

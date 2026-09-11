@@ -1,4 +1,4 @@
-import { Icon } from "@/components/ui";
+import { Eyebrow, Icon } from "@/components/ui";
 
 const INDUSTRIES = [
   {
@@ -31,12 +31,7 @@ export function IndustriesSection() {
   return (
     <section id="industries" className="scroll-mt-20 bg-[#f4f4f2] py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2.5">
-          <span className="w-[3px] h-3.5 bg-brand-yellow inline-block" />
-          <span className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.22em] text-brand-text-secondary">
-            Industries We Serve
-          </span>
-        </div>
+        <Eyebrow>Industries We Serve</Eyebrow>
         <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text">
           Powering Multiple <span className="text-brand-accent-text">Industries</span>
         </h2>

@@ -55,14 +55,27 @@ body {
   color: var(--color-brand-text);
 }
 
-/* Scrolling stays fully functional everywhere — only the scrollbar's visible
-   track/thumb are hidden, including inner scroll containers (e.g. spec tables). */
-* {
+/* Hides the page scrollbar only. Inner scroll containers (e.g. the spec
+   table) keep their native scrollbar as the only cue that they scroll. */
+html,
+body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-*::-webkit-scrollbar {
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* For scrollers with their own visible affordance (e.g. prev/next arrows)
+   where a native scrollbar would be redundant. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 

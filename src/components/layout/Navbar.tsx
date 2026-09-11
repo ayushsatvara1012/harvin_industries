@@ -99,7 +99,7 @@ export function Navbar() {
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex h-full items-stretch gap-0.5 xl:gap-1">
+        <nav aria-label="Main" className="hidden lg:flex h-full items-stretch gap-0.5 xl:gap-1">
           {NAV_ITEMS.map((item) => {
             if (item.hasDropdown) {
               const isProductsActive = pathname.startsWith("/products");
@@ -296,7 +296,7 @@ export function Navbar() {
             )}
             <div className="pt-3">
               <Link
-                href="/#quote"
+                href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center justify-center gap-2 rounded-full bg-rusted-yellow py-3.5 px-6 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
               >

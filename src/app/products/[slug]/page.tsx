@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Navbar, Footer } from "@/components/layout";
-import { Icon } from "@/components/ui/Icon";
+import { Eyebrow, Icon } from "@/components/ui";
 import {
   ProductCard,
+  ProductGallery,
   ProductionTable,
   FeatureGroups,
   SpecTable,
@@ -94,7 +94,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
       <main id="main" className="min-h-screen bg-white">
         <section className="bg-white">
           <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-            <nav className="flex items-center gap-1.5 text-xs text-brand-text-secondary">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-brand-text-secondary">
               <Link href="/products" className="hover:text-brand-ink">Products</Link>
               <Icon name="chevron_right" className="text-sm" />
               <span className="text-brand-ink">{product.name}</span>
@@ -105,42 +105,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         <section className="bg-white">
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
             <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
-              <div className="grid gap-4">
-                <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-brand-cream">
-                  {product.images[0] ? (
-                    <Image
-                      src={product.images[0]}
-                      alt={product.name}
-                      fill
-                      priority
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                      <Icon name="deployed_code" className="text-6xl text-brand-clay" />
-                    </div>
-                  )}
-                </div>
-                {product.images.length > 1 && (
-                  <div className="grid grid-cols-3 gap-4">
-                    {product.images.slice(1).map((image) => (
-                      <div
-                        key={image}
-                        className="relative aspect-[4/3] overflow-hidden rounded-lg bg-brand-cream"
-                      >
-                        <Image
-                          src={image}
-                          alt={product.name}
-                          fill
-                          sizes="20vw"
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <ProductGallery images={product.images} alt={product.name} />
 
               <div>
                 <p className="text-sm font-semibold uppercase tracking-widest text-brand-accent">
@@ -194,8 +159,9 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         {product.specs && (
           <section className="bg-white">
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-              <h2 className="font-display text-3xl tracking-tight text-brand-ink">
-                Machine Specification
+              <Eyebrow>Specifications</Eyebrow>
+              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-ink">
+                Machine <span className="text-brand-accent-text">Specification</span>
               </h2>
               <div className="mt-6">
                 <SpecTable specs={product.specs} />
@@ -207,8 +173,9 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         {product.productionTable && (
           <section className="bg-white">
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-              <h2 className="font-display text-3xl tracking-tight text-brand-ink">
-                Output Products
+              <Eyebrow>Production Capacity</Eyebrow>
+              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-ink">
+                Output <span className="text-brand-accent-text">Products</span>
               </h2>
               <p className="mt-2 text-sm text-brand-text-secondary">
                 Products the {product.name} makes, with mould size and output per hour.
@@ -240,7 +207,8 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         {product.featureGroups && (
           <section className="bg-white">
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-              <h2 className="font-display text-3xl tracking-tight text-brand-ink">
+              <Eyebrow>Capabilities</Eyebrow>
+              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-accent-text">
                 Features
               </h2>
               <div className="mt-6">
@@ -251,9 +219,10 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         )}
 
         {related.length > 0 && (
-          <section className="bg-white">
+          <section className="bg-[#f4f4f2]">
             <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-              <h2 className="font-display text-3xl tracking-tight text-brand-ink">
+              <Eyebrow>Related Machines</Eyebrow>
+              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-ink">
                 You may also need
               </h2>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

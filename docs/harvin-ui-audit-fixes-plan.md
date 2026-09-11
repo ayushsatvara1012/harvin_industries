@@ -110,20 +110,67 @@ passes, manually verified in a live Chrome DevTools session against `next dev`):
 
 New file: `src/lib/site.ts`. New routes: `src/app/sitemap.ts`, `src/app/robots.ts`.
 
-## Not done — Phases 3-5
+## Status: Phase 3 (selected items) — DONE, verified, uncommitted
 
-Design-system token normalization (M-12), `Button`/`SectionHeader`/`Card` extraction, bringing the
-homepage visual language to `/products` (M-5), real image gallery (M-4), spec table mobile card layout
-(M-3), asset purge (H-9, 40MB unreferenced in `public/`), Cloudinary migration, all L-1 through L-12.
-See `docs/harvin-ui-audit-report.md` sections 24-25 for the full itemized list.
+User explicitly scoped Phase 3 to: the Low findings (L-1–L-12), the mechanical parts of M-3/M-4, and
+M-5 (visual parity on `/products`). Explicitly declined for now: M-12 token normalization + `CLAUDE.md`
+brand-section rewrite, and H-9 asset purge / Cloudinary migration ("static changes only" for this pass).
+
+- **L-1/L-2** — deleted the four dead components (`TrustStrip`, `KeyFactors`, `HowItWorks`,
+  `BrickWallPattern`, the last of which had the `Math.random()`-during-render hydration hazard) and their
+  barrel exports.
+- **L-3** — already clean (zero lint warnings confirmed; the two cited warnings no longer exist in the
+  current code).
+- **L-4** — removed the sole `quality={85}` override (`ProductCard.tsx`) so all images use the same
+  default quality; pruned the unused `qualities: [75, 85, 90]` down to nothing in `next.config.ts` (Next's
+  default of `[75]` covers it).
+- **L-5** — left alone. Latent-only (exactly one nav item has `hasDropdown` today); fixing it means
+  extracting per-item dropdown state into a child component, which is speculative work for a second
+  dropdown that doesn't exist yet.
+- **L-6** — footer links (`Footer.tsx`) gained `inline-block py-1.5` for a real ≥24px tap target.
+- **L-7** — search placeholder shortened to "Search machines…" so it stops clipping in the 260px sidebar.
+- **L-8** — `ProductFiltersSkeleton` replaces the `fallback={null}` on the filters' `Suspense` boundary.
+- **L-9** — already fixed in Phase 1.
+- **L-10** — `ProductCard`'s image `alt` set to `""` (decorative; the heading already names the link).
+- **L-11** — `aria-label="Breadcrumb"` on the detail page's breadcrumb nav, `aria-label="Main"` on the
+  desktop nav in `Navbar.tsx`.
+- **L-12** — all quote CTAs (`Navbar.tsx`, `Footer.tsx`, `CtaBanner.tsx`) now point at `/contact`, matching
+  `Hero.tsx`'s existing convention, instead of the dead `/#quote` anchor.
+- **M-3** — narrowed the global scrollbar-hiding rule in `globals.css` from `*` to `html, body` so the spec
+  table's horizontal scroller (and any other inner scroller) shows its native scrollbar as an affordance.
+  Added a scoped `.no-scrollbar` utility for `ClientLogosSection`'s carousel, which already has its own
+  prev/next arrows and would look worse with a redundant native scrollbar.
+- **M-4** — new `src/components/products/ProductGallery.tsx` (client component): clicking a thumbnail
+  swaps the main image, active thumbnail gets a `ring-2 ring-brand-accent`, thumbnails are real `<button>`s
+  (keyboard-operable for free) sized to content instead of sitting in a 3-column grid mostly empty.
+- **M-5** — extracted the homepage's eyebrow pattern (yellow tick + tracked-caps label) into
+  `src/components/ui/Eyebrow.tsx` (light/dark/accent tone variants) and applied it everywhere on the
+  homepage that had it duplicated inline, plus to every section heading on `/products` and
+  `/products/[slug]` that didn't have one. Added the split dark/accent heading treatment to "Machine
+  Specification", "Output Products" and "Features" on the detail page. Alternated the listing page's
+  filter+grid section and the detail page's "You may also need" section to `#f4f4f2`, matching the
+  homepage's alternating white/grey band rhythm — did **not** force alternation onto the conditionally-
+  rendered spec/production/features sections themselves, since only 2-3 of 7 products have each of those
+  fields and a fixed alternation would look inconsistent product to product.
+
+New file: `src/components/ui/Eyebrow.tsx`, `src/components/products/ProductGallery.tsx`.
+
+## Not done — Phases 3-5 (remaining)
+
+M-12 (design-token normalization + `CLAUDE.md` brand-section correction) and H-9 (asset purge) /
+Cloudinary migration were scoped out of this pass at the user's explicit request — pick a session for each
+when ready; the Cloudinary one needs credentials on hand.
+`Button`/`Card` extraction beyond `Eyebrow`, spec table mobile card layout (an alternative to the M-3 fix
+actually shipped), all remaining L-findings not listed above, and everything in
+`docs/harvin-ui-audit-report.md` sections 24-25 not itemized here.
 
 ## For a new session picking this up
 
 1. Confirm current branch is `bugfix/critical-ui-audit-fixes` (`git branch --show-current`).
-2. Confirm Phase 2 changes are still there (`git status --short`) unless the user has since committed —
-   Phase 1 was committed as `855a560` before Phase 2 started.
-3. Ask the user whether to commit Phase 2 now, and whether to proceed into Phase 3 — don't assume either.
-4. Before Phase 3, confirm the `SITE_URL` in `src/lib/site.ts` against whatever domain actually gets
-   connected in Vercel — it's currently an inferred placeholder, not a confirmed production domain.
-5. If proceeding to Phase 3, re-read `docs/harvin-ui-audit-report.md` sections 6-7 and 21-22 (M-3 through
-   M-5, M-12, and the Low findings) for full finding detail — this plan doc only summarizes.
+2. Confirm Phase 3 changes are still there (`git status --short`) unless the user has since committed —
+   Phase 1 (`855a560`) and Phase 2 (`337a45b`) are already committed.
+3. Ask the user whether to commit Phase 3 now.
+4. Before touching M-12 or M-9's SEO metadata further, confirm the `SITE_URL` in `src/lib/site.ts` against
+   whatever domain actually gets connected in Vercel — it's currently an inferred placeholder.
+5. Remaining scoped-out work: M-12 (tokens + `CLAUDE.md` brand section), H-9 (asset purge) + Cloudinary
+   migration (needs credentials). Ask before starting either — both were explicitly deferred this session.

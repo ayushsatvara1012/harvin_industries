@@ -35,7 +35,7 @@ export function CtaBanner() {
             </p>
 
             <Link
-              href="/#quote"
+              href="/contact"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
             >
               <span>Request a Quote</span>

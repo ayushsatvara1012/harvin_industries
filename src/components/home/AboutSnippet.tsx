@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { LazyVideo } from "@/components/ui";
 
 const PILLARS = [
   { icon: "precision_manufacturing", label: "Modern Manufacturing Facility" },
@@ -14,15 +14,13 @@ function FacilityVisual() {
       <div className="absolute inset-0 -translate-x-3 lg:-translate-x-4 bg-brand-yellow clip-notch-left" />
 
       <div className="relative h-full w-full overflow-hidden bg-brand-ink clip-notch-left">
-        {/* Timeline Evolution Video */}
-        <video
+        {/* Timeline Evolution Video — lazy-mounted once it nears the viewport */}
+        <LazyVideo
           src="/Harvin_animation_timeline.mp4"
           poster="/images/mockup/factory-hq-4k.webp"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="h-full w-full object-cover"
+          posterAlt="Harvin Industries manufacturing facility timeline"
+          sizes="(min-width: 1024px) 54vw, 100vw"
+          className="absolute inset-0"
         />
 
         {/* Top Floating Badge */}
@@ -93,7 +91,7 @@ export function AboutSnippet() {
             <div className="mt-8">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-white transition-all font-semibold"
+                className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
               >
                 <span>More About Us</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

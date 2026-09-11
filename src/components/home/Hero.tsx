@@ -103,7 +103,7 @@ export function Hero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 rounded-full border border-brand-yellow-light/80 hover:bg-rusted-yellow px-6 py-3 font-display text-base tracking-wider text-white font-semibold transition-all shadow-md shadow-black/40 hover:shadow-lg hover:shadow-brand-yellow/20 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]"
+              className="inline-flex items-center gap-2 rounded-full border border-brand-yellow-light/80 hover:bg-rusted-yellow px-6 py-3 font-display text-base tracking-wider text-white hover:text-brand-ink font-semibold transition-all shadow-md shadow-black/40 hover:shadow-lg hover:shadow-brand-yellow/20 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)] hover:[text-shadow:none]"
             >
               <span>Explore Our Machines</span>
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -113,7 +113,7 @@ export function Hero() {
 
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-white transition-all font-semibold"
+              className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
             >
               <span>Request a Quote</span>
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

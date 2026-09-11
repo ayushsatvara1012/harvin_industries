@@ -36,7 +36,7 @@ export function CtaBanner() {
 
             <Link
               href="/#quote"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-white transition-all font-semibold"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
             >
               <span>Request a Quote</span>
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

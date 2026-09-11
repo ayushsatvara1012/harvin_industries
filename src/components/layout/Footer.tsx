@@ -171,7 +171,7 @@ export function Footer() {
             <div className="mt-5">
               <Link
                 href="/#quote"
-                className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-5 py-3 font-display text-[17px] tracking-wider text-white transition-all font-semibold"
+                className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-5 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
               >
                 <span>Request a Quote</span>
                 <svg

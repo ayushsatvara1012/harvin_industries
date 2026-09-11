@@ -32,6 +32,7 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -47,18 +48,41 @@ export function Navbar() {
     }, 150);
   };
 
+  const suppressTriggerFocusOpenRef = useRef(false);
+
+  const closeDropdown = () => {
+    suppressTriggerFocusOpenRef.current = true;
+    setProductsDropdownOpen(false);
+    dropdownTriggerRef.current?.focus();
+  };
+
+  const handleTriggerFocus = () => {
+    if (suppressTriggerFocusOpenRef.current) {
+      suppressTriggerFocusOpenRef.current = false;
+      return;
+    }
+    handleMouseEnter();
+  };
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setProductsDropdownOpen(false);
       }
     }
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape" && productsDropdownOpen) {
+        closeDropdown();
+      }
+    }
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [productsDropdownOpen]);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-brand-ink/70 backdrop-blur-md border-b border-white/10">
@@ -83,14 +107,18 @@ export function Navbar() {
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
+                    ref={dropdownTriggerRef}
                     type="button"
                     onClick={() => setProductsDropdownOpen((v) => !v)}
+                    onFocus={handleTriggerFocus}
                     className={`group relative flex h-full items-center gap-1.5 px-3 xl:px-4 font-display text-base xl:text-lg font-semibold transition-colors whitespace-nowrap ${
                       productsDropdownOpen || isProductsActive
                         ? "text-brand-yellow"
                         : "text-gray-200 hover:text-brand-yellow"
                     }`}
                     aria-expanded={productsDropdownOpen}
+                    aria-haspopup="menu"
+                    aria-controls="products-dropdown-menu"
                   >
                     <span>{item.label}</span>
                     <svg
@@ -116,6 +144,9 @@ export function Navbar() {
 
                   {/* Dropdown Menu — starts exactly from the bottom of the navbar seam */}
                   <div
+                    id="products-dropdown-menu"
+                    role="menu"
+                    inert={!productsDropdownOpen}
                     className={`absolute top-full left-0 z-50 grid w-72 transition-[grid-template-rows,opacity] duration-200 ease-out ${
                       productsDropdownOpen
                         ? "grid-rows-[1fr] opacity-100 pointer-events-auto"
@@ -128,6 +159,7 @@ export function Navbar() {
                           <Link
                             key={subItem.label}
                             href={subItem.href}
+                            role="menuitem"
                             onClick={() => setProductsDropdownOpen(false)}
                             className="group/sub flex items-center justify-between px-3.5 py-2.5 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10 hover:text-brand-yellow transition-colors"
                           >
@@ -216,7 +248,7 @@ export function Navbar() {
               <Link
                 href="/#quote"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-full bg-rusted-yellow py-3.5 px-6 font-display text-[17px] tracking-wider text-white transition-all font-semibold"
+                className="flex items-center justify-center gap-2 rounded-full bg-rusted-yellow py-3.5 px-6 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
               >
                 <span>Request a Quote</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

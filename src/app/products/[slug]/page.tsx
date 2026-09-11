@@ -133,8 +133,8 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
                 )}
 
                 <Link
-                  href={`/contact?product=${encodeURIComponent(product.name)}`}
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-7 py-3.5 font-display text-[17px] tracking-wide text-white transition-all font-semibold"
+                  href={quoteHref}
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-7 py-3.5 font-display text-[17px] tracking-wide text-brand-ink transition-all font-semibold"
                 >
                   Request a Quote
                   <Icon name="arrow_forward" className="text-base" />

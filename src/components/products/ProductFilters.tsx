@@ -53,7 +53,7 @@ export function ProductFilters() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search machines by name or output…"
-          className="w-full rounded-full border border-brand-border bg-brand-surface py-3 pl-12 pr-4 text-sm text-brand-text placeholder:text-brand-text-secondary focus:border-brand-brick focus:outline-none"
+          className="w-full rounded-full border border-brand-border bg-brand-surface py-3 pl-12 pr-4 text-sm text-brand-text placeholder:text-brand-text-secondary focus:border-brand-brick"
         />
       </label>
 
@@ -69,7 +69,7 @@ export function ProductFilters() {
               onClick={() => update({ category: category === value ? null : value })}
               className={`rounded-full px-4 py-2 font-display text-sm tracking-wide transition-all ${
                 category === value
-                  ? "bg-rusted-yellow text-white"
+                  ? "bg-rusted-yellow text-brand-ink"
                   : "border border-brand-border bg-brand-surface text-brand-text-secondary hover:border-brand-yellow-light hover:text-brand-ink"
               }`}
             >

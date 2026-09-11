@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useRef } from "react";
+import { LazyVideo, type LazyVideoHandle } from "@/components/ui";
 
 const PROCESS_STEPS = [
   {
@@ -37,6 +39,9 @@ const PROCESS_STEPS = [
 ];
 
 export function ManufacturingSection() {
+  const reelRef = useRef<LazyVideoHandle>(null);
+  const reelContainerRef = useRef<HTMLDivElement>(null);
+
   return (
     <section id="manufacturing" className="scroll-mt-20 bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -108,7 +113,7 @@ export function ManufacturingSection() {
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <Link
               href="/about#manufacturing"
-              className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-7 py-3.5 font-display text-[17px] tracking-wider text-white transition-all font-semibold"
+              className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-7 py-3.5 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
             >
               <span>See Our Manufacturing</span>
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -120,11 +125,8 @@ export function ManufacturingSection() {
               href="#manufacturing"
               onClick={(e) => {
                 e.preventDefault();
-                const v = document.getElementById("manufacturing-reel-video") as HTMLVideoElement | null;
-                if (v) {
-                  v.scrollIntoView({ behavior: "smooth", block: "center" });
-                  if (v.paused) v.play();
-                }
+                reelContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+                reelRef.current?.play();
               }}
               className="inline-flex items-center gap-2.5 rounded-full border border-brand-border bg-brand-surface px-6 py-3.5 font-display text-[17px] tracking-wider text-brand-text font-semibold hover:border-brand-yellow hover:text-brand-accent transition-all shadow-sm"
             >
@@ -139,17 +141,18 @@ export function ManufacturingSection() {
 
           {/* 4. Panoramic Manufacturing Animation Reel Banner */}
           <div
+            ref={reelContainerRef}
             id="manufacturing-reel-video"
             className="relative w-full aspect-[21/9] sm:aspect-[24/9] overflow-hidden rounded-2xl sm:rounded-3xl bg-brand-ink shadow-2xl border border-brand-border"
           >
-            <video
+            <LazyVideo
+              ref={reelRef}
               src="/harvin_animation.mp4"
               poster="/images/mockup/hero-plant-4k.webp"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="h-full w-full object-cover"
+              posterAlt="Harvin Industries automated manufacturing plant in operation"
+              sizes="100vw"
+              className="absolute inset-0"
+              showControls
             />
 
             {/* Gradient Scrim */}

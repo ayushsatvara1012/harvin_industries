@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useRef } from "react";
-import { Eyebrow, LazyVideo, type LazyVideoHandle } from "@/components/ui";
+import { Button, LazyVideo, SectionHeader, type LazyVideoHandle } from "@/components/ui";
 
 const PROCESS_STEPS = [
   {
@@ -48,11 +47,9 @@ export function ManufacturingSection() {
         <div className="flex flex-col gap-10 lg:gap-12">
           {/* 1. Header & Description */}
           <div className="max-w-3xl">
-            <Eyebrow>Our Manufacturing</Eyebrow>
-
-            <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text leading-[1.05]">
+            <SectionHeader eyebrow="Our Manufacturing" tight>
               Precision in <span className="text-brand-accent-text">Every Part</span>
-            </h2>
+            </SectionHeader>
 
             <p className="mt-4 text-base lg:text-[17px] text-brand-text-secondary leading-relaxed max-w-2xl">
               From design to dispatch, every machine is built in-house with strict quality control,
@@ -106,15 +103,9 @@ export function ManufacturingSection() {
 
           {/* 3. Actions & Video Reel Preview */}
           <div className="pt-2 flex flex-wrap items-center gap-4">
-            <Link
-              href="/about#manufacturing"
-              className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-7 py-3.5 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
-            >
-              <span>See Our Manufacturing</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
+            <Button href="/about#manufacturing" size="lg">
+              See Our Manufacturing
+            </Button>
 
             <a
               href="#manufacturing"
@@ -134,11 +125,13 @@ export function ManufacturingSection() {
             </a>
           </div>
 
-          {/* 4. Panoramic Manufacturing Animation Reel Banner */}
+          {/* 4. Panoramic Manufacturing Animation Reel Banner — full width with
+              minor side padding on mobile, caption kept out of the player;
+              caption moves onto the video as an overlay from `sm` up. */}
           <div
             ref={reelContainerRef}
             id="manufacturing-reel-video"
-            className="relative w-full aspect-[21/9] sm:aspect-[24/9] overflow-hidden rounded-2xl sm:rounded-3xl bg-brand-ink shadow-2xl border border-brand-border"
+            className="relative w-full aspect-[16/10] sm:aspect-[24/9] overflow-hidden rounded-2xl sm:rounded-3xl bg-brand-ink shadow-2xl border border-brand-border"
           >
             <LazyVideo
               ref={reelRef}
@@ -150,31 +143,30 @@ export function ManufacturingSection() {
               showControls
             />
 
-            {/* Gradient Scrim */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
+            {/* Gradient Scrim — desktop caption legibility only */}
+            <div className="hidden sm:block absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
 
-            {/* Live Plant Badge */}
-            <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10 flex items-center gap-2 rounded-full bg-black/70 backdrop-blur-md px-3.5 py-1.5 border border-white/15">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-bold tracking-wider uppercase text-white">
-                Live Automation • Factory Plant View
-              </span>
-            </div>
-
-            {/* Bottom Caption Overlay */}
-            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-white">
+            {/* Bottom Caption Overlay — sm and up only */}
+            <div className="hidden sm:flex absolute bottom-6 left-6 right-6 z-10 items-end justify-between gap-3 text-white">
               <div>
-                <p className="font-display text-lg sm:text-xl font-bold tracking-tight">
+                <p className="font-display text-xl font-bold tracking-tight">
                   High-Speed Hydraulic Press & Automated Batching Operations
                 </p>
-                <p className="text-xs sm:text-sm text-gray-300">
+                <p className="text-sm text-gray-300">
                   Continuous robotic synchronization and strict ISO 9001:2015 quality standards.
                 </p>
               </div>
-              <span className="self-start sm:self-end px-3 py-1 rounded-md bg-brand-yellow/20 border border-brand-yellow/40 text-[11px] font-bold tracking-widest uppercase text-brand-yellow shrink-0">
-                100% In-House Built
-              </span>
             </div>
+          </div>
+
+          {/* Caption — below the player on mobile, kept off the video itself */}
+          <div className="sm:hidden">
+            <p className="font-display text-lg font-bold tracking-tight text-brand-text">
+              High-Speed Hydraulic Press & Automated Batching Operations
+            </p>
+            <p className="text-xs text-brand-text-secondary">
+              Continuous robotic synchronization and strict ISO 9001:2015 quality standards.
+            </p>
           </div>
         </div>
       </div>

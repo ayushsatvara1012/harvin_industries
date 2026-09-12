@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Navbar, Footer } from "@/components/layout";
-import { Eyebrow, Icon } from "@/components/ui";
+import { Button, Icon, SectionHeader } from "@/components/ui";
 import {
   ProductCard,
   ProductGallery,
@@ -144,13 +144,9 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
                   </div>
                 )}
 
-                <Link
-                  href={quoteHref}
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-7 py-3.5 font-display text-[17px] tracking-wide text-brand-ink transition-all font-semibold"
-                >
+                <Button href={quoteHref} size="lg" className="mt-8">
                   Request a Quote
-                  <Icon name="arrow_forward" className="text-base" />
-                </Link>
+                </Button>
               </div>
             </div>
           </div>
@@ -159,10 +155,9 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         {product.specs && (
           <section className="bg-white">
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-              <Eyebrow>Specifications</Eyebrow>
-              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-ink">
+              <SectionHeader eyebrow="Specifications" size="md">
                 Machine <span className="text-brand-accent-text">Specification</span>
-              </h2>
+              </SectionHeader>
               <div className="mt-6">
                 <SpecTable specs={product.specs} />
               </div>
@@ -173,10 +168,9 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         {product.productionTable && (
           <section className="bg-white">
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-              <Eyebrow>Production Capacity</Eyebrow>
-              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-ink">
+              <SectionHeader eyebrow="Production Capacity" size="md">
                 Output <span className="text-brand-accent-text">Products</span>
-              </h2>
+              </SectionHeader>
               <p className="mt-2 text-sm text-brand-text-secondary">
                 Products the {product.name} makes, with mould size and output per hour.
               </p>
@@ -207,10 +201,9 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         {product.featureGroups && (
           <section className="bg-white">
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-              <Eyebrow>Capabilities</Eyebrow>
-              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-accent-text">
+              <SectionHeader eyebrow="Capabilities" tone="accent" size="md">
                 Features
-              </h2>
+              </SectionHeader>
               <div className="mt-6">
                 <FeatureGroups groups={product.featureGroups} />
               </div>
@@ -219,12 +212,11 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         )}
 
         {related.length > 0 && (
-          <section className="bg-[#f4f4f2]">
+          <section className="bg-brand-surface-alt">
             <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-              <Eyebrow>Related Machines</Eyebrow>
-              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-ink">
+              <SectionHeader eyebrow="Related Machines" size="md">
                 You may also need
-              </h2>
+              </SectionHeader>
               <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((item) => (
                   <ProductCard key={item.slug} product={item} />

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui";
 
 export function CtaBanner() {
   return (
@@ -34,15 +34,9 @@ export function CtaBanner() {
               Our team is ready to help you with the best solution.
             </p>
 
-            <Link
-              href="/contact"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
-            >
-              <span>Request a Quote</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
+            <Button href="/contact" className="mt-6">
+              Request a Quote
+            </Button>
           </div>
         </div>
 

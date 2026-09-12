@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Navbar, Footer } from "@/components/layout";
-import { Eyebrow, IsometricLines } from "@/components/ui";
+import { Card, Eyebrow, IsometricLines } from "@/components/ui";
 import { ProductCard, ProductFilters } from "@/components/products";
 import { PRODUCTS, type Category } from "@/data/products";
 import { SITE_NAME } from "@/lib/site";
@@ -79,9 +79,9 @@ export default async function ProductsPage(props: PageProps<"/products">) {
       <Navbar />
       <main id="main" className="bg-white">
         <section className="relative overflow-hidden border-b border-white/10 bg-brand-ink">
-          <IsometricLines className="absolute inset-0 h-full w-full opacity-35" />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-ink via-brand-ink/90 via-50% to-brand-ink/40 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-transparent to-brand-ink/50 pointer-events-none" />
+          <IsometricLines className="absolute inset-0 h-full w-full opacity-90" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-ink via-brand-ink/75 via-45% to-brand-ink/20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/80 via-transparent to-brand-ink/30 pointer-events-none" />
 
           <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
             <Eyebrow tone="accent">Product Portfolio</Eyebrow>
@@ -94,7 +94,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
           </div>
         </section>
 
-        <section className="bg-[#f4f4f2]">
+        <section className="bg-brand-surface-alt">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[260px_1fr]">
             <aside className="lg:sticky lg:top-24 lg:self-start">
@@ -115,12 +115,12 @@ export default async function ProductsPage(props: PageProps<"/products">) {
                   ))}
                 </div>
               ) : (
-                <div className="rounded-xl border border-dashed border-brand-border bg-brand-surface px-6 py-16 text-center">
+                <Card variant="dashed" className="px-6 py-16 text-center">
                   <p className="font-display text-xl text-brand-ink">No machines found</p>
                   <p className="mt-2 text-sm text-brand-text-secondary">
                     Try a different search term or clear your filters.
                   </p>
-                </div>
+                </Card>
               )}
             </div>
           </div>

@@ -184,7 +184,10 @@ export const PRODUCTS: Product[] = [
     tagline: "Automatic aggregate, cement, and water batching for concrete output.",
     description:
       "A fully automated batching and mixing line — PLC-controlled dosing of up to five raw materials, automatic cement feeding, and automatic water metering — designed to feed a Harvin press machine at a steady 30 m³/hr.",
-    images: ["/images/brochure/machines/batching-plant.png"],
+    images: [
+      "/images/machines/batching-plant.jpg",
+      "/images/brochure/machines/batching-plant.png",
+    ],
     power: "15 KW (22.5 HP)",
     featureGroups: [
       {
@@ -234,7 +237,10 @@ export const PRODUCTS: Product[] = [
     tagline: "Turbo and Planetary mixers for uniform, lump-free material mixing.",
     description:
       "Two mixing formats to match the output — a Turbo mixer for fly ash brick lines, and a heavy-duty Planetary mixer for high-strength concrete bricks, hollow blocks, and paver blocks.",
-    images: ["/images/brochure/machines/mixture-machine.png"],
+    images: [
+      "/images/machines/mixture-machine.jpg",
+      "/images/brochure/machines/mixture-machine.png",
+    ],
     power: "10 to 20 HP",
     featureGroups: [
       {

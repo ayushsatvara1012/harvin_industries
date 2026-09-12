@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import { Icon } from "@/components/ui";
+import { useEffect, useRef, useState } from "react";
+import { Button, Icon } from "@/components/ui";
 
 const SLIDES = [
   {
@@ -47,18 +46,71 @@ const BADGES = [
   { icon: "trending_up", line1: "BUILT", line2: "FOR LONG TERM" },
 ];
 
+const SWIPE_THRESHOLD_PX = 50;
+
 export function Hero() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const slide = SLIDES[currentSlideIndex];
+  const sectionRef = useRef<HTMLElement>(null);
+  const touchStartXRef = useRef<number | null>(null);
 
   const handleNextSlide = () => {
     setCurrentSlideIndex((prev) => (prev + 1) % SLIDES.length);
   };
 
+  const handlePrevSlide = () => {
+    setCurrentSlideIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+  };
+
+  // Arrow-key navigation while the hero is the section in view, without
+  // hijacking arrow keys once the user has scrolled past it.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let isVisible = false;
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+    });
+    observer.observe(section);
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (!isVisible) return;
+      if (event.target instanceof HTMLElement && ["INPUT", "TEXTAREA"].includes(event.target.tagName)) return;
+      if (event.key === "ArrowRight") handleNextSlide();
+      if (event.key === "ArrowLeft") handlePrevSlide();
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  function handleTouchStart(event: React.TouchEvent) {
+    touchStartXRef.current = event.touches[0].clientX;
+  }
+
+  function handleTouchEnd(event: React.TouchEvent) {
+    if (touchStartXRef.current === null) return;
+    const deltaX = event.changedTouches[0].clientX - touchStartXRef.current;
+    touchStartXRef.current = null;
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD_PX) return;
+    if (deltaX < 0) handleNextSlide();
+    else handlePrevSlide();
+  }
+
   return (
-    <section className="relative min-h-[calc(100svh-5rem)] lg:min-h-[calc(100svh-5rem)] flex items-center overflow-hidden bg-brand-ink">
+    <section
+      ref={sectionRef}
+      className="relative min-h-[calc(100svh-5rem)] lg:min-h-[calc(100svh-5rem)] flex items-center overflow-hidden bg-brand-ink"
+    >
       {/* Background Media Layers: Video for Slide 01, Images for Slide 02 & 03 with smooth transitions */}
-      <div className="absolute inset-0 z-0">
+      <div
+        className="absolute inset-0 z-0"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {SLIDES.map((s, idx) => {
           const isCurrent = idx === currentSlideIndex;
           return (
@@ -102,25 +154,11 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 rounded-full border border-brand-yellow-light/80 hover:bg-rusted-yellow px-6 py-3 font-display text-base tracking-wider text-white hover:text-brand-ink font-semibold transition-all shadow-md shadow-black/40 hover:shadow-lg hover:shadow-brand-yellow/20 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)] hover:[text-shadow:none]"
-            >
-              <span>Explore Our Machines</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
+            <Button href="/products" variant="outline-dark">
+              Explore Our Machines
+            </Button>
 
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
-            >
-              <span>Request a Quote</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
+            <Button href="/contact">Request a Quote</Button>
           </div>
 
           {/* Trust badges. Grid instead of a wrapping flex row so the divider,

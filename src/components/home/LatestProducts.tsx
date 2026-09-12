@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Eyebrow, Icon } from "@/components/ui";
+import { Icon, SectionHeader } from "@/components/ui";
 
 const PRODUCT_CATEGORIES = [
   {
@@ -65,11 +65,10 @@ export function LatestProducts() {
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <Eyebrow>Our Products</Eyebrow>
-            <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text">
+            <SectionHeader eyebrow="Our Products">
               Machines That Build{" "}
               <span className="text-brand-accent-text">Possibilities</span>
-            </h2>
+            </SectionHeader>
           </div>
 
           <Link

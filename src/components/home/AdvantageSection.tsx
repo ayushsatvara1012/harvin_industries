@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Eyebrow, Icon } from "@/components/ui";
+import { Icon, SectionHeader } from "@/components/ui";
 
 const ADVANTAGES = [
   { icon: "shield", title: "Robust & Reliable Machines" },
@@ -28,27 +28,24 @@ export function AdvantageSection() {
 
       {/* Yellow arrow edge, with the dark panel riding just in front of it */}
       <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[66%] bg-brand-yellow clip-wedge-right" />
-      <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[66%] -translate-x-[9px] bg-gradient-to-br from-brand-ink via-brand-ink to-[#1c1f24] clip-wedge-right" />
+      <div className="absolute inset-y-0 left-0 z-10 hidden lg:block w-[66%] -translate-x-[9px] bg-gradient-to-br from-brand-ink via-brand-ink to-brand-dark-surface clip-wedge-right" />
 
       {/* Strapline sitting over the photo */}
-      <p className="absolute right-8 xl:right-16 top-20 z-20 hidden lg:block text-right text-lg xl:text-xl font-extrabold drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)] uppercase leading-[1.2] tracking-tight text-brand-yellow">
-        Stronger
+      <p
+        className="absolute right-8 xl:right-16 top-20 z-20 hidden lg:block text-right text-3xl xl:text-4xl font-black font-stat uppercase leading-[1.15] tracking-wider text-transparent drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]"
+        style={{ WebkitTextStroke: "1px var(--color-brand-yellow-light)" }}
+      >
+        Stronger Buildings
         <br />
-        Buildings
-        <br />
-        Brighter
-        <br />
-        Communities
+        Brighter Communities
       </p>
 
       <div className="relative z-20 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="lg:max-w-[58%]">
-          <Eyebrow tone="dark">Our Advantage</Eyebrow>
-
-          <h2 className="mt-4 font-display text-4xl sm:text-5xl tracking-tight text-white leading-[1.05]">
+          <SectionHeader eyebrow="Our Advantage" tone="dark" spacing="lg" tight>
             Engineered <br />
             for <span className="text-brand-yellow">Your Advantage</span>
-          </h2>
+          </SectionHeader>
 
           {/* Five pillars as glass panels on the dark ground */}
           <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-3.5">
@@ -93,7 +90,10 @@ export function AdvantageSection() {
             className="object-cover"
           />
           <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-brand-ink/80 to-transparent" />
-          <p className="absolute right-5 top-5 text-right text-base font-extrabold uppercase leading-tight text-brand-yellow">
+          <p
+            className="absolute right-5 top-5 text-right text-lg font-black font-stat uppercase leading-tight text-transparent drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
+            style={{ WebkitTextStroke: "1.25px var(--color-brand-yellow)" }}
+          >
             Stronger Buildings
             <br />
             Brighter Communities

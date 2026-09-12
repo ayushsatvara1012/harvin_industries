@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Icon } from "@/components/ui";
+import { Button, Icon } from "@/components/ui";
 import { BrandLogo } from "./BrandLogo";
 
 export function Footer() {
@@ -14,37 +14,6 @@ export function Footer() {
               Manufacturing high-performance machinery for a stronger, more sustainable construction
               industry.
             </p>
-
-            {/* Social Icons */}
-            <div className="mt-6 flex items-center gap-3">
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
-                aria-label="LinkedIn"
-              >
-                <span className="text-sm font-bold">in</span>
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
-                aria-label="YouTube"
-              >
-                <Icon name="smart_display" className="text-base" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-sm bg-white/10 text-gray-300 hover:bg-brand-yellow hover:text-brand-ink transition-colors"
-                aria-label="Instagram"
-              >
-                <Icon name="photo_camera" className="text-base" />
-              </a>
-            </div>
           </div>
 
           {/* Column 2: Quick Links */}
@@ -164,21 +133,9 @@ export function Footer() {
             </ul>
 
             <div className="mt-5">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-5 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
-              >
-                <span>Request a Quote</span>
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </Link>
+              <Button href="/contact" size="sm">
+                Request a Quote
+              </Button>
             </div>
           </div>
         </div>

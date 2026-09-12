@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { Eyebrow } from "@/components/ui";
+import { useEffect, useRef, useState } from "react";
+import { SectionHeader } from "@/components/ui";
 
 const CLIENTS = [
   {
@@ -99,6 +99,25 @@ const CLIENTS = [
 
 export function ClientLogosSection() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const updateEnds = () => {
+      setAtStart(track.scrollLeft <= 4);
+      setAtEnd(track.scrollLeft + track.clientWidth >= track.scrollWidth - 4);
+    };
+    updateEnds();
+    track.addEventListener("scroll", updateEnds, { passive: true });
+    window.addEventListener("resize", updateEnds);
+    return () => {
+      track.removeEventListener("scroll", updateEnds);
+      window.removeEventListener("resize", updateEnds);
+    };
+  }, []);
 
   const scrollByCard = (direction: 1 | -1) => {
     const track = trackRef.current;
@@ -111,10 +130,9 @@ export function ClientLogosSection() {
   return (
     <section className="bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Eyebrow>Our Valued Customers</Eyebrow>
-        <h2 className="mt-3 font-display text-4xl sm:text-5xl tracking-tight text-brand-text">
+        <SectionHeader eyebrow="Our Valued Customers">
           Trusted Across <span className="text-brand-accent-text">Borders</span>
-        </h2>
+        </SectionHeader>
 
         <div className="relative mt-10">
           <div
@@ -138,7 +156,8 @@ export function ClientLogosSection() {
           <button
             type="button"
             onClick={() => scrollByCard(-1)}
-            className="absolute -left-2 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border bg-white text-brand-text transition-colors hover:border-brand-yellow hover:text-brand-accent md:flex cursor-pointer"
+            disabled={atStart}
+            className="absolute -left-2 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border bg-white text-brand-text transition-colors hover:border-brand-yellow hover:text-brand-accent md:flex cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
             aria-label="Previous client logos"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -149,7 +168,8 @@ export function ClientLogosSection() {
           <button
             type="button"
             onClick={() => scrollByCard(1)}
-            className="absolute -right-2 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border bg-white text-brand-text transition-colors hover:border-brand-yellow hover:text-brand-accent md:flex cursor-pointer"
+            disabled={atEnd}
+            className="absolute -right-2 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border bg-white text-brand-text transition-colors hover:border-brand-yellow hover:text-brand-accent md:flex cursor-pointer disabled:opacity-40 disabled:pointer-events-none"
             aria-label="Next client logos"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

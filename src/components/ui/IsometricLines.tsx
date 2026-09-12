@@ -16,7 +16,7 @@ function buildGrid(): Line[] {
   // crossing points instead of straddling them.
   const vShift = SPACING / 2;
   for (let x = -SPACING; x <= W + SPACING; x += SPACING) {
-    lines.push({ x1: x - vShift, y1: -40, x2: x - vShift, y2: H + 40, opacity: 0.12 });
+    lines.push({ x1: x - vShift, y1: -40, x2: x - vShift, y2: H + 40, opacity: 0.35 });
   }
 
   const rad30 = Math.PI / 6;
@@ -24,8 +24,8 @@ function buildGrid(): Line[] {
   const dyDown = Math.sin(rad30) * 1800;
 
   for (let x0 = -900; x0 <= W + 900; x0 += SPACING) {
-    lines.push({ x1: x0 - dx, y1: -dyDown, x2: x0 + dx, y2: dyDown, opacity: 0.14 });
-    lines.push({ x1: x0 - dx, y1: dyDown, x2: x0 + dx, y2: -dyDown, opacity: 0.14 });
+    lines.push({ x1: x0 - dx, y1: -dyDown, x2: x0 + dx, y2: dyDown, opacity: 0.45 });
+    lines.push({ x1: x0 - dx, y1: dyDown, x2: x0 + dx, y2: -dyDown, opacity: 0.45 });
   }
 
   return lines;
@@ -41,7 +41,7 @@ export function IsometricLines({ className = "" }: { className?: string }) {
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
     >
-      <g stroke="var(--color-brand-cream)" strokeWidth={1}>
+      <g stroke="var(--color-brand-surface)" strokeWidth={1}>
         {GRID.map((line, i) => (
           <line
             key={i}

@@ -10,7 +10,7 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
 
   return (
     <div className="grid gap-4">
-      <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-brand-cream">
+      <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-brand-surface">
         {mainImage ? (
           <Image
             src={mainImage}
@@ -36,7 +36,7 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
               onClick={() => setActive(idx)}
               aria-current={idx === active}
               aria-label={`Show image ${idx + 1} of ${images.length}`}
-              className={`relative aspect-[4/3] w-20 shrink-0 overflow-hidden rounded-lg bg-brand-cream transition-all sm:w-24 ${
+              className={`relative aspect-[4/3] w-20 shrink-0 overflow-hidden rounded-lg bg-brand-surface transition-all sm:w-24 ${
                 idx === active
                   ? "ring-2 ring-brand-accent"
                   : "opacity-70 hover:opacity-100"

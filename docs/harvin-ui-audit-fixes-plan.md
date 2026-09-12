@@ -155,22 +155,138 @@ brand-section rewrite, and H-9 asset purge / Cloudinary migration ("static chang
 
 New file: `src/components/ui/Eyebrow.tsx`, `src/components/products/ProductGallery.tsx`.
 
-## Not done — Phases 3-5 (remaining)
+## Status: M-12 (design-token normalization + `CLAUDE.md` brand-section correction) — DONE, verified, uncommitted
 
-M-12 (design-token normalization + `CLAUDE.md` brand-section correction) and H-9 (asset purge) /
-Cloudinary migration were scoped out of this pass at the user's explicit request — pick a session for each
-when ready; the Cloudinary one needs credentials on hand.
-`Button`/`Card` extraction beyond `Eyebrow`, spec table mobile card layout (an alternative to the M-3 fix
-actually shipped), all remaining L-findings not listed above, and everything in
-`docs/harvin-ui-audit-report.md` sections 24-25 not itemized here.
+Phase 3 was found already committed (`e357c07`) at the start of this session. User picked M-12 over H-9
+(H-9 still needs Cloudinary credentials).
+
+- Removed four duplicate/dead tokens from `globals.css`: `--color-brand-brick` (`#f59e0b`, exact dup of
+  `--color-brand-yellow`), `--color-brand-brick-hover` (`#d97706`, exact dup of `--color-brand-accent`,
+  and unreferenced anywhere), `--color-brand-dark` (`#121417`, exact dup of `--color-brand-ink`, only ever
+  used for the `body{background}` rule which now reads `var(--color-brand-ink)` directly), and
+  `--color-brand-cream` (`#ffffff`, exact dup of `--color-brand-surface`) plus the fully-unused
+  `--color-brand-umber`. Migrated their few call sites (`ProductFilters.tsx`, `Logo.tsx`,
+  `ProductGallery.tsx`, `ProductCard.tsx`, `ProductionTable.tsx`, `IsometricLines.tsx`) onto the surviving
+  token — no visual change, since every merge was between tokens already carrying the same hex value.
+- Added `--color-brand-surface-alt: #f4f4f2` and replaced the three hardcoded `bg-[#f4f4f2]` call sites
+  (`app/products/page.tsx`, `app/products/[slug]/page.tsx`, `IndustriesSection.tsx`) with `bg-brand-surface-alt`.
+- Replaced the hardcoded `#1c1f24` gradient stop in `AdvantageSection.tsx` with the existing
+  `brand-dark-surface` token (`#1e2229` — close enough that the decorative gradient is visually identical).
+- **Left alone, flagged rather than guessed:** `#FFEE00` in `BrandLogo.tsx:34` (the yellow accent triangle
+  in the full text-lockup logo). It's a real visible brand-identity color, not a UI accent — collapsing it
+  into `brand-yellow` (`#f59e0b`, a much darker amber) would visibly change the logo. Needs a human call,
+  not a silent fix.
+- Radius scale (8 values, no formal scale per the audit) was left as-is — normalizing it site-wide is a
+  larger refactor than "token normalization" implied here, and the 8 buckets already map sensibly to
+  distinct component shapes (pills vs cards vs tags vs panels).
+- Rewrote the `## Brand` palette section in `CLAUDE.md`: it still documented the abandoned "Fired Clay"
+  terracotta palette (`#2F1B27` ink, `#B4442A` brick, etc.) from the original plan doc, while the shipped
+  homepage redesign (`be91661`) replaced it with "Machine Yellow" months ago. New section lists the actual
+  current token values from `globals.css` verbatim.
+- Verified: `tsc --noEmit` clean, `npm run lint` zero warnings, `npm run build` passes, and manually
+  checked `/`, `/products`, `/products/hi-1500` against `next start` in Chrome — no visual regression from
+  the token merges.
+- Did **not** touch `docs/harvin-industries-plan.md`'s stale "Brochure Match" palette table — it's the
+  original historical plan doc (not itemized in M-12's scope), and per the global CLAUDE.md rule "where a
+  plan and the code disagree, the code is correct."
+
+## Status: Roadmap leftovers (Button/Card/SectionHeader, spec table mobile layout, polish items) — DONE, verified, uncommitted
+
+User explicitly deferred the `BrandLogo.tsx` `#FFEE00` color call and H-9/Cloudinary again this session
+("keep the images static for now as we will do it together when the database is configured") and asked to
+start on the "smaller leftovers" bucket instead.
+
+- **`Button` primitive** (`src/components/ui/Button.tsx`, new) — the `rounded-full ... bg-rusted-yellow
+  ... text-brand-ink ...` pill CTA was duplicated at 8 call sites (`Hero.tsx` x2, `CtaBanner.tsx`,
+  `AboutSnippet.tsx`, `ManufacturingSection.tsx`, `Navbar.tsx` mobile drawer, `Footer.tsx`,
+  `app/products/[slug]/page.tsx`), each with slightly different padding and a hand-copied arrow SVG.
+  Extracted into `variant` (`primary` / `outline-dark` / `outline-light`) x `size` (`sm` / `md` / `lg`),
+  renders a `Link` when `href` is passed or a plain `<button>` otherwise (used by `error.tsx`'s retry
+  action). Trailing arrow now goes through the existing `Icon` component instead of a repeated inline SVG.
+  All 8 sites migrated; one minor intentional visual normalization: Hero's "Explore Our Machines" button
+  was `text-base`, every other CTA was `text-[17px]` — unified to `text-[17px]`.
+- **`Card` primitive** (`src/components/ui/Card.tsx`, new) — the `rounded-xl border border-brand-border
+  bg-brand-surface` shell repeated in `FeatureGroups.tsx`, `SpecTable.tsx`, and the `/products` empty-state
+  box. Takes `as` (defaults to `div`, `SpecTable` uses `dl`) and `variant` (`solid` / `dashed`). Left
+  `ProductCard.tsx` and `ProductionTable.tsx`'s outer wrapper alone — the former is a whole-card `<Link>`
+  with its own hover/translate treatment, the latter doesn't carry `bg-brand-surface` at the outer level
+  (its table cells do) - forcing either through `Card` would either fight existing behavior or add
+  ceremony without removing real duplication.
+- **`SectionHeader` primitive** (`src/components/ui/SectionHeader.tsx`, new) — the `Eyebrow` + `<h2
+  className="mt-3/mt-4 font-display text-4xl sm:text-5xl ...">` pair repeated across all 6 homepage
+  sections and, at a smaller scale, the 4 sub-sections of `/products/[slug]`. Takes `tone` (`light` /
+  `dark` / `accent`, controls both the eyebrow default and the heading color), `size` (`md` text-3xl for
+  the detail page / `lg` text-4xl sm:text-5xl for homepage, default), `spacing` (`sm` mt-3 default / `lg`
+  mt-4) and `tight` (adds `leading-[1.05]`) to reproduce each section's existing spacing exactly - no
+  visual change, just eliminated the copy-pasted eyebrow+h2 markup at 10 call sites.
+- **Spec/production table mobile card layout** (M-3's real fix, not just the scrollbar-affordance patch
+  from Phase 3) — `ProductionTable.tsx` now renders a stacked `<ul>` of cards below `sm` (Product name as
+  heading, Size/Pcs-per-Mould/Pcs-per-Hour as a 3-column mini-grid) instead of relying on horizontal scroll
+  of the `min-w-[520px]` table; the table itself is now `hidden sm:block`. Fixes the audit's actual
+  complaint - "179px of the table is off-screen ... the hidden portion contains Pcs/Hour, the number a
+  buyer is on the page to find" - by never letting it go off-screen instead of just making the scroll
+  affordance visible. Also added `scope="col"` to the table's `<th>`s while in the file (A11y item from
+  section 24, one attribute).
+- **Radius scale** — audited all 8 `rounded-*` values in use. Only one real outlier: `rounded-md` on
+  ManufacturingSection's "100% In-House Built" badge, the only badge/tag element in the codebase not using
+  `rounded-full` like every other chip/tag — normalized to `rounded-full`. Left the other 7 values alone
+  (`rounded-full`/`xl`/`lg`/`sm`/`3xl`/`2xl` map to genuinely different component families - pills, cards,
+  thumbnails, tags, panels - and `rounded-[2px]` on `ClientLogosSection`'s Shree Cement logo replica is
+  deliberate pixel-fidelity to a real logo mark, not a design-system value to conform).
+- **Styled `not-found.tsx` / `error.tsx`** (`src/app/`, both new) — previously the Next.js default
+  unstyled fallbacks (section 16 finding). Both use `Navbar`/`Footer` + the new `SectionHeader`/`Button`
+  primitives; `error.tsx` is a client component with a `reset()` retry button (`Button` with no `href`).
+- **Footer social icons removed** — LinkedIn/YouTube/Instagram all pointed at bare platform homepages
+  (`https://linkedin.com`, etc.), not real profiles (flagged under L-12's cluster in the audit, never
+  actually fixed). No real profile URLs on hand and CLAUDE.md forbids placeholder content, so removed the
+  icons entirely per the audit's own suggested alternative ("point them at the real profiles or remove the
+  icons until they exist"). Add them back with real URLs once the business has profiles to link.
+- **Nav scroll-spy** (`Navbar.tsx`) — the 4 homepage anchor nav items (About Us, Manufacturing, Technology,
+  Projects) never showed an active state while scrolling, only `pathname`-based routes did (audit: "dead
+  active states on 4 items"). Added an `IntersectionObserver` over `#about`/`#manufacturing`/`#advantage`/
+  `#industries`, tracked in `activeSection` state, only wired up when `pathname === "/"`.
+- **Hero carousel keyboard + swipe support** (`Hero.tsx`) — added `ArrowLeft`/`ArrowRight` navigation
+  (scoped to while the Hero section is in view, via `IntersectionObserver`, so it doesn't hijack arrow keys
+  once the user scrolls past it) and touch-swipe on the slide media (50px threshold). The visual rail
+  itself (numbered dots + single "next" arrow) was left untouched — a prev arrow already exists
+  functionally via keyboard/swipe/clicking a dot directly, and redesigning that tightly-styled semicircle
+  rail to add a visual prev arrow was out of scope for a functional-support pass.
+- **`ClientLogosSection` rail arrows disabled at ends** — tracked `atStart`/`atEnd` off the track's
+  `scrollLeft`/`scrollWidth`, arrows get `disabled` + `opacity-40 pointer-events-none` at each end (matches
+  roadmap item 24, "disable rail arrows at their ends").
+- Verified: `tsc --noEmit` clean, `npm run lint` zero warnings, `npm run build` passes. Manually checked in
+  Chrome against `next start`: homepage (full page + scroll-spy while scrolled to Manufacturing), product
+  detail page (desktop + 390px mobile card layout for the production table), `/products`, the 404 page,
+  and the client-logos rail's disabled-at-start arrow.
+
+**Found but explicitly left alone, needs your call:**
+- **`/#resources` is a dead link.** The "Resources" nav item (`Navbar.tsx`) and a footer quick link both
+  point at `/#resources`, but no `id="resources"` section exists anywhere - there's no Resources page or
+  section built yet. This was flagged in the original audit (L-12's cluster) and never fixed. Fixing it
+  either means building a real Resources section/page (a content/scope decision, not a UI cleanup) or
+  removing the nav item - didn't want to unilaterally delete a nav item that might be an intentional
+  placeholder for planned content. Surface this to the user before touching it.
+
+## Not done — remaining
+
+- **`#FFEE00` in `BrandLogo.tsx`** — deferred again this session. Ask the user whether the full-lockup
+  logo's yellow should match `brand-yellow` or stay its own brand-identity color, then fix in whichever
+  direction they pick.
+- **`/#resources` dead link** — see above, needs a scope decision (build a Resources destination, or
+  remove the nav item) before it can be fixed.
+- **H-9** (asset purge / Cloudinary migration) — deferred again this session; images stay static/local
+  until the database is configured, per the user. Do this one together once that's ready.
+- All remaining L-findings not previously listed (none currently known - all 12 L-findings were closed in
+  Phase 3), and anything in `docs/harvin-ui-audit-report.md` sections 24-25 not itemized across this doc.
 
 ## For a new session picking this up
 
 1. Confirm current branch is `bugfix/critical-ui-audit-fixes` (`git branch --show-current`).
-2. Confirm Phase 3 changes are still there (`git status --short`) unless the user has since committed —
-   Phase 1 (`855a560`) and Phase 2 (`337a45b`) are already committed.
-3. Ask the user whether to commit Phase 3 now.
-4. Before touching M-12 or M-9's SEO metadata further, confirm the `SITE_URL` in `src/lib/site.ts` against
-   whatever domain actually gets connected in Vercel — it's currently an inferred placeholder.
-5. Remaining scoped-out work: M-12 (tokens + `CLAUDE.md` brand section), H-9 (asset purge) + Cloudinary
-   migration (needs credentials). Ask before starting either — both were explicitly deferred this session.
+2. Confirm the changes above are still there (`git status --short`) unless the user has since committed -
+   Phase 1 (`855a560`), Phase 2 (`337a45b`) and Phase 3 (`e357c07`) are already committed; M-12 and this
+   session's roadmap-leftovers pass are not.
+3. Ask the user whether to commit now.
+4. Ask the user about the `BrandLogo.tsx` `#FFEE00` call and the `/#resources` dead link before touching
+   either.
+5. H-9 (asset purge + Cloudinary migration) - explicitly "do it together when the database is configured."
+   Don't start without the user.

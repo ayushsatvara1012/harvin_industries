@@ -18,12 +18,17 @@ brand/company facts pulled from the brochure.
 
 ## Brand
 
-- Palette (decided, "Fired Clay" — sampled from brick/terracotta tones): ink
-  `#2F1B27`, umber `#513533`, brick `#B4442A` / hover `#98371F`, clay `#DCC4A2`,
-  cream (page bg) `#F7F1E6`, surface `#FFFFFF`, text-secondary `#6B5A52`, border
-  `#E5D9C6`. Tokens live in `src/app/globals.css` as `--color-brand-*` (Tailwind v4
-  `@theme`, not `tailwind.config.ts`) — use `brand-*` Tailwind classes, never
-  hardcode these hex values inline.
+- Palette (current, "Machine Yellow" — industrial safety yellow against
+  near-black, replaced the earlier "Fired Clay" terracotta direction during the
+  homepage redesign): ink `#121417`, dark-card `#181b20`, dark-surface `#1e2229`,
+  yellow `#f59e0b` / yellow-light `#fbbf24`, accent (deep amber, fill only)
+  `#d97706`, accent-text (text-safe amber on light backgrounds) `#9a5b06`, clay
+  `#fef3c7`, surface (page/card bg) `#ffffff`, surface-alt (alternating band)
+  `#f4f4f2`, text `#111827`, text-secondary `#5b6470`, border `#e5e7eb`. Yellow
+  is fill-only — it fails contrast as text on light backgrounds, use
+  `accent-text` there instead. Tokens live in `src/app/globals.css` as
+  `--color-brand-*` (Tailwind v4 `@theme`, not `tailwind.config.ts`) — use
+  `brand-*` Tailwind classes, never hardcode these hex values inline.
 - Fonts: **Forum** (serif display, weight 400) for headings via `font-display`,
   **Inter** for body via `font-sans` — loaded in `src/app/layout.tsx`.
 - Icons: Google Material Symbols Outlined, loaded via stylesheet link in

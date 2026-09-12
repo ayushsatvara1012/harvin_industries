@@ -14,7 +14,7 @@ export function Logo({ className = "" }: { className?: string }) {
       />
       <rect x="24" y="30" width="9" height="40" fill="currentColor" />
       <rect x="39" y="30" width="9" height="40" fill="currentColor" />
-      <rect x="54" y="30" width="9" height="18" fill="var(--color-brand-brick)" />
+      <rect x="54" y="30" width="9" height="18" fill="var(--color-brand-yellow)" />
       <rect x="54" y="52" width="9" height="18" fill="currentColor" />
       <rect x="69" y="30" width="9" height="40" fill="currentColor" />
     </svg>

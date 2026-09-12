@@ -10,7 +10,7 @@ export function Icon({
   style?: CSSProperties;
 }) {
   return (
-    <span className={`material-symbols-outlined ${className}`} style={style} aria-hidden="true">
+    <span className={`icon-symbol ${className}`} style={style} aria-hidden="true">
       {name}
     </span>
   );

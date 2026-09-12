@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Eyebrow, Icon, LazyVideo } from "@/components/ui";
+import { Button, Icon, LazyVideo, SectionHeader } from "@/components/ui";
 
 const PILLARS = [
   { icon: "precision_manufacturing", label: "Modern Manufacturing Facility" },
@@ -7,13 +6,20 @@ const PILLARS = [
   { icon: "group", label: "Customer Focused Approach" },
 ];
 
-function FacilityVisual() {
+function FacilityVisual({ variant }: { variant: "desktop" | "mobile" }) {
+  const isMobile = variant === "mobile";
+
   return (
     <div className="relative h-full w-full">
-      {/* Yellow wedge sitting behind the video, offset left to read as an edge */}
-      <div className="absolute inset-0 -translate-x-3 lg:-translate-x-4 bg-brand-yellow clip-notch-left" />
+      {/* Yellow wedge sitting behind the video, offset left to read as an edge —
+          desktop-only; mobile spans full-bleed with no notch cut. */}
+      {!isMobile && (
+        <div className="absolute inset-0 -translate-x-3 lg:-translate-x-4 bg-brand-yellow clip-notch-left" />
+      )}
 
-      <div className="relative h-full w-full overflow-hidden bg-brand-ink clip-notch-left">
+      <div
+        className={`relative h-full w-full overflow-hidden bg-brand-ink ${isMobile ? "" : "clip-notch-left"}`}
+      >
         {/* Timeline Evolution Video — lazy-mounted once it nears the viewport */}
         <LazyVideo
           src="/Harvin_animation_timeline.mp4"
@@ -35,7 +41,11 @@ function FacilityVisual() {
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-ink/95 via-brand-ink/60 to-transparent pointer-events-none" />
 
         {/* Pillars overlaid across the foot of the video */}
-        <div className="absolute inset-x-0 bottom-0 bg-brand-ink/85 backdrop-blur-[2px] py-3.5 pr-6 pl-[calc(var(--notch)+1rem)]">
+        <div
+          className={`absolute inset-x-0 bottom-0 bg-brand-ink/85 backdrop-blur-[2px] py-3.5 pr-6 ${
+            isMobile ? "pl-4" : "pl-[calc(var(--notch)+1rem)]"
+          }`}
+        >
           <div className="flex items-center justify-start gap-5 lg:gap-8">
             {PILLARS.map((pillar) => (
               <div key={pillar.label} className="flex items-center gap-3">
@@ -61,18 +71,16 @@ export function AboutSnippet() {
     <section id="about" className="relative scroll-mt-20 bg-white py-16 lg:py-24 overflow-hidden">
       {/* On large screens the photo bleeds to the right edge of the viewport */}
       <div className="hidden lg:block absolute inset-y-10 right-0 w-[54%] z-0">
-        <FacilityVisual />
+        <FacilityVisual variant="desktop" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-6 lg:py-10 lg:pr-16 xl:pr-24">
-            <Eyebrow>Who We Are</Eyebrow>
-
-            <h2 className="mt-4 font-display text-4xl sm:text-5xl tracking-tight text-brand-text leading-[1.05]">
+            <SectionHeader eyebrow="Who We Are" spacing="lg" tight>
               Engineering Machines <br />
               for <span className="text-brand-accent-text">a Better Tomorrow</span>
-            </h2>
+            </SectionHeader>
 
             <p className="mt-6 max-w-lg text-base lg:text-[17px] text-brand-text-secondary leading-relaxed">
               <strong className="text-brand-text font-semibold">HARVIN INDUSTRIES</strong> is a
@@ -83,21 +91,15 @@ export function AboutSnippet() {
             </p>
 
             <div className="mt-8">
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-2 rounded-full bg-rusted-yellow px-6 py-3 font-display text-[17px] tracking-wider text-brand-ink transition-all font-semibold"
-              >
-                <span>More About Us</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </Link>
+              <Button href="/about">More About Us</Button>
             </div>
           </div>
 
-          {/* Stacked photo below the copy on small screens */}
-          <div className="lg:hidden aspect-[16/11] w-full">
-            <FacilityVisual />
+          {/* Stacked video below the copy on small screens — full-bleed edge
+              to edge, breaking out of the section's side padding for an
+              immersive look instead of sitting inset in a padded column. */}
+          <div className="lg:hidden -mx-4 sm:-mx-6 aspect-[16/11]">
+            <FacilityVisual variant="mobile" />
           </div>
         </div>
       </div>

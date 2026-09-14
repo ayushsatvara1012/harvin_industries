@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Navbar, Footer } from "@/components/layout";
 import { Card, Eyebrow, IsometricLines } from "@/components/ui";
-import { ProductCard, ProductFilters } from "@/components/products";
+import { ProductCard, ProductFilters, ModelComparison } from "@/components/products";
 import { PRODUCTS, type Category } from "@/data/products";
 import { SITE_NAME } from "@/lib/site";
 
@@ -93,6 +93,8 @@ export default async function ProductsPage(props: PageProps<"/products">) {
             </p>
           </div>
         </section>
+
+        <ModelComparison />
 
         <section className="bg-brand-surface-alt">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">

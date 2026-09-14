@@ -5,4 +5,3 @@ export { ManufacturingSection } from "./ManufacturingSection";
 export { AdvantageSection } from "./AdvantageSection";
 export { IndustriesSection } from "./IndustriesSection";
 export { CtaBanner } from "./CtaBanner";
-export { ClientLogosSection } from "./ClientLogosSection";

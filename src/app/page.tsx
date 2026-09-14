@@ -7,7 +7,6 @@ import {
   AdvantageSection,
   IndustriesSection,
   CtaBanner,
-  ClientLogosSection,
 } from "@/components/home";
 
 export default function Home() {
@@ -35,9 +34,6 @@ export default function Home() {
 
         {/* 7. Let's Build Together CTA Banner */}
         <CtaBanner />
-
-        {/* 8. Our Valued Customers Client Logos Section */}
-        <ClientLogosSection />
       </main>
       <Footer />
     </>

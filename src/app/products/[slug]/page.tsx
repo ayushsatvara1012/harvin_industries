@@ -9,6 +9,7 @@ import {
   ProductionTable,
   FeatureGroups,
   SpecTable,
+  PressStandards,
 } from "@/components/products";
 import {
   CATEGORY_LABELS,
@@ -158,12 +159,17 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
               <SectionHeader eyebrow="Specifications" size="md">
                 Machine <span className="text-brand-accent-text">Specification</span>
               </SectionHeader>
+              <p className="mt-2 text-sm text-brand-text-secondary">
+                Tap any row marked with a chevron to see what the figure means in practice.
+              </p>
               <div className="mt-6">
                 <SpecTable specs={product.specs} />
               </div>
             </div>
           </section>
         )}
+
+        {product.category === "press" && <PressStandards modelName={product.name} />}
 
         {product.productionTable && (
           <section className="bg-white">

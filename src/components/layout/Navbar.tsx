@@ -5,26 +5,27 @@ import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { BrandLogo } from "./BrandLogo";
 import { Button } from "@/components/ui";
+import { PRODUCTS, CATEGORY_LABELS } from "@/data/products";
+
+// Built from the catalog itself so the dropdown can never drift out of sync
+// with the machines that actually have pages.
+const PRODUCT_LINKS = PRODUCTS.map((product) => ({
+  label: `${product.name} — ${CATEGORY_LABELS[product.category]}`,
+  href: `/products/${product.slug}`,
+}));
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/#about" },
+  { label: "About Us", href: "/about" },
   {
     label: "Products",
     href: "/products",
     hasDropdown: true,
-    children: [
-      { label: "Fly Ash Brick Machines", href: "/products#fly-ash" },
-      { label: "Concrete Block Machines", href: "/products#concrete-blocks" },
-      { label: "Paver Block Machines", href: "/products#paver-blocks" },
-      { label: "Automatic Plant Solutions", href: "/products#automatic-plants" },
-      { label: "Material Handling Equipment", href: "/products#material-handling" },
-    ],
+    children: PRODUCT_LINKS,
   },
   { label: "Manufacturing", href: "/#manufacturing" },
   { label: "Technology", href: "/#advantage" },
-  { label: "Projects", href: "/#industries" },
-  { label: "Resources", href: "/#resources" },
+  { label: "Industries", href: "/#industries" },
   { label: "Contact", href: "/contact" },
 ];
 

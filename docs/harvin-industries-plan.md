@@ -276,3 +276,132 @@ routes, SEO/GEO/AEO files (`llms.txt`, `sitemap.ts`, `robots.ts`, JSON-LD).
 sizes/spacing/section order), iterate on that until confirmed, then either connect
 Higgsfield for real images or move to Phase 2 (`/products` catalog) per user
 direction.
+
+## 8. Session status — brochure document integration (2026-09-13)
+
+**Branch:** `feature/brochure-content-integration` off `main`. Not merged.
+`npm run lint` and `npm run build` both pass clean.
+
+**Source:** three owner-supplied `.docx` files in `public/`:
+`harvin about us ,vision details.docx`, `harvin machine model (3 model).docx`,
+`harvin mixture machine (2 pcs).docx`.
+
+**Spec corrections applied (docx treated as authoritative over the brochure
+values previously committed in `src/data/products.ts`):**
+
+| Model | Field | Was | Now |
+|---|---|---|---|
+| HI-1500 | Pallet size | 590 × 560 × 18 mm | 565 × 560 × 18 mm |
+| HI-1500 | Electrical load | 30 KW | 22.5 KW |
+| HI-2000 | Machine dimension | 10 × 8 × 2.5 m | 8 × 8 × 2.5 m |
+| HI-2000 | Pallet size | 690 × 560 × 18 mm | 665 × 560 × 18 mm |
+| HI-2000 | Electrical load | 34 KW | 25 KW |
+| HI-2000 | Hydraulic tank | 450 L | 400 L |
+| HI-3000 | Electrical load / power | 40 KW (60 HP) | 55 KW (75 HP) |
+
+**Content placement decided (no content appears in two places):**
+
+- `/about` — **new route.** About Us, Vision, Mission (4 pillars), Key Factors (4),
+  founder's message + closing, signed by Mr. Dhaval Sathwara. Copy lives in
+  `src/data/company.ts`, rendered by `src/components/about/`. Founder's letter sits
+  last on the page deliberately: a first-time visitor wants the company and the
+  certification before the letter.
+- Homepage `AboutSnippet` — leads with `COMPANY_INTRO_PREDICATE` (the same sentence
+  as `/about`, from one constant). Its three pillars are icon labels only; the full
+  Key Factor text is `/about`-only.
+- Homepage stats strip — now `COMPANY_STATS`: ISO 9001:2015 / 3 press models /
+  9 product forms / Pan-India reach.
+- Homepage "Our Products" grid — now the five real machines, each linking to its
+  own detail page, followed by a "Nine forms. One standard." strip built from
+  `OUTPUT_FORMS`.
+- `/products` — `ModelComparison` table above the catalog grid, answering "which
+  model do I need?" by daily output target.
+- `/products/[slug]` — spec rows that differ between models carry a plain-language
+  `note`, rendered as expandable `<details>` rows in `SpecTable`. Figures identical
+  across the range (50–60 MT, 60 KN, 15–20 s) are stated **once** in
+  `PRESS_COMMON_STANDARDS` and rendered by `PressStandards`, so the three press
+  detail pages do not read as copies of each other.
+- Mixture machine doc — no new page. Its Turbo/Planetary content was already
+  accurate in `src/data/products.ts`; only the "Nine forms" line and the closing
+  message were new, and both are placed above.
+
+**Removed, with reason:**
+
+- `ClientLogosSection` (L&T, Adani, TATA, UltraTech, Shree, Dalmia, Ambuja under
+  "Our Valued Customers") — **deleted.** The founder's own message describes Harvin
+  as "a new player in the industry", so a customer wall of those names is not
+  defensible. Restore only with real, permissioned customer names.
+- Homepage stats "500+ Machines Designed", "100+ Happy Customers", "Global Market
+  Reach" — same reason. Replaced with verifiable facts.
+- Nav/footer links to `/products#fly-ash`, `#concrete-blocks`, `#paver-blocks`,
+  `#automatic-plants`, `#material-handling` — all five anchors never existed, and
+  "Material Handling Equipment" is not a machine Harvin makes per any source.
+  Navbar now lists the five real machines (derived from `PRODUCTS`); footer lists
+  the three real categories as `?category=` filters.
+- Nav/footer "Resources" → `/#resources` — dead anchor, no such section.
+- `ManufacturingSection`'s "See Our Manufacturing" → `/about#manufacturing` — the
+  new `/about` deliberately does not duplicate the manufacturing section, so the
+  button now reads "About Harvin Industries" and points at `/about`.
+
+**Open items from this pass (need the owner):**
+
+- [ ] **Confirm HI-2000 machine dimension.** The docx says 8 × 8 × 2.5 m, which
+      makes the mid-range model physically *smaller* than the entry-level HI-1500
+      (10 × 8 × 2.5 m). Applied as written, but it reads as a possible typo.
+- [ ] Confirm the "nine forms" list. The mixture docx names seven (Solid Brick,
+      Fly Ash Brick, Hollow Block, Paver, Retention Block, Curb Stone, Drain Block)
+      but says "nine". `OUTPUT_FORMS` resolves it to nine by splitting Paver into
+      I-Shape and Zig Zag and keeping Curb Block and Curb Stone separate, matching
+      the production tables.
+- [x] `/contact` — **built** (see section 9 below).
+- [ ] `/privacy`, `/terms`, `/sitemap` links in the footer are still 404.
+- [ ] `OUTPUT_FORMS` uses Material Symbols icons as stand-ins; real product photos
+      would be stronger (four exist in `public/images/products/`).
+
+## 9. Session status — /contact (2026-09-13)
+
+Same branch, `feature/brochure-content-integration`. Lint and build pass clean.
+
+**Route:** `/contact` (dynamic — it reads `?product=<slug>`). Added to `sitemap.ts`.
+`LocalBusiness` JSON-LD carries the address, phone, GSTIN and opening hours.
+
+**Structure:** `ContactHero` (dark, `IsometricLines`, matches the `/products` and
+`/about` heroes) → form + details two-column band on `brand-surface-alt` → full-width
+`ContactMap`. Form is first in source order so it is the first thing reached on
+mobile.
+
+- `src/data/contact.ts` — all contact facts, hours, map embed URL, output bands.
+- `src/components/contact/` — `ContactHero`, `ContactForm`, `ContactDetails`,
+  `ContactMap`, with the usual barrel.
+- `src/app/contact/actions.ts` — `submitQuoteRequest` server action.
+- `src/lib/quote-form.ts` — `QuoteFormState` + `EMPTY_FORM_STATE`. These live
+  **outside** `actions.ts` on purpose: a `"use server"` module may only export async
+  functions, and a plain object exported from one is stripped at runtime and arrives
+  as `undefined` (this crashed the page once already).
+
+**Form:** name*, company, phone*, email, city/state, machine of interest (prefilled
+from `?product=`, validated against real slugs), target daily output, message.
+Progressive enhancement via `useActionState` + `useFormStatus`; per-field errors with
+`aria-describedby`/`aria-invalid`; a hidden honeypot (`company_website`) that returns
+a fake success so bots learn nothing. Phone validation is deliberately permissive —
+Indian numbers get written with +91, leading zeros, spaces and hyphens.
+
+**Mock data to replace** — everything flagged `mock: true` in `src/data/contact.ts`
+renders a small "To confirm" chip on the page so a placeholder cannot ship unnoticed:
+
+- [ ] Second phone number (currently `+91 00000 00000`).
+- [ ] Email address — `info@harvinindustries.com` is assumed, never verified.
+- [ ] Google Maps embed — currently a keyless address-query embed, so the pin lands
+      on the industrial-park centroid rather than Shed No 28. Replace `MAP_EMBED_SRC`
+      with the "Embed a map" URL from the Google Business listing once it exists, and
+      set `MAP_IS_MOCK = false` to drop the "pin approximate" notice.
+
+**Blocking before this form goes live:** `submitQuoteRequest` validates and accepts a
+submission but **does not store it** — there is no Prisma/Neon yet. The `TODO` in
+`actions.ts` marks where the `Lead` write and the owner notification go. Do not point
+a production deploy at this form until that lands, or enquiries are silently lost.
+
+**Also fixed this session:** `PressStandards.tsx` used `bg-brand-surface-dark/70`,
+which is not a token — the palette defines `brand-dark-card` and `brand-dark-surface`,
+so the class resolved to nothing and the cards had no background. Now
+`bg-brand-dark-card/70`.

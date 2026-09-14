@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { Button, Icon } from "@/components/ui";
+import { CATEGORY_LABELS, type Category } from "@/data/products";
 import { BrandLogo } from "./BrandLogo";
+
+const CATEGORY_ORDER: Category[] = ["press", "batching_plant", "mixture"];
 
 export function Footer() {
   return (
@@ -47,12 +50,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/#industries" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link href="/#resources" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
-                  Resources
+                  Industries
                 </Link>
               </li>
               <li>
@@ -67,41 +65,22 @@ export function Footer() {
           <div className="lg:col-span-3">
             <h3 className="text-sm font-bold uppercase tracking-wider text-white">Our Products</h3>
             <ul className="mt-4 space-y-2.5 text-sm font-medium text-gray-400">
-              <li>
-                <Link href="/products#fly-ash" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
-                  Fly Ash Brick Machines
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products#concrete-blocks"
-                  className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
-                >
-                  Concrete Block Machines
-                </Link>
-              </li>
+              {CATEGORY_ORDER.map((category) => (
+                <li key={category}>
+                  <Link
+                    href={`/products?category=${category}`}
+                    className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
+                  >
+                    {CATEGORY_LABELS[category]}s
+                  </Link>
+                </li>
+              ))}
               <li>
                 <Link
-                  href="/products#paver-blocks"
+                  href="/products"
                   className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
                 >
-                  Paver Block Machines
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products#automatic-plants"
-                  className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
-                >
-                  Automatic Plant Solutions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products#material-handling"
-                  className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
-                >
-                  Material Handling Equipment
+                  View All Machines
                 </Link>
               </li>
             </ul>

@@ -62,7 +62,7 @@ export function ManufacturingSection() {
             {PROCESS_STEPS.map((step) => (
               <div
                 key={step.title}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl bg-brand-ink transition-all duration-300 hover:shadow-xl hover:-translate-y-1 aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4]"
+                className="relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl bg-brand-ink aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] shadow-md"
               >
                 {/* Full-bleed Photo */}
                 <Image
@@ -70,7 +70,7 @@ export function ManufacturingSection() {
                   alt={step.alt}
                   fill
                   sizes="(min-width: 1024px) 18vw, (min-width: 640px) 30vw, 45vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover"
                 />
 
                 {/* Scrim overlay: soft dark gradient from bottom for text legibility */}
@@ -90,7 +90,7 @@ export function ManufacturingSection() {
                   </h3>
 
                   <div className="mt-2.5 flex items-center justify-between pt-2 border-t border-white/20">
-                    <span className="text-brand-yellow transition-transform duration-300 group-hover:translate-x-1">
+                    <span className="text-brand-yellow">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
@@ -103,8 +103,8 @@ export function ManufacturingSection() {
 
           {/* 3. Actions & Video Reel Preview */}
           <div className="pt-2 flex flex-wrap items-center gap-4">
-            <Button href="/about#manufacturing" size="lg">
-              See Our Manufacturing
+            <Button href="/about" size="lg">
+              About Harvin Industries
             </Button>
 
             <a

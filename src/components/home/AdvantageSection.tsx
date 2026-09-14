@@ -52,27 +52,21 @@ export function AdvantageSection() {
             {ADVANTAGES.map((item, idx) => (
               <div
                 key={item.title}
-                className="group relative flex flex-col gap-6 overflow-hidden rounded-sm border border-white/10 bg-white/[0.03] p-5 cursor-default transition-colors duration-300 hover:border-brand-yellow/40 hover:bg-white/[0.06]"
+                className="relative flex flex-col gap-6 overflow-hidden rounded-sm border border-white/10 bg-white/[0.03] p-5 cursor-default"
               >
                 {/* Giant outlined watermark number, bleeding off the card edge */}
                 <span
-                  className="font-stat pointer-events-none absolute -right-2 -top-6 text-[88px] leading-none text-transparent transition-opacity duration-300 group-hover:opacity-0"
+                  className="font-stat pointer-events-none absolute -right-2 -top-6 text-[88px] leading-none text-transparent"
                   style={{ WebkitTextStroke: "1px rgba(255,255,255,0.08)" }}
                 >
                   {String(idx + 1).padStart(2, "0")}
                 </span>
-                <span
-                  className="font-stat pointer-events-none absolute -right-2 -top-6 text-[88px] leading-none text-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{ WebkitTextStroke: "1px rgba(245,158,11,0.4)" }}
-                >
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
 
-                <span className="relative flex h-11 w-11 items-center justify-center rounded-sm border border-brand-yellow/30 text-brand-yellow transition-colors duration-300 group-hover:border-brand-yellow group-hover:bg-brand-yellow/10">
+                <span className="relative flex h-11 w-11 items-center justify-center rounded-sm border border-brand-yellow/30 text-brand-yellow">
                   <Icon name={item.icon} className="text-[22px]" />
                 </span>
 
-                <p className="relative text-sm sm:text-[15px] font-semibold leading-snug text-gray-200 transition-colors duration-300 group-hover:text-white">
+                <p className="relative text-sm sm:text-[15px] font-semibold leading-snug text-gray-200">
                   {item.title}
                 </p>
               </div>

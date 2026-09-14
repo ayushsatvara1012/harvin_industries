@@ -20,7 +20,8 @@
      stacked white cards on it keep visible separation. */
   --color-brand-surface-alt: #f4f4f2;
   --color-brand-text: #111827;
-  --color-brand-text-secondary: #5b6470;
+  /* Deep near-black for body copy on light backgrounds (#272d37 / gray-800) */
+  --color-brand-text-secondary: #272d37;
   --color-brand-border: #e5e7eb;
 }
 

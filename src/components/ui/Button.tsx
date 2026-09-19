@@ -10,7 +10,7 @@ const SIZE_CLASSES = {
 const VARIANT_CLASSES = {
   primary: "bg-rusted-yellow text-brand-ink",
   "outline-dark":
-    "border border-brand-yellow-light/80 text-white hover:bg-rusted-yellow hover:text-brand-ink shadow-md shadow-black/40 hover:shadow-lg hover:shadow-brand-yellow/20 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)] hover:[text-shadow:none]",
+    "border border-brand-yellow-light/80 text-white hover:border-brand-yellow-light hover:bg-brand-yellow/10 shadow-md shadow-black/40 hover:shadow-lg hover:shadow-brand-yellow/20 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]",
   "outline-light":
     "border border-brand-border bg-brand-surface text-brand-text shadow-sm hover:border-brand-yellow hover:text-brand-accent",
 } as const;

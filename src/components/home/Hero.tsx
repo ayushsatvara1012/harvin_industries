@@ -248,7 +248,7 @@ export function Hero() {
 
       {/* Angled yellow strapline anchored to the bottom-right corner */}
       <div
-        className="absolute bottom-0 right-0 z-20 hidden lg:block bg-brand-yellow text-brand-ink py-4 pl-14 pr-8"
+        className="absolute bottom-0 right-0 z-20 hidden lg:block bg-brand-yellow text-white py-4 pl-14 pr-8"
         style={{ clipPath: "polygon(44px 0%, 100% 0%, 100% 100%, 0% 100%)" }}
       >
         <p className="text-sm sm:text-[15px] font-extrabold uppercase tracking-tight leading-[1.15]">

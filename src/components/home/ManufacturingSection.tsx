@@ -103,8 +103,8 @@ export function ManufacturingSection() {
 
           {/* 3. Actions & Video Reel Preview */}
           <div className="pt-2 flex flex-wrap items-center gap-4">
-            <Button href="/about" size="lg">
-              About Harvin Industries
+            <Button href="/contact" size="lg">
+              Consult Our Engineers
             </Button>
 
             <a

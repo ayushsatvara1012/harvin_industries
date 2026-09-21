@@ -8,11 +8,12 @@ import {
   IndustriesSection,
   CtaBanner,
 } from "@/components/home";
+import { PRODUCTS } from "@/data/products";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
+      <Navbar products={PRODUCTS} />
       <main id="main" className="min-h-screen">
         {/* 1. Hero Section */}
         <Hero />

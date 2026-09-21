@@ -3,7 +3,7 @@
 import { useActionState, useId } from "react";
 import { useFormStatus } from "react-dom";
 import { Icon } from "@/components/ui";
-import { PRODUCTS, CATEGORY_LABELS } from "@/data/products";
+import { CATEGORY_LABELS, type Product } from "@/data/products";
 import { OUTPUT_BANDS } from "@/data/contact";
 import { submitQuoteRequest } from "@/app/contact/actions";
 import { EMPTY_FORM_STATE } from "@/lib/quote-form";
@@ -60,7 +60,13 @@ function SubmitButton() {
   );
 }
 
-export function ContactForm({ selectedProduct }: { selectedProduct?: string }) {
+export function ContactForm({
+  products,
+  selectedProduct,
+}: {
+  products: Product[];
+  selectedProduct?: string;
+}) {
   const [state, formAction] = useActionState(submitQuoteRequest, EMPTY_FORM_STATE);
   const { errors, values } = state;
 
@@ -158,7 +164,7 @@ export function ContactForm({ selectedProduct }: { selectedProduct?: string }) {
               className={`${FIELD_CLASSES} [&>option]:bg-brand-ink [&>option]:text-white`}
             >
               <option value="">Select a machine</option>
-              {PRODUCTS.map((product) => (
+              {products.map((product) => (
                 <option key={product.slug} value={product.slug}>
                   {product.name} — {CATEGORY_LABELS[product.category]}
                 </option>

@@ -3,12 +3,11 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
-import { CATEGORY_LABELS, PRODUCTS, type Category } from "@/data/products";
+import { CATEGORY_LABELS, type Category, type Product } from "@/data/products";
 
-const CATEGORIES: Category[] = Array.from(new Set(PRODUCTS.map((p) => p.category)));
-
-export function ProductFilters() {
+export function ProductFilters({ products }: { products: Product[] }) {
   const router = useRouter();
+  const CATEGORIES: Category[] = Array.from(new Set(products.map((p) => p.category)));
   const pathname = usePathname();
   const searchParams = useSearchParams();
 

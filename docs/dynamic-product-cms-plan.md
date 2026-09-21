@@ -188,6 +188,22 @@ pages do not change behaviour until phase 4 flips the data source.
    custom domain. Verify ISR and `revalidateTag` actually work in production —
    this is the step most likely to surprise us.
 
+## Progress
+
+- **Phase 1 done** (on `feature/dynamic-product-cms`, direct commits — this
+  branch is already the CMS work branch, no sub-branch needed). `Navbar`,
+  `ContactForm`, `ProductFilters` no longer import `PRODUCTS` from
+  `@/data/products` — they take `products: Product[]` as a prop. Every call
+  site now passes `PRODUCTS` explicitly (`page.tsx`, `about/page.tsx`,
+  `products/page.tsx`, `products/[slug]/page.tsx`, `contact/page.tsx` via
+  `ContactHero`, `not-found.tsx`, `error.tsx`). `CATEGORY_LABELS` stayed a
+  direct import in all three — it's a fixed 3-entry `Record<Category, string>`
+  lookup, not catalog data, so it isn't part of what moves to the DB later.
+  `npm run build` and `npm run lint` both clean; prerendered routes unchanged
+  (same static/SSG/dynamic split as before).
+- **Next**: Phase 2 (skeletons / `loading.tsx` + Suspense boundaries), still
+  against static data.
+
 ## 9. Open Questions
 
 - Domain for the live site — registered yet?

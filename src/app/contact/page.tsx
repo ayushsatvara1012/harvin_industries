@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Navbar, Footer } from "@/components/layout";
 import { ContactHero, ContactMap } from "@/components/contact";
-import { getProductBySlug } from "@/data/products";
+import { getProductBySlug, PRODUCTS } from "@/data/products";
 import { ADDRESS_LINES, EMAIL, GSTIN, PHONE } from "@/data/contact";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -68,9 +68,9 @@ export default async function ContactPage(props: PageProps<"/contact">) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar />
+      <Navbar products={PRODUCTS} />
       <main id="main" className="min-h-screen bg-brand-ink">
-        <ContactHero productName={product?.name} productSlug={product?.slug} />
+        <ContactHero products={PRODUCTS} productName={product?.name} productSlug={product?.slug} />
 
         <ContactMap />
       </main>

@@ -5,34 +5,35 @@ import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { BrandLogo } from "./BrandLogo";
 import { Button } from "@/components/ui";
-import { PRODUCTS, CATEGORY_LABELS } from "@/data/products";
-
-// Built from the catalog itself so the dropdown can never drift out of sync
-// with the machines that actually have pages.
-const PRODUCT_LINKS = PRODUCTS.map((product) => ({
-  label: `${product.name} — ${CATEGORY_LABELS[product.category]}`,
-  href: `/products/${product.slug}`,
-}));
-
-const NAV_ITEMS = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  {
-    label: "Products",
-    href: "/products",
-    hasDropdown: true,
-    children: PRODUCT_LINKS,
-  },
-  { label: "Manufacturing", href: "/#manufacturing" },
-  { label: "Technology", href: "/#advantage" },
-  { label: "Industries", href: "/#industries" },
-  { label: "Contact", href: "/contact" },
-];
+import { CATEGORY_LABELS, type Product } from "@/data/products";
 
 const SPY_SECTION_IDS = ["about", "manufacturing", "advantage", "industries"];
 
-export function Navbar() {
+export function Navbar({ products }: { products: Product[] }) {
   const pathname = usePathname();
+
+  // Built from the catalog itself so the dropdown can never drift out of sync
+  // with the machines that actually have pages.
+  const PRODUCT_LINKS = products.map((product) => ({
+    label: `${product.name} — ${CATEGORY_LABELS[product.category]}`,
+    href: `/products/${product.slug}`,
+  }));
+
+  const NAV_ITEMS = [
+    { label: "Home", href: "/" },
+    { label: "About Us", href: "/about" },
+    {
+      label: "Products",
+      href: "/products",
+      hasDropdown: true,
+      children: PRODUCT_LINKS,
+    },
+    { label: "Manufacturing", href: "/#manufacturing" },
+    { label: "Technology", href: "/#advantage" },
+    { label: "Industries", href: "/#industries" },
+    { label: "Contact", href: "/contact" },
+  ];
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);

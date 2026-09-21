@@ -76,7 +76,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
 
   return (
     <>
-      <Navbar />
+      <Navbar products={PRODUCTS} />
       <main id="main" className="bg-white">
         <section className="relative overflow-hidden border-b border-white/10 bg-brand-ink">
           <IsometricLines className="absolute inset-0 h-full w-full opacity-90" />
@@ -101,7 +101,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
           <div className="grid gap-10 lg:grid-cols-[260px_1fr]">
             <aside className="lg:sticky lg:top-24 lg:self-start">
               <Suspense fallback={<ProductFiltersSkeleton />}>
-                <ProductFilters />
+                <ProductFilters products={PRODUCTS} />
               </Suspense>
             </aside>
 

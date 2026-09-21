@@ -1,11 +1,14 @@
 import { Icon, IsometricLines } from "@/components/ui";
 import { PHONE, PHONE_HREF, EMAIL, ADDRESS_LINES } from "@/data/contact";
+import type { Product } from "@/data/products";
 import { ContactForm } from "./ContactForm";
 
 export function ContactHero({
+  products,
   productName,
   productSlug,
 }: {
+  products: Product[];
   productName?: string;
   productSlug?: string;
 }) {
@@ -97,7 +100,7 @@ export function ContactHero({
 
           {/* Right Column: Direct Contact Form (no card effect, directly on the dark section) */}
           <div className="lg:col-span-7">
-            <ContactForm selectedProduct={productSlug} />
+            <ContactForm products={products} selectedProduct={productSlug} />
           </div>
         </div>
       </div>

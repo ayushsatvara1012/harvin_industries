@@ -1,5 +1,7 @@
 export { ProductCard } from "./ProductCard";
 export { ProductFilters } from "./ProductFilters";
+export { ProductFiltersSkeleton } from "./ProductFiltersSkeleton";
+export { ProductGridSkeleton } from "./ProductGridSkeleton";
 export { ProductGallery } from "./ProductGallery";
 export { SpecTable } from "./SpecTable";
 export { ProductionTable } from "./ProductionTable";

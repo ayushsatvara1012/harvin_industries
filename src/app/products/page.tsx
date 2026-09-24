@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Navbar, Footer } from "@/components/layout";
 import { Card, Eyebrow, IsometricLines } from "@/components/ui";
-import { ProductCard, ProductFilters, ModelComparison } from "@/components/products";
-import { PRODUCTS, type Category } from "@/data/products";
+import {
+  ProductCard,
+  ProductFilters,
+  ProductFiltersSkeleton,
+  ProductGridSkeleton,
+  ModelComparison,
+} from "@/components/products";
+import { PRODUCTS, type Category, type Product } from "@/data/products";
 import { SITE_NAME } from "@/lib/site";
 
 const title = "Products — Harvin Industries";
@@ -30,22 +35,6 @@ export const metadata: Metadata = {
   },
 };
 
-function ProductFiltersSkeleton() {
-  return (
-    <div className="flex flex-col gap-8 animate-pulse" aria-hidden="true">
-      <div className="h-12 rounded-full bg-brand-border/60" />
-      <div>
-        <div className="h-3 w-16 rounded bg-brand-border/60" />
-        <div className="mt-3 flex flex-wrap gap-2">
-          <div className="h-9 w-24 rounded-full bg-brand-border/60" />
-          <div className="h-9 w-28 rounded-full bg-brand-border/60" />
-          <div className="h-9 w-20 rounded-full bg-brand-border/60" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function filterProducts(searchParams: { q?: string; category?: string }) {
   const q = searchParams.q?.trim().toLowerCase();
   const category = searchParams.category as Category | undefined;
@@ -67,6 +56,31 @@ function filterProducts(searchParams: { q?: string; category?: string }) {
   });
 }
 
+function ProductResults({ results }: { results: Product[] }) {
+  return (
+    <div>
+      <p className="mb-6 text-sm text-brand-text-secondary">
+        {results.length} {results.length === 1 ? "machine" : "machines"} found
+      </p>
+
+      {results.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {results.map((product) => (
+            <ProductCard key={product.slug} product={product} />
+          ))}
+        </div>
+      ) : (
+        <Card variant="dashed" className="px-6 py-16 text-center">
+          <p className="font-display text-xl text-brand-ink">No machines found</p>
+          <p className="mt-2 text-sm text-brand-text-secondary">
+            Try a different search term or clear your filters.
+          </p>
+        </Card>
+      )}
+    </div>
+  );
+}
+
 export default async function ProductsPage(props: PageProps<"/products">) {
   const searchParams = await props.searchParams;
   const q = typeof searchParams.q === "string" ? searchParams.q : undefined;
@@ -76,7 +90,6 @@ export default async function ProductsPage(props: PageProps<"/products">) {
 
   return (
     <>
-      <Navbar products={PRODUCTS} />
       <main id="main" className="bg-white">
         <section className="relative overflow-hidden border-b border-white/10 bg-brand-ink">
           <IsometricLines className="absolute inset-0 h-full w-full opacity-90" />
@@ -105,31 +118,13 @@ export default async function ProductsPage(props: PageProps<"/products">) {
               </Suspense>
             </aside>
 
-            <div>
-              <p className="mb-6 text-sm text-brand-text-secondary">
-                {results.length} {results.length === 1 ? "machine" : "machines"} found
-              </p>
-
-              {results.length > 0 ? (
-                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                  {results.map((product) => (
-                    <ProductCard key={product.slug} product={product} />
-                  ))}
-                </div>
-              ) : (
-                <Card variant="dashed" className="px-6 py-16 text-center">
-                  <p className="font-display text-xl text-brand-ink">No machines found</p>
-                  <p className="mt-2 text-sm text-brand-text-secondary">
-                    Try a different search term or clear your filters.
-                  </p>
-                </Card>
-              )}
-            </div>
+            <Suspense fallback={<ProductGridSkeleton />}>
+              <ProductResults results={results} />
+            </Suspense>
           </div>
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

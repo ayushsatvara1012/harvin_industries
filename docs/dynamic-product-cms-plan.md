@@ -201,8 +201,24 @@ pages do not change behaviour until phase 4 flips the data source.
   lookup, not catalog data, so it isn't part of what moves to the DB later.
   `npm run build` and `npm run lint` both clean; prerendered routes unchanged
   (same static/SSG/dynamic split as before).
-- **Next**: Phase 2 (skeletons / `loading.tsx` + Suspense boundaries), still
-  against static data.
+- **Phase 2 done.** `src/app/products/layout.tsx` now hosts `Navbar`/`Footer`
+  so they stay mounted across `/products` ⇄ `/products/[slug]` navigations
+  instead of being duplicated per-page. Added `loading.tsx` at both routes.
+  Extracted `ProductFiltersSkeleton` and `ProductGridSkeleton` into
+  `src/components/products/` (barrel-exported) so `loading.tsx` and the
+  in-page `<Suspense>` fallbacks share one skeleton, matching real card/filter
+  geometry. `/products` results (count + grid/empty state) are now in their
+  own `ProductResults` component wrapped in `<Suspense>`, ready for Phase 3/4
+  to make that boundary meaningful. `ProductCard` already uses `next/link`,
+  which prefetches static routes by default — no change needed there. Build
+  showed `/products` is genuinely dynamic today (reads `searchParams`
+  server-side), so this `loading.tsx` is not just future-proofing — it covers
+  the real per-navigation server round trip now; `/products/[slug]` stays SSG,
+  so its `loading.tsx` is inert until Phase 3/4. `npm run build` and
+  `npm run lint` clean; route static/dynamic split unchanged.
+- **Next**: Phase 3 (Prisma schema, migration, seed script from
+  `products.ts`, repository layer in `src/lib/products.ts` with `cacheTag`),
+  not yet wired to pages.
 
 ## 9. Open Questions
 

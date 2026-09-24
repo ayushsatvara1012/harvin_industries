@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Navbar, Footer } from "@/components/layout";
 import { Button, Icon, SectionHeader } from "@/components/ui";
 import {
   ProductCard,
@@ -91,7 +90,6 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <Navbar products={PRODUCTS} />
       <main id="main" className="min-h-screen bg-white">
         <section className="bg-white">
           <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
@@ -232,7 +230,6 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
           </section>
         )}
       </main>
-      <Footer />
     </>
   );
 }

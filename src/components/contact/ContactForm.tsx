@@ -9,7 +9,7 @@ import { submitQuoteRequest } from "@/app/contact/actions";
 import { EMPTY_FORM_STATE } from "@/lib/quote-form";
 
 const FIELD_CLASSES =
-  "w-full rounded-md border border-white/15 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-gray-500 transition-colors focus:border-brand-yellow focus:bg-white/[0.07] focus:outline-none focus:ring-1 focus:ring-brand-yellow disabled:opacity-60";
+  "w-full rounded-md border border-white/15 bg-brand-ink/80 backdrop-blur-md px-4 py-3 text-sm text-white placeholder:text-gray-500 transition-colors focus:border-brand-yellow focus:bg-brand-ink/90 focus:outline-none focus:ring-1 focus:ring-brand-yellow disabled:opacity-60";
 
 const LABEL_CLASSES =
   "block text-xs font-semibold uppercase tracking-wider text-gray-200";

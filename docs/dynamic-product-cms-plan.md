@@ -71,7 +71,6 @@ These are real and worth naming before we start, not after:
 If any of these cost more than a day, Vercel Pro at $20/mo is the escape hatch.
 
 ## 3. Rendering Strategy
-
 **This is the core decision. Everything else follows from it.**
 
 Public pages stay statically prerendered and served from Cloudflare's edge. They

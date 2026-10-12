@@ -19,16 +19,17 @@
 			"service": "harvin-industries"
 		}
 	],
-	"r2_buckets": [
+	"kv_namespaces": [
 		{
-			"binding": "NEXT_INC_CACHE_R2_BUCKET",
-			"bucket_name": "harvin-industries-cache"
+			"binding": "NEXT_INC_CACHE_KV",
+			"id": "98a631516b7b4aaab21cf0a1e1f9a313"
 		}
 	],
 	"d1_databases": [
 		{
 			"binding": "NEXT_TAG_CACHE_D1",
-			"database_name": "harvin-industries-tag-cache"
+			"database_name": "harvin-industries-tag-cache",
+			"database_id": "b2233e79-eb70-4ea7-8b3c-f443ba968540"
 		}
 	],
 	"images": {

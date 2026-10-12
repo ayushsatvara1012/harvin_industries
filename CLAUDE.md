@@ -10,8 +10,8 @@ owner-only CMS to manage products, contact/quote forms, homepage "latest product
 - Next.js (App Router) + TypeScript + Tailwind CSS
 - Neon (serverless Postgres) + Prisma (`@prisma/adapter-neon`) for data
 - Cloudinary for product images / brochure PDFs
-- NextAuth (credentials provider, single owner account) for CMS auth
-- Deploy target: Vercel
+- Auth.js v5 (credentials provider, single owner account, JWT session) for CMS auth
+- Deploy target: Cloudflare Workers via `@opennextjs/cloudflare` (R2 + D1 for ISR cache). Not Vercel Hobby - it bars commercial use. See `docs/dynamic-product-cms-plan.md` §2.
 
 See `docs/harvin-industries-plan.md` for sitemap, schema, architecture, and full
 brand/company facts pulled from the brochure.
@@ -43,7 +43,7 @@ brand/company facts pulled from the brochure.
 
 - Production branch: `main`. Never commit to it directly — work on a feature branch,
   merge only when explicitly asked.
-- Deploys run from `main` via Vercel git integration once connected.
+- Deploys run from `main` to Cloudflare once connected (Phase 8 of the CMS plan).
 
 ## Conventions
 

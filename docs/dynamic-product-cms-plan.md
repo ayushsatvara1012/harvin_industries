@@ -40,12 +40,14 @@ plan, so the data shape does not change. Three things do block the swap:
 |---|---|---|---|
 | Host | Cloudflare Workers via `@opennextjs/cloudflare` | $0 | No commercial-use bar, unlike Vercel Hobby. Workers Free covers 100k req/day. |
 | Database | Neon Postgres + Prisma (`@prisma/adapter-neon`) | $0 | HTTP driver is fetch-based, so it runs inside a Worker with no TCP pool. |
-| ISR cache | R2 (incremental cache) + D1 (tag cache) | $0 | Backs `revalidateTag`, which is the mechanism the whole design rests on. |
+| ISR cache | Workers KV (incremental cache) + D1 (tag cache) | $0, no card | Backs `revalidateTag`, which is the mechanism the whole design rests on. R2 was the first choice but Cloudflare requires a payment method to enable it; KV and D1 do not. |
 | Media | Cloudinary | $0 | Free tier explicitly permits commercial production use. Also serves as the image optimizer, which Workers does not provide free. |
 | Auth | Auth.js v5, credentials, single owner, JWT session | $0 | Edge-compatible, no session table needed. |
 | Leads | Postgres row + admin inbox, WhatsApp click-to-chat on the public site | $0 | No email provider. See §6. |
 
-Total recurring: **$0**, plus the domain.
+Total recurring: **$0**, plus the domain. No payment method is on any account,
+so nothing can bill: if a free limit is hit the service stops rather than charges.
+This is a hard requirement from the client's budget, not a preference.
 
 ### Cost ceiling, honestly
 
@@ -60,8 +62,17 @@ and never touch the database (§3).
 These are real and worth naming before we start, not after:
 
 - Next 16 on Workers runs through OpenNext, not natively. ISR and
-  `revalidateTag` need the R2 + D1 cache bindings wired explicitly; on Vercel
+  `revalidateTag` need the KV + D1 cache bindings wired explicitly; on Vercel
   they are automatic.
+- **`next` is pinned to exactly `16.3.8`.** The adapter (1.20.10) supports
+  `>=16.3.8`, but 16.4.0 returned 500 on every route (unexpected
+  `preview-props.json` manifest load). Do not upgrade `next` until the adapter
+  is confirmed to support the newer version; test under `wrangler dev` first.
+- KV is eventually consistent, so an owner edit can take up to about a minute
+  to appear publicly (R2 would be about a second). Accepted trade-off for
+  needing no card.
+- Anything in `public/` is published. Keep source documents elsewhere
+  (`docs/source/`).
 - Prisma needs `driverAdapters` and a no-engine build to fit the Worker bundle.
   If it fights us, Drizzle is the fallback — it is lighter and Workers-native.
   Decide only if we hit the wall; do not pre-emptively switch.
@@ -76,7 +87,8 @@ If any of these cost more than a day, Vercel Pro at $20/mo is the escape hatch.
 Public pages stay statically prerendered and served from Cloudflare's edge. They
 are not server-rendered per request. When the owner saves a product, the write
 handler calls `revalidateTag('products')`, and the affected pages regenerate
-within about a second — no rebuild, no redeploy, no downtime.
+within about a minute (KV is eventually consistent) — no rebuild, no redeploy,
+no downtime.
 
 Consequences, each of which is one of the stated requirements:
 
@@ -155,7 +167,7 @@ it. Not in scope now.
 - `generateMetadata` keeps its current shape, fed live fields. Canonicals, OG
   and Twitter cards unchanged.
 - `sitemap.ts` becomes dynamic and revalidates on the `products` tag, so a new
-  machine is in the sitemap within seconds of publishing.
+  machine is in the sitemap within about a minute of publishing.
 - Existing `Product` and `BreadcrumbList` JSON-LD stay, fed live data. Add
   `Organization` on the homepage.
 - `/admin/*` gets `robots: { index: false }` and is disallowed in `robots.ts`.
@@ -183,9 +195,12 @@ pages do not change behaviour until phase 4 flips the data source.
 6. **Auth + admin.** Auth.js owner login, middleware guard, product CRUD,
    Cloudinary signed upload for images and brochure PDFs, revalidation on write.
 7. **Leads.** Persist submissions, admin inbox, WhatsApp CTA.
-8. **Cloudflare deploy.** OpenNext adapter, R2 and D1 cache bindings, env vars,
-   custom domain. Verify ISR and `revalidateTag` actually work in production —
-   this is the step most likely to surprise us.
+8. **Cloudflare deploy.** Split in two because it was the riskiest step:
+   - **8a, deploy spike (done early, see Progress).** OpenNext adapter, KV and D1
+     cache bindings, static site live on `workers.dev`.
+   - **8b, production (last).** Neon `DATABASE_URL` and auth env vars as Worker
+     secrets, custom domain, Cloudinary image loader, and verify ISR and
+     `revalidateTag` actually work in production. Needs Phases 3 to 7 first.
 
 ## Progress
 
@@ -232,6 +247,30 @@ pages do not change behaviour until phase 4 flips the data source.
   `data/products.ts` helpers so Phase 4 is a drop-in swap), `prisma/seed.ts`
   (imports `PRODUCTS` verbatim). No existing page/component touched; build/lint
   and live site behavior unaffected until Phase 4.
+- **Phase 8a done (Cloudflare deploy spike, merged into this branch).**
+  `@opennextjs/cloudflare` 1.20.10 + `wrangler` added; `open-next.config.ts`
+  uses `kvIncrementalCache` + `d1NextTagCache`; `wrangler.jsonc` binds
+  `NEXT_INC_CACHE_KV` and `NEXT_TAG_CACHE_D1`; scripts `preview`, `deploy`,
+  `upload`, `cf-typegen`. Static site is live at
+  `https://harvin-industries.harvin-industries.workers.dev` on the company
+  Cloudflare account. All routes, `/_next/image` and the sitemap return
+  correctly; worker is about 1.1 MB gzipped against the 3 MB free limit. Not
+  yet tested: `revalidateTag` (needs the DB), custom domain, Cloudinary loader.
+  Findings: `next` pinned to `16.3.8` (16.4.0 breaks the adapter, see §2);
+  R2 needs a payment method so KV replaced it; the adapter only auto-creates
+  R2, so the KV namespace and D1 database were created by hand with
+  `wrangler kv namespace create` / `wrangler d1 create` and their IDs are in
+  `wrangler.jsonc` (identifiers, not secrets). ESLint now ignores
+  `.open-next/**` and `.wrangler/**`.
+- **Accounts:** Cloudflare is created, owned by the developer under the
+  company's main email (kept out of the repo), no card on file. Handover to the
+  client, 2FA and recovery codes are still to be settled in writing. Neon and
+  Cloudinary accounts are not confirmed created yet.
+- **Cleanup done:** three owner `.docx` source files were publicly downloadable
+  from `public/`; moved to `docs/source/`; the redeploy that takes them offline is pending until confirmed live (check they 404). Still in
+  `public/` and to review: `images/brochure/raw/` and the unused template SVGs
+  (`next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg`). Phase 5
+  removes `public/images` entirely.
 - **Blocked on:** a Neon connection string. Decided the DB must live under a
   Neon **Organization** scoped to this client, not the developer's personal
   Neon account — either the client's own org (developer added as
@@ -243,7 +282,8 @@ pages do not change behaviour until phase 4 flips the data source.
   for this unattended-admin-panel use case); plan to move to Neon Launch
   (paid, billed to the client) once the site is actually live, for real
   backups/PITR.
-- **Next session:** once the `DATABASE_URL` is available, write
+- **Next session:** once `DATABASE_URL` and `DIRECT_URL` are in `.env.local`
+  (and named in `.env.example`), write
   `schema.prisma` + `src/lib/db.ts` + `src/lib/products.ts` + `prisma/seed.ts`,
   run `prisma migrate dev`, verify seed matches `data/products.ts` output
   exactly, confirm `npm run build`/`npm run lint` still clean. Still not wired
@@ -255,5 +295,12 @@ pages do not change behaviour until phase 4 flips the data source.
 - Owner's WhatsApp number for the public CTA.
 - Does the owner need multiple images per machine reorderable in the CMS, or is
   one primary image plus a gallery enough?
-- Neon connection string (`DATABASE_URL`) — pending account/org setup, see
-  Progress above.
+- Neon connection strings — both the pooled `DATABASE_URL` and the direct
+  `DIRECT_URL` (migrations fail over the pooler). Pending account/org setup,
+  see Progress above. Neon Organizations may need a paid plan; verify before
+  relying on one, and keep the no-card constraint in mind.
+- Account handover to the client: who owns them long term, when the developer
+  steps back to collaborator, and who pays if Neon moves to the paid tier.
+- Confirm the registered `workers.dev` subdomain in the Cloudflare dashboard,
+  since it is part of the public URL until a custom domain exists.
+- Remove or keep `public/images/brochure/raw/` and the template SVGs.

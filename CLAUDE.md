@@ -11,7 +11,7 @@ owner-only CMS to manage products, contact/quote forms, homepage "latest product
 - Neon (serverless Postgres) + Prisma (`@prisma/adapter-neon`) for data
 - Cloudinary for product images / brochure PDFs
 - Auth.js v5 (credentials provider, single owner account, JWT session) for CMS auth
-- Deploy target: Cloudflare Workers via `@opennextjs/cloudflare` (R2 + D1 for ISR cache). Not Vercel Hobby - it bars commercial use. See `docs/dynamic-product-cms-plan.md` §2.
+- Deploy target: Cloudflare Workers via `@opennextjs/cloudflare` (KV + D1 for ISR cache, no card needed). Not Vercel Hobby - it bars commercial use. See `docs/dynamic-product-cms-plan.md` §2.
 
 See `docs/harvin-industries-plan.md` for sitemap, schema, architecture, and full
 brand/company facts pulled from the brochure.

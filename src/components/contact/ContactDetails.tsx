@@ -1,13 +1,5 @@
 import { Icon } from "@/components/ui";
-import { BUSINESS_HOURS, CONTACT_DETAILS } from "@/data/contact";
-
-function MockChip() {
-  return (
-    <span className="ml-2 inline-flex shrink-0 items-center rounded-full border border-brand-yellow/40 px-2 py-0.5 align-middle text-[9px] font-bold uppercase tracking-[0.12em] text-brand-yellow-light">
-      To confirm
-    </span>
-  );
-}
+import { CONTACT_DETAILS } from "@/data/contact";
 
 export function ContactDetails() {
   const founder = CONTACT_DETAILS.find((d) => d.label === "Speak To");

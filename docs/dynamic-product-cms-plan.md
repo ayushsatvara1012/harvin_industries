@@ -215,9 +215,39 @@ pages do not change behaviour until phase 4 flips the data source.
   the real per-navigation server round trip now; `/products/[slug]` stays SSG,
   so its `loading.tsx` is inert until Phase 3/4. `npm run build` and
   `npm run lint` clean; route static/dynamic split unchanged.
-- **Next**: Phase 3 (Prisma schema, migration, seed script from
-  `products.ts`, repository layer in `src/lib/products.ts` with `cacheTag`),
-  not yet wired to pages.
+- **Phase 3 planned, not started.** Reviewed `data/products.ts` against the
+  schema sketch in the main plan doc (`harvin-industries-plan.md` §3) and
+  decided the main plan's `Product` model (type: machine|output_item,
+  material, price) is stale — it predates the machines-only catalog decision.
+  The actual Phase 3 schema will mirror the current TS `Product` type field
+  for field, plus `status` (draft|published) and `sortOrder` for CMS use, a
+  `Lead` model for contact/quote submissions (currently `console.info`'d and
+  lost), and a `Redirect` model (`from`→`to`) for slug-rename 301s. Full field
+  list for each is recorded in this session's log — re-derive from
+  `src/data/products.ts` plus §5 of this doc if needed rather than guessing.
+  Deps to add: `prisma`, `@prisma/client`, `@prisma/adapter-neon`,
+  `@neondatabase/serverless`. New files only — `schema.prisma`, `src/lib/db.ts`
+  (Prisma client singleton over the Neon adapter), `src/lib/products.ts`
+  (repository functions, `cacheTag('products')`, same signatures as today's
+  `data/products.ts` helpers so Phase 4 is a drop-in swap), `prisma/seed.ts`
+  (imports `PRODUCTS` verbatim). No existing page/component touched; build/lint
+  and live site behavior unaffected until Phase 4.
+- **Blocked on:** a Neon connection string. Decided the DB must live under a
+  Neon **Organization** scoped to this client, not the developer's personal
+  Neon account — either the client's own org (developer added as
+  collaborator) or a developer-controlled-but-client-labeled account/org,
+  clearly documented as belonging to Harvin Industries' infra, never the
+  developer's personal daily-driver login. Free tier is fine to start
+  (auto-wakes on query, no manual resume, no data deletion — ruled safer than
+  Supabase's 7-day manual-resume pause and Render's 30-day free-tier deletion
+  for this unattended-admin-panel use case); plan to move to Neon Launch
+  (paid, billed to the client) once the site is actually live, for real
+  backups/PITR.
+- **Next session:** once the `DATABASE_URL` is available, write
+  `schema.prisma` + `src/lib/db.ts` + `src/lib/products.ts` + `prisma/seed.ts`,
+  run `prisma migrate dev`, verify seed matches `data/products.ts` output
+  exactly, confirm `npm run build`/`npm run lint` still clean. Still not wired
+  to pages (that's Phase 4).
 
 ## 9. Open Questions
 
@@ -225,3 +255,5 @@ pages do not change behaviour until phase 4 flips the data source.
 - Owner's WhatsApp number for the public CTA.
 - Does the owner need multiple images per machine reorderable in the CMS, or is
   one primary image plus a gallery enough?
+- Neon connection string (`DATABASE_URL`) — pending account/org setup, see
+  Progress above.

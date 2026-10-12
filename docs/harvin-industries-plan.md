@@ -282,7 +282,7 @@ direction.
 **Branch:** `feature/brochure-content-integration` off `main`. Not merged.
 `npm run lint` and `npm run build` both pass clean.
 
-**Source:** three owner-supplied `.docx` files in `public/`:
+**Source:** three owner-supplied `.docx` files in `docs/source/` (moved out of `public/`, which is published):
 `harvin about us ,vision details.docx`, `harvin machine model (3 model).docx`,
 `harvin mixture machine (2 pcs).docx`.
 

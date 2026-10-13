@@ -222,6 +222,34 @@ old static-data build and is not broken.
 with the company email, no card. Then: migration script, `next/image` loader,
 image URLs into the database, `public/images` leaves the repo.
 
+**Phase 5 pre-work done without a Cloudinary account (2026-10-13), PROPOSED scope,
+not yet approved by the user:**
+- `public/` is 62 MB, 157 tracked files. Only 34 files (20 MB) are referenced by
+  `src/` or `prisma/`. The other 123 (44 MB) are referenced nowhere: 
+  `images/brochure/raw` (72 files, 20 MB), `brochure/pages` (18, 9 MB),
+  `brochure/factory` (7, 9 MB), `brochure/products` (10), the four
+  `images/products/*.jpg`, four `mockup/product-*-4k.webp`, `images/hero-plant.jpg`,
+  `hero_Image.jpeg` and the five template SVGs (`next`, `vercel`, `file`, `globe`,
+  `window`). The earlier UI audit (`docs/harvin-ui-audit-report.md`) found the same.
+  Everything is recoverable from git history. Needs the user's approval to delete.
+- Only 10 files (7.8 MB) are owner-managed product images, i.e. the `images`
+  arrays in the database rows: `images/machines/{hi-1500,hi-2000,hi-3000,
+  batching-plant,mixture-machine}.jpg` and `images/brochure/machines/<same>.png`.
+- The other 24 used files are fixed site imagery that the owner never edits:
+  `mockup/*-4k.webp` (11), `forms/*.png` (9), `hero_Image.webp`, the logo, and two
+  animation `.mp4` files (4.9 MB).
+- **Proposal:** move only the 10 product images to Cloudinary (they are the only
+  ones the CMS changes, and `CLAUDE.md` says product media is Cloudinary-only).
+  Keep the fixed site imagery and videos as Worker static assets: free, no
+  Cloudinary credits, no loader needed for them, and `next/image` already
+  optimizes them through the Images binding (verified live). Delete the 123
+  unreferenced files and move the 35 MB `Harvin_brochures/` sources out of the repo.
+- Schema decision for Phase 5/6: the `images` column is `String[]` with no alt text,
+  but §7 requires real alt text per image. Change it to JSON
+  `[{ publicId, alt }]` (Cloudinary public ID plus alt) when images move.
+- `next.config.ts` will need `images.remotePatterns` for `res.cloudinary.com` and a
+  loader that only applies to Cloudinary URLs.
+
 **Working rules that bit us (see Progress for detail):**
 - No payment method on any account. Free limits stop service, they never bill.
 - `next` is pinned to `16.3.8` and Prisma to `7.10.0`. Do not bump either without
@@ -408,4 +436,5 @@ which is not the live host yet (`workers.dev`); settle the domain before launch.
   steps back to collaborator, and who pays if Neon moves to the paid tier.
 - Confirm the registered `workers.dev` subdomain in the Cloudflare dashboard,
   since it is part of the public URL until a custom domain exists.
-- Remove or keep `public/images/brochure/raw/` and the template SVGs.
+- Approve the Phase 5 proposal above: delete the 123 unreferenced files, move
+  `Harvin_brochures/` out of the repo, and put only the 10 product images on Cloudinary.

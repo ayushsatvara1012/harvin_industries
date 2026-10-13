@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // OpenNext / wrangler build output.
     ".open-next/**",
     ".wrangler/**",
+    // Prisma generated client.
+    "src/generated/**",
   ]),
   {
     // Force icon markup through <Icon>, which sets aria-hidden — a raw

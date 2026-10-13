@@ -7,7 +7,7 @@ Companion to `docs/harvin-industries-plan.md` (sitemap, brand, brochure facts).
 Where the two disagree on stack, this document wins — it supersedes the Vercel
 and Neon-only assumptions in section 2 of that plan.
 
-## 1. Current State
+## 1. Starting State (historical, before Phase 1)
 
 All public content is compiled into the bundle:
 
@@ -104,11 +104,12 @@ Per-route caching:
 
 | Route | Strategy |
 |---|---|
-| `/` | Static, tag `products` (latest-products feed) |
-| `/products` | Static shell; filtering is client-side over a prefetched list, tag `products` |
-| `/products/[slug]` | Static via `generateStaticParams`, tag `products` + `product:<slug>` |
-| `/sitemap.xml` | Dynamic, tag `products` |
-| `/about`, `/contact` | Static |
+| `/` | Static, tag `products` (latest-products feed), 1h safety revalidate |
+| `/products` | Dynamic (reads `searchParams`), data from the tagged `products` cache. Making it static with client-side filtering is possible later |
+| `/products/[slug]` | Static via `generateStaticParams`; unknown or new slugs render on first visit and are cached. Tags `products` + `product:<slug>` |
+| `/sitemap.xml` | `force-dynamic`, data from the tagged `products` cache |
+| `/about` | Static (nav and footer come from the root layout) |
+| `/contact` | Dynamic (reads `?product=`), machine list from the tagged cache |
 | `/admin/*` | `force-dynamic`, never cached, `noindex` |
 
 ## 4. Skeleton Loading, No Full Page Load
@@ -187,9 +188,10 @@ pages do not change behaviour until phase 4 flips the data source.
    static, so the loading states are verifiable in isolation.
 3. **Database (done).** Prisma schema, migration, seed script that imports the
    current `products.ts` verbatim. Repository layer in `src/lib/products.ts`
-   (plain functions; caching is decided in Phase 4). Not yet wired to pages.
-4. **Flip the data source.** Pages read from the repository. `data/products.ts`
-   is deleted. Verify prerendered output is byte-identical to today's.
+   (plain functions at the time; `unstable_cache` was added in Phase 4).
+4. **Flip the data source (done, not yet deployed).** Pages read from the
+   repository through `unstable_cache`. `data/products.ts` is gone; its rows live
+   in `prisma/seed-data.ts` (seed only). Verified the rendered output matches.
 5. **Media to Cloudinary.** Migration script, Cloudinary `next/image` loader,
    image URLs move to the database. `public/images` leaves the repo.
 6. **Auth + admin.** Auth.js owner login, middleware guard, product CRUD,
@@ -201,6 +203,43 @@ pages do not change behaviour until phase 4 flips the data source.
    - **8b, production (last).** Neon `DATABASE_URL` and auth env vars as Worker
      secrets, custom domain, Cloudinary image loader, and verify ISR and
      `revalidateTag` actually work in production. Needs Phases 3 to 7 first.
+
+## Resume Here (read this first in a new session)
+
+**State:** Phases 1, 2, 3, 4 and 8a are done and committed on
+`feature/dynamic-product-cms` (not pushed, not merged to `main`). Phase 4 is
+verified locally but **not deployed**: the live `workers.dev` site still runs the
+old static-data build and is not broken.
+
+**Before the next deploy:**
+1. Set the Worker secret from `.env.local` without printing it:
+   `grep '^DATABASE_URL=' .env.local | cut -d= -f2- | tr -d '"' | npx wrangler secret put DATABASE_URL`
+2. The user runs `! npm run deploy` (the assistant's own deploys are blocked by
+   the permission classifier).
+3. Re-check the live routes, and that unknown slugs and `/contact?product=` work.
+
+**Next phase: 5, media to Cloudinary.** Blocked on a Cloudinary account created
+with the company email, no card. Then: migration script, `next/image` loader,
+image URLs into the database, `public/images` leaves the repo.
+
+**Working rules that bit us (see Progress for detail):**
+- No payment method on any account. Free limits stop service, they never bill.
+- `next` is pinned to `16.3.8` and Prisma to `7.10.0`. Do not bump either without
+  testing under `npx opennextjs-cloudflare preview`.
+- Anything in `public/` is published. Keep source documents in `docs/source/`.
+- Before every preview, kill stale processes:
+  `pkill -9 -f opennextjs-cloudflare; pkill -9 -f wrangler; pkill -9 -f workerd`.
+  A stale one keeps answering on the port with the old build.
+- Preview logs are not in the terminal. Read them from
+  `http://localhost:8787/cdn-cgi/local/explorer/api/local/observability/query`
+  (POST `{"sql":"SELECT level, message FROM logs ..."}`).
+- Keep secrets out of chat and the repo. `.env.local` and `.dev.vars` are
+  git-ignored and mode 600. The Neon CLI is signed in on the dev machine.
+
+**Open decisions for the user:** soft 404 on unknown product slugs (drop
+`products/[slug]/loading.tsx`, or accept `noindex`); commit or ignore
+`.claude/skills/` and `skills-lock.json` (left untracked); account handover terms;
+`unstable_cache` is marked replaced by `use cache` in Next 16, revisit later.
 
 ## Progress
 
@@ -242,7 +281,7 @@ pages do not change behaviour until phase 4 flips the data source.
   `@prisma/adapter-neon`. `src/lib/products.ts` exports `getAllProducts`,
   `getPressModels`, `getProductBySlug`, `getRelatedProducts`,
   `getPublishedSlugs`, returning the existing `Product` shape, as plain async
-  functions with no caching yet (see Phase 4). `prisma/seed.ts` upserts from
+  functions with no caching at that point (added in Phase 4). `prisma/seed.ts` upserts from
   `PRODUCTS`, idempotent. Migration `init` applied; `migrate status` is up to
   date. Verified by reading all 5 products back through the repository and
   deep-comparing against `data/products.ts` (all match, same order). Lint and
@@ -269,8 +308,8 @@ pages do not change behaviour until phase 4 flips the data source.
   the client, 2FA and recovery codes are still to be settled in writing. The
   Cloudinary account is not confirmed created yet (needed for Phase 5).
 - **Cleanup done:** three owner `.docx` source files were publicly downloadable
-  from `public/`; moved to `docs/source/`; the redeploy that takes them offline is pending until
-  confirmed live (check they 404). Still in
+  from `public/`; moved to `docs/source/` and redeployed; all three now return 404 on the live
+  site (verified 2026-10-13). Still in
   `public/` and to review: `images/brochure/raw/` and the unused template SVGs
   (`next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg`). Phase 5
   removes `public/images` entirely.
@@ -282,17 +321,58 @@ pages do not change behaviour until phase 4 flips the data source.
   move to Neon Launch (billed to the client, needs a card) once live, for real
   backups. Neon CLI (`npx neon login`) is signed in on the dev machine; the
   connection strings were written to `.env.local` directly by the CLI.
-- **Next: Phase 4, flip the data source.** Open decisions to settle first:
-  - Caching: `cacheTag` only works inside `use cache`, which needs
-    `cacheComponents: true` in `next.config.ts`, a site-wide switch that changes
-    how every page renders. Alternative is `unstable_cache` with tags. Pick one,
-    then confirm it works on the Cloudflare adapter under `wrangler dev`.
-  - `/products` and `/contact` build as dynamic (`ƒ`). `/products` must come out
-    static, or visitors will hit Neon's cold start on every request.
-  - Move the `Product`, `SpecRow` etc. types out of `data/products.ts` before
-    deleting it. `CATEGORY_LABELS`, `PRESS_COMMON_STANDARDS` and `OUTPUT_FORMS`
-    are not catalog rows and stay as constants.
-  - Persist leads (Phase 7) wires into `contact/actions.ts`, not Phase 4.
+- **Phase 4 done (data source flipped, verified locally, NOT deployed).**
+  - *Caching:* `unstable_cache` (chosen over `use cache` to avoid the site-wide
+    `cacheComponents` switch; Next 16 marks it replaced, so revisit later). All
+    reads go through `src/lib/products.ts`: `getAllProducts` (tag `products`),
+    `getProductBySlug` (tags `products` + `product:<slug>`), and the rest derive
+    from `getAllProducts`. A 1-hour `revalidate` is the safety net if a
+    `revalidateTag` call is ever missed. Missing products are cached as `null`
+    (JSON has no `undefined`).
+  - *Types and content:* `Product` and friends plus `CATEGORY_LABELS` moved to
+    `src/lib/product-types.ts` (client-safe). `PRESS_COMMON_STANDARDS` and
+    `OUTPUT_FORMS` moved to `src/data/catalog-content.ts`.
+  - *Layout:* `Navbar` and `Footer` now live once in the root layout, fed by the
+    cached catalog, with a `.catch(() => [])` so a database failure degrades the
+    nav search instead of every page. Removed seven per-page copies and
+    `src/app/products/layout.tsx`. `error.tsx` is a client component and could
+    not call the database, so this also fixed it.
+  - *Routes:* `/products`, `/contact` and `/sitemap.xml` stay dynamic (they read
+    `searchParams` or must be fresh) but read the tagged cache, not Neon, except
+    on a cache miss. The sitemap is `force-dynamic`. `generateStaticParams` reads
+    published slugs, and `dynamicParams` stays on so a newly published machine
+    renders on first visit without a rebuild.
+  - *Server action:* the quote form validates the chosen machine against live
+    published slugs.
+  - *Verification:* lint and build clean. Rendered HTML of 11 routes compared
+    against the live static-data site: no content differences, only Suspense
+    comment markers, per-build form action keys, generated IDs and a meta tag
+    order swap. Also exercised under `opennextjs-cloudflare preview` against
+    Neon: every route 200, zero logged errors.
+  - *Prisma on Workers (found and fixed):* Workers forbid compiling WASM at
+    runtime, so the default client failed with `Wasm code generation disallowed
+    by embedder` (hidden by the retry wrapper, which then made every DB route
+    take about 6 seconds and fail). The schema now has `runtime = "workerd"` for
+    the app client, plus a second `nodeClient` generator (output
+    `src/generated/prisma-node`) because the seed runs in Node. `db.ts` now logs
+    each failed attempt so a real error is no longer masked as a cold start.
+    `next build` prints one non-fatal Turbopack file-pattern warning from its
+    WASM loader. Neon over the Worker websocket works with the current
+    connection strings, including `channel_binding=require`.
+  - *Needed before deploying:* the production Worker has no `DATABASE_URL`. It is
+    only needed on a cache miss, but without it a miss means an error. Set it
+    with `wrangler secret put DATABASE_URL` (pooled string), then
+    `npm run deploy`. `.dev.vars` holds it for local preview (git-ignored, mode
+    600). The build also reads `.env.local`, so a CI build would need it too.
+  - *Known, pre-existing:* an unknown product slug returns HTTP 200 with a "Page
+    Not Found" body and `noindex`, a soft 404. The old live site did the same.
+    Likely cause: `app/products/[slug]/loading.tsx` streams a skeleton before the
+    page can 404. Options: drop that `loading.tsx` (pages are cached, so it is
+    barely visible), or accept `noindex` as sufficient.
+- **Next: Phase 5, media to Cloudinary.** Needs a Cloudinary account first, created
+  with the company email, no card. Then: migration script, `next/image` loader,
+  image URLs into the database, and `public/images` leaves the repo. Persisting
+  leads (Phase 7) wires into `contact/actions.ts`, not here.
 
 ## 9. Open Questions
 
@@ -300,7 +380,6 @@ pages do not change behaviour until phase 4 flips the data source.
 - Owner's WhatsApp number for the public CTA.
 - Does the owner need multiple images per machine reorderable in the CMS, or is
   one primary image plus a gallery enough?
-- Confirm the `workers.dev` redeploy that removes the `.docx` files has run.
 - Account handover to the client: who owns them long term, when the developer
   steps back to collaborator, and who pays if Neon moves to the paid tier.
 - Confirm the registered `workers.dev` subdomain in the Cloudflare dashboard,

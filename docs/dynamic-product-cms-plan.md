@@ -233,8 +233,32 @@ image URLs into the database, `public/images` leaves the repo.
 - Preview logs are not in the terminal. Read them from
   `http://localhost:8787/cdn-cgi/local/explorer/api/local/observability/query`
   (POST `{"sql":"SELECT level, message FROM logs ..."}`).
+- If `npm run dev` returns 500 on every route with `Cannot find module
+  'picocolors'` from `globals.css`, the Turbopack cache is stale (it happens after
+  swapping versions or clients). `rm -rf .next` fixes it.
+- A fresh clone runs `npm ci` (its `postinstall` generates both Prisma clients)
+  and lints clean. `tsc` needs `npx next typegen` first, because `PageProps` and
+  `LayoutProps` are generated. `npm run build` reads the catalog, so it needs
+  `DATABASE_URL` in the environment (a CI build must provide it).
 - Keep secrets out of chat and the repo. `.env.local` and `.dev.vars` are
   git-ignored and mode 600. The Neon CLI is signed in on the dev machine.
+
+**Audit 2026-10-13 (everything in sync):** working tree clean apart from the two
+untracked tooling paths; no secrets tracked or exposed (`.env.local` and
+`.dev.vars` are mode 600 and git-ignored; `/.env`, `/.git/config`, `/package.json`
+and the `.docx` files all 404 on the live site); migration up to date; the 5
+database rows equal `prisma/seed-data.ts` field by field (0 leads, 0 redirects);
+lint, typecheck and the dev server pass; the live site returns 200 on every route.
+Known and accepted: `npm audit` reports 4 highs, all inside the `prisma` CLI's own
+tree (`@prisma/config` via `deepmerge-ts`, and a bundled `mysql2`), not in the
+Worker bundle and unused here; the only fix offered is a major Prisma upgrade, so
+leave it until Prisma 8 is stable.
+
+**Drift to resolve later:** `CLAUDE.md` says to use generated Prisma types, but
+`src/lib/product-types.ts` is hand-written (mapped in `src/lib/products.ts`).
+Phase 6 replaces it with Zod schemas whose inferred types the CMS form and the
+repository share. The sitemap and canonicals point at `https://harvinindustries.com`,
+which is not the live host yet (`workers.dev`); settle the domain before launch.
 
 **Open decisions for the user:** soft 404 on unknown product slugs (drop
 `products/[slug]/loading.tsx`, or accept `noindex`); commit or ignore

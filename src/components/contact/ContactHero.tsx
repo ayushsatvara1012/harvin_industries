@@ -1,6 +1,6 @@
 import { Icon, IsometricLines } from "@/components/ui";
 import { PHONE, PHONE_HREF, EMAIL, ADDRESS_LINES } from "@/data/contact";
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/product-types";
 import { ContactForm } from "./ContactForm";
 
 export function ContactHero({

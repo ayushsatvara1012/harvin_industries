@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button, Icon } from "@/components/ui";
-import { CATEGORY_LABELS, type Category } from "@/data/products";
+import { type Category, CATEGORY_LABELS } from "@/lib/product-types";
 import { BrandLogo } from "./BrandLogo";
 
 const CATEGORY_ORDER: Category[] = ["press", "batching_plant", "mixture"];

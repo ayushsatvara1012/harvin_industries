@@ -1,5 +1,5 @@
 import { Card, Icon } from "@/components/ui";
-import type { FeatureGroup } from "@/data/products";
+import type { FeatureGroup } from "@/lib/product-types";
 
 export function FeatureGroups({ groups }: { groups: FeatureGroup[] }) {
   return (

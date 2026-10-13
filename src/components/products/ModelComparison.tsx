@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Icon, SectionHeader } from "@/components/ui";
-import { getPressModels, type Product } from "@/data/products";
+import { type Product } from "@/lib/product-types";
+import { getPressModels } from "@/lib/products";
 
 function specValue(product: Product, label: string) {
   return product.specs?.find((spec) => spec.label === label)?.value ?? "—";
@@ -18,8 +19,8 @@ const ROWS: { label: string; value: (product: Product) => string }[] = [
 
 /* The first question a new visitor has is "which model do I need?". Answering
    it above the catalog grid saves them opening three detail pages to compare. */
-export function ModelComparison() {
-  const models = getPressModels();
+export async function ModelComparison() {
+  const models = await getPressModels();
   if (models.length === 0) return null;
 
   return (

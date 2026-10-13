@@ -8,7 +8,8 @@ import {
   ProductGridSkeleton,
   ModelComparison,
 } from "@/components/products";
-import { PRODUCTS, type Category, type Product } from "@/data/products";
+import { type Category, type Product } from "@/lib/product-types";
+import { getAllProducts } from "@/lib/products";
 import { SITE_NAME } from "@/lib/site";
 
 const title = "Products — Harvin Industries";
@@ -35,11 +36,11 @@ export const metadata: Metadata = {
   },
 };
 
-function filterProducts(searchParams: { q?: string; category?: string }) {
+function filterProducts(products: Product[], searchParams: { q?: string; category?: string }) {
   const q = searchParams.q?.trim().toLowerCase();
   const category = searchParams.category as Category | undefined;
 
-  return PRODUCTS.filter((product) => {
+  return products.filter((product) => {
     if (category && product.category !== category) return false;
     if (q) {
       // Output names come from the production table so a search for "paver"
@@ -86,7 +87,8 @@ export default async function ProductsPage(props: PageProps<"/products">) {
   const q = typeof searchParams.q === "string" ? searchParams.q : undefined;
   const category = typeof searchParams.category === "string" ? searchParams.category : undefined;
 
-  const results = filterProducts({ q, category });
+  const products = await getAllProducts();
+  const results = filterProducts(products, { q, category });
 
   return (
     <>
@@ -114,7 +116,7 @@ export default async function ProductsPage(props: PageProps<"/products">) {
           <div className="grid gap-10 lg:grid-cols-[260px_1fr]">
             <aside className="lg:sticky lg:top-24 lg:self-start">
               <Suspense fallback={<ProductFiltersSkeleton />}>
-                <ProductFilters products={PRODUCTS} />
+                <ProductFilters products={products} />
               </Suspense>
             </aside>
 

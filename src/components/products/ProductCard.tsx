@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
-import { CATEGORY_LABELS, type Product } from "@/data/products";
+import { type Product, CATEGORY_LABELS } from "@/lib/product-types";
 
 export function ProductCard({ product }: { product: Product }) {
   const image = product.images[0];

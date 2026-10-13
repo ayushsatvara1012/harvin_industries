@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { Navbar, Footer } from "@/components/layout";
 import { ContactHero, ContactMap } from "@/components/contact";
-import { getProductBySlug, PRODUCTS } from "@/data/products";
+import { getAllProducts, getProductBySlug } from "@/lib/products";
 import { ADDRESS_LINES, EMAIL, GSTIN, PHONE } from "@/data/contact";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -34,7 +33,10 @@ export default async function ContactPage(props: PageProps<"/contact">) {
   const slug = typeof searchParams.product === "string" ? searchParams.product : undefined;
   // Only prefill from a slug that actually resolves — a stale or hand-typed
   // `?product=` must not put an unknown value into the select.
-  const product = slug ? getProductBySlug(slug) : undefined;
+  const [products, product] = await Promise.all([
+    getAllProducts(),
+    slug ? getProductBySlug(slug) : Promise.resolve(undefined),
+  ]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -68,13 +70,11 @@ export default async function ContactPage(props: PageProps<"/contact">) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar products={PRODUCTS} />
       <main id="main" className="min-h-screen bg-brand-ink">
-        <ContactHero products={PRODUCTS} productName={product?.name} productSlug={product?.slug} />
+        <ContactHero products={products} productName={product?.name} productSlug={product?.slug} />
 
         <ContactMap />
       </main>
-      <Footer />
     </>
   );
 }

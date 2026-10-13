@@ -3,7 +3,7 @@
 import { useActionState, useId } from "react";
 import { useFormStatus } from "react-dom";
 import { Icon } from "@/components/ui";
-import { CATEGORY_LABELS, type Product } from "@/data/products";
+import { type Product, CATEGORY_LABELS } from "@/lib/product-types";
 import { OUTPUT_BANDS } from "@/data/contact";
 import { submitQuoteRequest } from "@/app/contact/actions";
 import { EMPTY_FORM_STATE } from "@/lib/quote-form";

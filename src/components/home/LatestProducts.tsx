@@ -1,10 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Icon, SectionHeader } from "@/components/ui";
-import { PRODUCTS, CATEGORY_LABELS, OUTPUT_FORMS } from "@/data/products";
+import { CATEGORY_LABELS } from "@/lib/product-types";
+import { OUTPUT_FORMS } from "@/data/catalog-content";
+import { getAllProducts } from "@/lib/products";
 import { COMPANY_STATS } from "@/data/company";
 
-export function LatestProducts() {
+export async function LatestProducts() {
+  const products = await getAllProducts();
+
   return (
     <section id="products" className="scroll-mt-20 pt-16 lg:pt-24 pb-0 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -36,7 +40,7 @@ export function LatestProducts() {
 
         {/* The five machines we actually build, each linking to its detail page */}
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-          {PRODUCTS.map((product) => (
+          {products.map((product) => (
             <Link
               key={product.slug}
               href={`/products/${product.slug}`}

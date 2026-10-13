@@ -1,10 +1,9 @@
 "use server";
 
-import { PRODUCTS } from "@/data/products";
+import { getPublishedSlugs } from "@/lib/products";
 import { OUTPUT_BANDS } from "@/data/contact";
 import type { QuoteFormState } from "@/lib/quote-form";
 
-const VALID_SLUGS = new Set(PRODUCTS.map((product) => product.slug));
 const VALID_BANDS = new Set(OUTPUT_BANDS);
 
 // Deliberately permissive: Indian mobile numbers get written with spaces, +91,
@@ -38,6 +37,7 @@ export async function submitQuoteRequest(
     message: readField(formData, "message"),
   };
 
+  const validSlugs = new Set(await getPublishedSlugs());
   const errors: Record<string, string> = {};
 
   if (values.name.length < 2) errors.name = "Please enter your name.";
@@ -45,7 +45,7 @@ export async function submitQuoteRequest(
   if (values.email && !EMAIL_PATTERN.test(values.email)) {
     errors.email = "That email address does not look right.";
   }
-  if (values.product && values.product !== "unsure" && !VALID_SLUGS.has(values.product)) {
+  if (values.product && values.product !== "unsure" && !validSlugs.has(values.product)) {
     errors.product = "Please choose a machine from the list.";
   }
   if (values.output && !VALID_BANDS.has(values.output)) {

@@ -1,52 +1,8 @@
-// Static catalog data, shaped to match the `Product` Prisma model in
-// docs/harvin-industries-plan.md so this swaps to a DB query later with no
-// component changes. Sourced from `Harvin_brochures/HARVIN BROUCHER.pdf`, with
-// specs and buyer-facing explanations corrected against the owner-supplied
-// machine-model and mixture-machine documents in `public/`.
-
-// The catalog lists machines only — bricks, pavers, and blocks are what the
-// machines produce, so they live in each machine's production table rather than
-// as products of their own.
-export type Category = "press" | "batching_plant" | "mixture";
-
-// `note` is the plain-language explanation of what the number means for a
-// buyer. Only rows that differ between models carry one — values shared across
-// the whole press range are explained once in `PRESS_COMMON_STANDARDS`.
-export type SpecRow = { label: string; value: string; note?: string };
-
-export type ProductionRow = {
-  product: string;
-  sizeMm: string;
-  pcsPerMould: number;
-  pcsPerHour: number;
-};
-
-export type FeatureGroup = { title: string; items: string[] };
-
-export type Product = {
-  slug: string;
-  name: string;
-  category: Category;
-  tagline: string;
-  description: string;
-  images: string[];
-  specs?: SpecRow[];
-  productionSummary?: SpecRow[];
-  productionTable?: ProductionRow[];
-  featureGroups?: FeatureGroup[];
-  additionalOutputs?: string[];
-  outputCapacity?: number;
-  power?: string;
-  dailyOutput?: string;
-  bestFor?: string;
-  featured?: boolean;
-};
-
-export const CATEGORY_LABELS: Record<Category, string> = {
-  press: "Press Machine",
-  batching_plant: "Batching Plant",
-  mixture: "Mixture Machine",
-};
+// Source rows for `prisma db seed`. The live catalog is the Neon database; the
+// site never imports this file. Sourced from `Harvin_brochures/HARVIN BROUCHER.pdf`,
+// with specs corrected against the owner-supplied machine-model and
+// mixture-machine documents in `docs/source/`.
+import type { Product } from "../src/lib/product-types";
 
 export const PRODUCTS: Product[] = [
   {
@@ -355,55 +311,3 @@ export const PRODUCTS: Product[] = [
     ],
   },
 ];
-
-// The three press models share identical pressing, compaction and cycle figures.
-// Stating them once here keeps the three detail pages from reading as copies of
-// each other — only the rows that actually differ carry a per-model note.
-export const PRESS_COMMON_STANDARDS: SpecRow[] = [
-  {
-    label: "Hydraulic Pressure",
-    value: "50 to 60 MT",
-    note: "Every Harvin press applies the same 50 to 60 metric tonnes of force inside the mould. That pressure is what gives a brick its compressive strength and uniform density to IS standards — so a brick off the HI-1500 is as strong as one off the HI-3000.",
-  },
-  {
-    label: "Vibration Force",
-    value: "60 KN",
-    note: "The vibro-compaction system is identical across the range. While the hydraulics compress from above, 60 kilonewtons of vibration fills every corner of the mould, drives out air pockets and leaves the brick solid and smooth throughout.",
-  },
-  {
-    label: "Cycle Time",
-    value: "15 to 20 Seconds",
-    note: "One full cycle — fill, press, release — takes 15 to 20 seconds on all three models. Choosing a smaller machine costs you bricks per stroke, never speed.",
-  },
-];
-
-// The nine forms every Harvin press can produce. Sizes come from the machine
-// production tables above; the four optional-mould forms have no fixed size.
-export type OutputForm = { name: string; icon: string; detail: string; image: string };
-
-export const OUTPUT_FORMS: OutputForm[] = [
-  { name: "Fly Ash Brick", icon: "view_module", detail: "230 × 110 × 75 mm", image: "/images/forms/fly-ash-brick.png" },
-  { name: "Solid Brick", icon: "rectangle", detail: "300 × 200 × 200 mm", image: "/images/forms/solid-brick.png" },
-  { name: "Hollow Block", icon: "grid_view", detail: "390 × 190 × 190 mm", image: "/images/forms/hollow-block.png" },
-  { name: "I-Shape Paver", icon: "extension", detail: "200 × 165 × 60 mm", image: "/images/forms/i-shape-paver.png" },
-  { name: "Zig Zag Paver", icon: "stairs", detail: "225 × 112.5 × 80 mm", image: "/images/forms/zig-zag-paver.png" },
-  { name: "Retention Block", icon: "fence", detail: "Optional mould", image: "/images/forms/retention-block.png" },
-  { name: "Curb Block", icon: "road", detail: "Optional mould", image: "/images/forms/curb-block.png" },
-  { name: "Curb Stone", icon: "straighten", detail: "Optional mould", image: "/images/forms/curb-stone.png" },
-  { name: "Drain Block", icon: "water_drop", detail: "Optional mould", image: "/images/forms/drain-block.png" },
-];
-
-export function getPressModels(): Product[] {
-  return PRODUCTS.filter((product) => product.category === "press");
-}
-
-export function getProductBySlug(slug: string): Product | undefined {
-  return PRODUCTS.find((product) => product.slug === slug);
-}
-
-export function getRelatedProducts(product: Product, limit = 3): Product[] {
-  return PRODUCTS.filter(
-    (candidate) =>
-      candidate.slug !== product.slug && candidate.category === product.category,
-  ).slice(0, limit);
-}

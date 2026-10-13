@@ -1,13 +1,21 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
 import type { Product as ProductRow } from "@/generated/prisma/client";
 import type {
+  Category,
   FeatureGroup,
   Product,
   ProductionRow,
   SpecRow,
-} from "@/data/products";
+} from "@/lib/product-types";
 import { db, withWakeRetry } from "@/lib/db";
+
+export const PRODUCTS_TAG = "products";
+export const productTag = (slug: string) => `product:${slug}`;
+
+// Safety net if a revalidateTag call is ever missed: the cache refreshes hourly.
+const REVALIDATE_SECONDS = 3600;
 
 function toProduct(row: ProductRow): Product {
   return {
@@ -33,44 +41,49 @@ function toProduct(row: ProductRow): Product {
 const PUBLISHED = { status: "published" } as const;
 const CATALOG_ORDER = [{ sortOrder: "asc" }, { id: "asc" }] as const;
 
-export async function getAllProducts(): Promise<Product[]> {
-  const rows = await withWakeRetry(() =>
-    db.product.findMany({ where: PUBLISHED, orderBy: [...CATALOG_ORDER] }),
-  );
-  return rows.map(toProduct);
-}
+export const getAllProducts = unstable_cache(
+  async (): Promise<Product[]> => {
+    const rows = await withWakeRetry(() =>
+      db.product.findMany({ where: PUBLISHED, orderBy: [...CATALOG_ORDER] }),
+    );
+    return rows.map(toProduct);
+  },
+  ["products:all"],
+  { tags: [PRODUCTS_TAG], revalidate: REVALIDATE_SECONDS },
+);
 
 export async function getPressModels(): Promise<Product[]> {
-  const rows = await withWakeRetry(() =>
-    db.product.findMany({
-      where: { ...PUBLISHED, category: "press" },
-      orderBy: [...CATALOG_ORDER],
-    }),
-  );
-  return rows.map(toProduct);
+  const all = await getAllProducts();
+  return all.filter((product) => product.category === "press");
 }
 
+// The cache serialises to JSON, which has no `undefined`, so a missing product is
+// cached as null and mapped back here.
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
-  const row = await withWakeRetry(() =>
-    db.product.findFirst({ where: { ...PUBLISHED, slug } }),
-  );
-  return row ? toProduct(row) : undefined;
+  const product = await unstable_cache(
+    async () => {
+      const row = await withWakeRetry(() =>
+        db.product.findFirst({ where: { ...PUBLISHED, slug } }),
+      );
+      return row ? toProduct(row) : null;
+    },
+    ["products:by-slug", slug],
+    { tags: [PRODUCTS_TAG, productTag(slug)], revalidate: REVALIDATE_SECONDS },
+  )();
+  return product ?? undefined;
 }
 
-export async function getRelatedProducts(product: Product, limit = 3): Promise<Product[]> {
-  const rows = await withWakeRetry(() =>
-    db.product.findMany({
-      where: { ...PUBLISHED, category: product.category, slug: { not: product.slug } },
-      orderBy: [...CATALOG_ORDER],
-      take: limit,
-    }),
-  );
-  return rows.map(toProduct);
+export async function getRelatedProducts(
+  product: { slug: string; category: Category },
+  limit = 3,
+): Promise<Product[]> {
+  const all = await getAllProducts();
+  return all
+    .filter((candidate) => candidate.slug !== product.slug && candidate.category === product.category)
+    .slice(0, limit);
 }
 
 export async function getPublishedSlugs(): Promise<string[]> {
-  const rows = await withWakeRetry(() =>
-    db.product.findMany({ where: PUBLISHED, select: { slug: true } }),
-  );
-  return rows.map((row) => row.slug);
+  const all = await getAllProducts();
+  return all.map((product) => product.slug);
 }

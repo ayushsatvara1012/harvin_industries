@@ -1,5 +1,5 @@
 import { Card, Icon } from "@/components/ui";
-import type { SpecRow } from "@/data/products";
+import type { SpecRow } from "@/lib/product-types";
 
 /* Rows carrying a `note` expand to a plain-language explanation of what the
    number means for a buyer. Uses native <details> so the table stays dense and

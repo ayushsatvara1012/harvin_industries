@@ -1,4 +1,3 @@
-import { Navbar, Footer } from "@/components/layout";
 import {
   Hero,
   AboutSnippet,
@@ -8,12 +7,10 @@ import {
   IndustriesSection,
   CtaBanner,
 } from "@/components/home";
-import { PRODUCTS } from "@/data/products";
 
 export default function Home() {
   return (
     <>
-      <Navbar products={PRODUCTS} />
       <main id="main" className="min-h-screen">
         {/* 1. Hero Section */}
         <Hero />
@@ -36,7 +33,6 @@ export default function Home() {
         {/* 7. Let's Build Together CTA Banner */}
         <CtaBanner />
       </main>
-      <Footer />
     </>
   );
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Forum, Oswald } from "next/font/google";
+import { Navbar, Footer } from "@/components/layout";
+import { getAllProducts } from "@/lib/products";
 import { OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -67,7 +69,11 @@ const organizationJsonLd = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // The shell must still render if the catalog cannot load, so a database outage
+  // degrades the nav search instead of taking every page down.
+  const products = await getAllProducts().catch(() => []);
+
   return (
     <html
       lang="en"
@@ -91,7 +97,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
+        <Navbar products={products} />
         {children}
+        <Footer />
       </body>
     </html>
   );

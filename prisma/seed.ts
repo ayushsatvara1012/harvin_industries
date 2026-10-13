@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient, Prisma } from "../src/generated/prisma/client";
-import { PRODUCTS } from "../src/data/products";
+import { PRODUCTS } from "./seed-data";
 
 config({ path: ".env.local" });
 

@@ -10,23 +10,19 @@ import {
   SpecTable,
   PressStandards,
 } from "@/components/products";
-import {
-  CATEGORY_LABELS,
-  PRODUCTS,
-  getProductBySlug,
-  getRelatedProducts,
-} from "@/data/products";
+import { CATEGORY_LABELS } from "@/lib/product-types";
+import { getProductBySlug, getPublishedSlugs, getRelatedProducts } from "@/lib/products";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
-export function generateStaticParams() {
-  return PRODUCTS.map((product) => ({ slug: product.slug }));
+export async function generateStaticParams() {
+  return (await getPublishedSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata(
   props: PageProps<"/products/[slug]">,
 ): Promise<Metadata> {
   const { slug } = await props.params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return {};
   const title = `${product.name} — Harvin Industries`;
   const url = `/products/${product.slug}`;
@@ -55,10 +51,10 @@ export async function generateMetadata(
 
 export default async function ProductDetailPage(props: PageProps<"/products/[slug]">) {
   const { slug } = await props.params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const related = getRelatedProducts(product);
+  const related = await getRelatedProducts(product);
   const quoteHref = `/contact?product=${product.slug}`;
 
   const productJsonLd = {

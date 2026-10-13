@@ -1,5 +1,5 @@
 import { SectionHeader } from "@/components/ui";
-import { PRESS_COMMON_STANDARDS } from "@/data/products";
+import { PRESS_COMMON_STANDARDS } from "@/data/catalog-content";
 
 /* The three figures that are identical on every Harvin press. Stated once,
    here, so the HI-1500 / HI-2000 / HI-3000 pages don't repeat each other —

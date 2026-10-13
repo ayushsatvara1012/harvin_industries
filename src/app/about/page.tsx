@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { Navbar, Footer } from "@/components/layout";
 import { AboutHero, VisionMission, KeyFactors, FounderMessage } from "@/components/about";
 import { COMPANY_INTRO } from "@/data/company";
-import { PRODUCTS } from "@/data/products";
 import { SITE_NAME, SITE_URL, OG_IMAGE } from "@/lib/site";
 
 const title = "About Us — Harvin Industries";
@@ -56,7 +54,6 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
-      <Navbar products={PRODUCTS} />
       <main id="main" className="min-h-screen bg-white">
         {/* Who we are, and the certification — the two things a first-time
             visitor checks before anything else. */}
@@ -72,7 +69,6 @@ export default function AboutPage() {
             not before. */}
         <FounderMessage />
       </main>
-      <Footer />
     </>
   );
 }

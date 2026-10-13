@@ -1,4 +1,4 @@
-import type { ProductionRow, SpecRow } from "@/data/products";
+import type { ProductionRow, SpecRow } from "@/lib/product-types";
 
 export function ProductionTable({
   summary,

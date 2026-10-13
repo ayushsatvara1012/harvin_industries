@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
-import { CATEGORY_LABELS, type Category, type Product } from "@/data/products";
+import { type Category, type Product, CATEGORY_LABELS } from "@/lib/product-types";
 
 export function ProductFilters({ products }: { products: Product[] }) {
   const router = useRouter();

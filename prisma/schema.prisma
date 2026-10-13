@@ -1,6 +1,15 @@
+// The app runs on Cloudflare Workers, which cannot compile WASM at runtime, so it
+// needs the precompiled workerd build.
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
+  runtime  = "workerd"
+}
+
+// Scripts (seed) run in Node, where the workerd build cannot load.
+generator nodeClient {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma-node"
 }
 
 datasource db {

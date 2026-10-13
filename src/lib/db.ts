@@ -24,6 +24,7 @@ export async function withWakeRetry<T>(run: () => Promise<T>, attempts = 4): Pro
       return await run();
     } catch (error) {
       lastError = error;
+      console.error(`[db] query failed (attempt ${attempt + 1}/${attempts})`, error);
       await new Promise((resolve) => setTimeout(resolve, 400 * 2 ** attempt));
     }
   }

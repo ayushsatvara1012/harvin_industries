@@ -185,9 +185,9 @@ pages do not change behaviour until phase 4 flips the data source.
    *This is the prerequisite for everything else.*
 2. **Skeletons.** Add `loading.tsx` and Suspense boundaries while data is still
    static, so the loading states are verifiable in isolation.
-3. **Database.** Prisma schema, migration, seed script that imports the current
-   `products.ts` verbatim. Repository layer in `src/lib/products.ts` with
-   `cacheTag`. Not yet wired to pages.
+3. **Database (done).** Prisma schema, migration, seed script that imports the
+   current `products.ts` verbatim. Repository layer in `src/lib/products.ts`
+   (plain functions; caching is decided in Phase 4). Not yet wired to pages.
 4. **Flip the data source.** Pages read from the repository. `data/products.ts`
    is deleted. Verify prerendered output is byte-identical to today's.
 5. **Media to Cloudinary.** Migration script, Cloudinary `next/image` loader,
@@ -230,23 +230,25 @@ pages do not change behaviour until phase 4 flips the data source.
   the real per-navigation server round trip now; `/products/[slug]` stays SSG,
   so its `loading.tsx` is inert until Phase 3/4. `npm run build` and
   `npm run lint` clean; route static/dynamic split unchanged.
-- **Phase 3 planned, not started.** Reviewed `data/products.ts` against the
-  schema sketch in the main plan doc (`harvin-industries-plan.md` §3) and
-  decided the main plan's `Product` model (type: machine|output_item,
-  material, price) is stale — it predates the machines-only catalog decision.
-  The actual Phase 3 schema will mirror the current TS `Product` type field
-  for field, plus `status` (draft|published) and `sortOrder` for CMS use, a
-  `Lead` model for contact/quote submissions (currently `console.info`'d and
-  lost), and a `Redirect` model (`from`→`to`) for slug-rename 301s. Full field
-  list for each is recorded in this session's log — re-derive from
-  `src/data/products.ts` plus §5 of this doc if needed rather than guessing.
-  Deps to add: `prisma`, `@prisma/client`, `@prisma/adapter-neon`,
-  `@neondatabase/serverless`. New files only — `schema.prisma`, `src/lib/db.ts`
-  (Prisma client singleton over the Neon adapter), `src/lib/products.ts`
-  (repository functions, `cacheTag('products')`, same signatures as today's
-  `data/products.ts` helpers so Phase 4 is a drop-in swap), `prisma/seed.ts`
-  (imports `PRODUCTS` verbatim). No existing page/component touched; build/lint
-  and live site behavior unaffected until Phase 4.
+- **Phase 3 done (database, not yet wired to pages).** Schema in
+  `prisma/schema.prisma`: `Product` mirrors the TS type field for field plus
+  `status` (draft|published), `sortOrder`; `Redirect` (`fromSlug`→`toSlug`) for
+  slug-rename 301s; `Lead` holds the contact form's eight fields plus `handled`.
+  The main plan's `Product` model (machine|output_item, material, price) is
+  stale and was not used. Prisma is pinned to exactly `7.10.0` (npm had pulled a
+  v8 release candidate for the CLI); client generated to `src/generated/prisma`
+  (git-ignored, ESLint-ignored). `prisma.config.ts` reads `.env.local` and uses
+  `DIRECT_URL` for migrations; `db.ts` uses the pooled `DATABASE_URL` through
+  `@prisma/adapter-neon`. `src/lib/products.ts` exports `getAllProducts`,
+  `getPressModels`, `getProductBySlug`, `getRelatedProducts`,
+  `getPublishedSlugs`, returning the existing `Product` shape, as plain async
+  functions with no caching yet (see Phase 4). `prisma/seed.ts` upserts from
+  `PRODUCTS`, idempotent. Migration `init` applied; `migrate status` is up to
+  date. Verified by reading all 5 products back through the repository and
+  deep-comparing against `data/products.ts` (all match, same order). Lint and
+  build clean, route split unchanged. `.env.example` added and un-ignored
+  (`.env*` was swallowing it). Not yet tested: `channel_binding=require` in the
+  connection strings from inside a Cloudflare Worker (Phase 8b).
 - **Phase 8a done (Cloudflare deploy spike, merged into this branch).**
   `@opennextjs/cloudflare` 1.20.10 + `wrangler` added; `open-next.config.ts`
   uses `kvIncrementalCache` + `d1NextTagCache`; `wrangler.jsonc` binds
@@ -262,32 +264,35 @@ pages do not change behaviour until phase 4 flips the data source.
   `wrangler kv namespace create` / `wrangler d1 create` and their IDs are in
   `wrangler.jsonc` (identifiers, not secrets). ESLint now ignores
   `.open-next/**` and `.wrangler/**`.
-- **Accounts:** Cloudflare is created, owned by the developer under the
-  company's main email (kept out of the repo), no card on file. Handover to the
-  client, 2FA and recovery codes are still to be settled in writing. Neon and
-  Cloudinary accounts are not confirmed created yet.
+- **Accounts:** Cloudflare and Neon are created, owned by the developer under
+  the company's main email (kept out of the repo), no card on either. Handover to
+  the client, 2FA and recovery codes are still to be settled in writing. The
+  Cloudinary account is not confirmed created yet (needed for Phase 5).
 - **Cleanup done:** three owner `.docx` source files were publicly downloadable
-  from `public/`; moved to `docs/source/`; the redeploy that takes them offline is pending until confirmed live (check they 404). Still in
+  from `public/`; moved to `docs/source/`; the redeploy that takes them offline is pending until
+  confirmed live (check they 404). Still in
   `public/` and to review: `images/brochure/raw/` and the unused template SVGs
   (`next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg`). Phase 5
   removes `public/images` entirely.
-- **Blocked on:** a Neon connection string. Decided the DB must live under a
-  Neon **Organization** scoped to this client, not the developer's personal
-  Neon account — either the client's own org (developer added as
-  collaborator) or a developer-controlled-but-client-labeled account/org,
-  clearly documented as belonging to Harvin Industries' infra, never the
-  developer's personal daily-driver login. Free tier is fine to start
-  (auto-wakes on query, no manual resume, no data deletion — ruled safer than
-  Supabase's 7-day manual-resume pause and Render's 30-day free-tier deletion
-  for this unattended-admin-panel use case); plan to move to Neon Launch
-  (paid, billed to the client) once the site is actually live, for real
-  backups/PITR.
-- **Next session:** once `DATABASE_URL` and `DIRECT_URL` are in `.env.local`
-  (and named in `.env.example`), write
-  `schema.prisma` + `src/lib/db.ts` + `src/lib/products.ts` + `prisma/seed.ts`,
-  run `prisma migrate dev`, verify seed matches `data/products.ts` output
-  exactly, confirm `npm run build`/`npm run lint` still clean. Still not wired
-  to pages (that's Phase 4).
+- **Neon resolved.** Org `Harvin Industries` (Free plan, no card) on the company
+  account holds project `Harvin_Industry_Project` in Singapore
+  (`aws-ap-southeast-1`), chosen for latency to Indian visitors. Free tier
+  scales to zero when idle (first query after idle is slower, handled by
+  `withWakeRetry`; public pages are cached so visitors do not hit it). Plan to
+  move to Neon Launch (billed to the client, needs a card) once live, for real
+  backups. Neon CLI (`npx neon login`) is signed in on the dev machine; the
+  connection strings were written to `.env.local` directly by the CLI.
+- **Next: Phase 4, flip the data source.** Open decisions to settle first:
+  - Caching: `cacheTag` only works inside `use cache`, which needs
+    `cacheComponents: true` in `next.config.ts`, a site-wide switch that changes
+    how every page renders. Alternative is `unstable_cache` with tags. Pick one,
+    then confirm it works on the Cloudflare adapter under `wrangler dev`.
+  - `/products` and `/contact` build as dynamic (`ƒ`). `/products` must come out
+    static, or visitors will hit Neon's cold start on every request.
+  - Move the `Product`, `SpecRow` etc. types out of `data/products.ts` before
+    deleting it. `CATEGORY_LABELS`, `PRESS_COMMON_STANDARDS` and `OUTPUT_FORMS`
+    are not catalog rows and stay as constants.
+  - Persist leads (Phase 7) wires into `contact/actions.ts`, not Phase 4.
 
 ## 9. Open Questions
 
@@ -295,10 +300,7 @@ pages do not change behaviour until phase 4 flips the data source.
 - Owner's WhatsApp number for the public CTA.
 - Does the owner need multiple images per machine reorderable in the CMS, or is
   one primary image plus a gallery enough?
-- Neon connection strings — both the pooled `DATABASE_URL` and the direct
-  `DIRECT_URL` (migrations fail over the pooler). Pending account/org setup,
-  see Progress above. Neon Organizations may need a paid plan; verify before
-  relying on one, and keep the no-card constraint in mind.
+- Confirm the `workers.dev` redeploy that removes the `.docx` files has run.
 - Account handover to the client: who owns them long term, when the developer
   steps back to collaborator, and who pays if Neon moves to the paid tier.
 - Confirm the registered `workers.dev` subdomain in the Cloudflare dashboard,

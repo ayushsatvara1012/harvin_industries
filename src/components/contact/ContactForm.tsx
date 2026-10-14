@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useId } from "react";
+import Link from "next/link";
 import { useFormStatus } from "react-dom";
 import { Icon } from "@/components/ui";
 import { type Product, CATEGORY_LABELS } from "@/lib/product-types";
@@ -248,6 +249,13 @@ export function ContactForm({
           We reply within one working day.
         </p>
       </div>
+      <p className="text-xs leading-relaxed text-gray-400">
+        By submitting this form you agree to our{" "}
+        <Link href="/privacy" className="font-semibold text-gray-200 underline underline-offset-2 hover:text-white">
+          Privacy Policy
+        </Link>
+        .
+      </p>
     </form>
   );
 }

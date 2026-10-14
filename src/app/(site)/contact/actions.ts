@@ -37,7 +37,16 @@ export async function submitQuoteRequest(
     message: readField(formData, "message"),
   };
 
-  const validSlugs = new Set(await getPublishedSlugs());
+  // A catalog outage must not block an enquiry, so fall back to checking the
+  // slug's shape and keep the real lookup for when the database is reachable.
+  let validSlugs: Set<string> | null = null;
+  try {
+    validSlugs = new Set(await getPublishedSlugs());
+  } catch (error) {
+    console.error("[contact] could not load the catalog to validate the product", error);
+  }
+  const knownProduct = (slug: string) =>
+    validSlugs ? validSlugs.has(slug) : /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug) && slug.length <= 60;
   const errors: Record<string, string> = {};
 
   if (values.name.length < 2) errors.name = "Please enter your name.";
@@ -45,7 +54,7 @@ export async function submitQuoteRequest(
   if (values.email && !EMAIL_PATTERN.test(values.email)) {
     errors.email = "That email address does not look right.";
   }
-  if (values.product && values.product !== "unsure" && !validSlugs.has(values.product)) {
+  if (values.product && values.product !== "unsure" && !knownProduct(values.product)) {
     errors.product = "Please choose a machine from the list.";
   }
   if (values.output && !VALID_BANDS.has(values.output)) {

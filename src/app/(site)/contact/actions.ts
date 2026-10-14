@@ -1,6 +1,7 @@
 "use server";
 
 import { getPublishedSlugs } from "@/lib/products";
+import { isValidSlug } from "@/lib/product-schema";
 import { OUTPUT_BANDS } from "@/data/contact";
 import type { QuoteFormState } from "@/lib/quote-form";
 
@@ -46,7 +47,7 @@ export async function submitQuoteRequest(
     console.error("[contact] could not load the catalog to validate the product", error);
   }
   const knownProduct = (slug: string) =>
-    validSlugs ? validSlugs.has(slug) : /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug) && slug.length <= 60;
+    validSlugs ? validSlugs.has(slug) : isValidSlug(slug);
   const errors: Record<string, string> = {};
 
   if (values.name.length < 2) errors.name = "Please enter your name.";

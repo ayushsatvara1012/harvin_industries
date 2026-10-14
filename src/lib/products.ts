@@ -12,6 +12,7 @@ import type {
   SpecRow,
 } from "@/lib/product-types";
 import { withWakeRetry } from "@/lib/db";
+import { isValidSlug } from "@/lib/product-schema";
 
 export const PRODUCTS_TAG = "products";
 export const productTag = (slug: string) => `product:${slug}`;
@@ -65,7 +66,15 @@ export async function getPressModels(): Promise<Product[]> {
 
 // The cache serialises to JSON, which has no `undefined`, so a missing product is
 // cached as null and mapped back here.
-export const getProductBySlug = cache(async (slug: string): Promise<Product | undefined> => {
+export const getProductBySlug = cache(async (requestedSlug: string): Promise<Product | undefined> => {
+  // Next serves /products/HI-1500 from the same cached entry as /products/hi-1500.
+  // If the uppercase spelling 404ed, that 404 would be cached for the real URL, so
+  // both spellings must resolve to the same product.
+  const slug = requestedSlug.toLowerCase();
+  // Reject anything that cannot be a slug before it reaches the database or the
+  // cache: Postgres refuses NUL bytes, and every distinct value would otherwise
+  // become a cache entry.
+  if (!isValidSlug(slug)) return undefined;
   const product = await unstable_cache(
     async () => {
       const row = await withWakeRetry((db) =>

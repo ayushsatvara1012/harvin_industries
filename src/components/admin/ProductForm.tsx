@@ -11,6 +11,7 @@ import {
   EMPTY_PRODUCTION_ROW,
   EMPTY_SPEC_ROW,
   type ProductFormValues,
+  describeIssuePath,
   slugify,
   toPayload,
 } from "@/lib/product-form";
@@ -73,7 +74,7 @@ export function ProductForm({ id, initial }: { id: number | null; initial: Produ
             <ul className="mt-2 list-disc pl-5">
               {Object.entries(issues).map(([path, text]) => (
                 <li key={path}>
-                  <span className="font-mono text-xs">{path}</span>: {text}
+                  <strong>{describeIssuePath(path)}</strong>: {text}
                 </li>
               ))}
             </ul>
@@ -146,6 +147,11 @@ export function ProductForm({ id, initial }: { id: number | null; initial: Produ
           defaultAlt={values.name}
           errorFor={(index) => error(`images.${index}.alt`)}
         />
+        {error("images") && (
+          <p role="alert" className="text-sm font-medium text-red-700">
+            {error("images")}
+          </p>
+        )}
       </Section>
 
       <Section title="Headline figures" description="Optional. Shown on cards and the product page.">

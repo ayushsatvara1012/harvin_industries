@@ -29,10 +29,17 @@ export async function hashPassword(password: string): Promise<string> {
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
   const [scheme, iterations, salt, hash] = stored.split(".");
   if (scheme !== "pbkdf2" || !iterations || !salt || !hash) return false;
-  const expected = fromBase64Url(hash);
-  const actual = await derive(password, fromBase64Url(salt), Number(iterations));
-  if (actual.length !== expected.length) return false;
-  let diff = 0;
-  for (let i = 0; i < actual.length; i++) diff |= actual[i] ^ expected[i];
-  return diff === 0;
+  const rounds = Number(iterations);
+  if (!Number.isInteger(rounds) || rounds < 1 || rounds > ITERATIONS) return false;
+  try {
+    const expected = fromBase64Url(hash);
+    const actual = await derive(password, fromBase64Url(salt), rounds);
+    if (actual.length !== expected.length) return false;
+    let diff = 0;
+    for (let i = 0; i < actual.length; i++) diff |= actual[i] ^ expected[i];
+    return diff === 0;
+  } catch {
+    // A malformed stored hash is a setup mistake; it must read as "wrong password", not a crash.
+    return false;
+  }
 }

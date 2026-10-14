@@ -146,3 +146,46 @@ export function slugify(name: string): string {
     .replace(/^-+|-+$/g, "")
     .slice(0, 60);
 }
+
+const FIELD_LABELS: Record<string, string> = {
+  slug: "URL slug",
+  name: "Name",
+  category: "Category",
+  tagline: "Tagline",
+  description: "Description",
+  images: "Images",
+  outputCapacity: "Output capacity",
+  power: "Power",
+  dailyOutput: "Daily output",
+  bestFor: "Best for",
+  additionalOutputs: "Additional outputs",
+  sortOrder: "Display order",
+  status: "Status",
+  specs: "Specifications",
+  productionSummary: "Production summary",
+  productionTable: "Production table",
+  featureGroups: "Features",
+};
+
+const SUBFIELD_LABELS: Record<string, string> = {
+  label: "Label",
+  value: "Value",
+  note: "Note",
+  product: "Product",
+  sizeMm: "Size",
+  pcsPerMould: "Pieces per mould",
+  pcsPerHour: "Pieces per hour",
+  title: "Title",
+  items: "Items",
+  alt: "Alt text",
+  publicId: "Image",
+};
+
+// "specs.0.value" -> "Specifications, row 1, Value", so errors read like the form does.
+export function describeIssuePath(path: string): string {
+  const [head, index, sub] = path.split(".");
+  const label = FIELD_LABELS[head] ?? head;
+  if (index === undefined) return label;
+  const row = `${label}, row ${Number(index) + 1}`;
+  return sub ? `${row}, ${SUBFIELD_LABELS[sub] ?? sub}` : row;
+}

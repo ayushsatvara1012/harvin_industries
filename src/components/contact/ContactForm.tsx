@@ -162,6 +162,7 @@ export function ContactForm({
               name="product"
               defaultValue={values.product || selectedProduct || ""}
               aria-describedby={describedBy}
+              aria-invalid={Boolean(errors.product)}
               className={`${FIELD_CLASSES} [&>option]:bg-brand-ink [&>option]:text-white`}
             >
               <option value="">Select a machine</option>
@@ -182,6 +183,7 @@ export function ContactForm({
               name="output"
               defaultValue={values.output}
               aria-describedby={describedBy}
+              aria-invalid={Boolean(errors.output)}
               className={`${FIELD_CLASSES} [&>option]:bg-brand-ink [&>option]:text-white`}
             >
               <option value="">Select a volume</option>
@@ -219,6 +221,7 @@ export function ContactForm({
                 maxLength={2000}
                 defaultValue={values.message}
                 aria-describedby={describedBy}
+                aria-invalid={Boolean(errors.message)}
                 placeholder="Please enter your message, shed size, or power details..."
                 className={`${FIELD_CLASSES} resize-y`}
               />

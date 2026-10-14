@@ -18,7 +18,9 @@ type Signature = {
 };
 
 async function uploadToCloudinary(file: File): Promise<string> {
-  const signed = await fetch("/api/admin/cloudinary-sign", { method: "POST" });
+  const signed = await fetch("/api/admin/cloudinary-sign", { method: "POST" }).catch(() => {
+    throw new Error("Could not reach the server. Check your connection and try again.");
+  });
   if (!signed.ok) throw new Error("Could not start the upload. Please sign in again.");
   const sig: Signature = await signed.json();
 
@@ -33,9 +35,15 @@ async function uploadToCloudinary(file: File): Promise<string> {
   const response = await fetch(`https://api.cloudinary.com/v1_1/${sig.cloudName}/image/upload`, {
     method: "POST",
     body: form,
+  }).catch(() => {
+    throw new Error("Could not reach the image service. Check your connection and try again.");
   });
-  const body = await response.json();
-  if (!response.ok) throw new Error(body.error?.message ?? "Upload failed");
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    console.error("[upload] Cloudinary refused the file:", body.error?.message);
+    const refused = /not allowed|invalid|format|corrupt/i.test(body.error?.message ?? "");
+    throw new Error(refused ? "That file is not a valid JPG, PNG or WebP image." : "The upload failed. Please try again.");
+  }
   return body.public_id as string;
 }
 

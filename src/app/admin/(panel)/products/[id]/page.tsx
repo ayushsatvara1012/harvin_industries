@@ -8,8 +8,9 @@ export const metadata: Metadata = { title: "Edit product" };
 
 export default async function EditProductPage(props: PageProps<"/admin/products/[id]">) {
   const { id } = await props.params;
+  // Digits only and small enough for a Postgres integer, or the query itself throws.
+  if (!/^\d{1,9}$/.test(id)) notFound();
   const numericId = Number(id);
-  if (!Number.isInteger(numericId)) notFound();
 
   const product = await getAdminProduct(numericId);
   if (!product) notFound();

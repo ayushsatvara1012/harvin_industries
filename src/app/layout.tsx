@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Forum, Oswald } from "next/font/google";
+import { toJsonLd } from "@/lib/json-ld";
 import { OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -81,7 +82,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(organizationJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col font-sans">

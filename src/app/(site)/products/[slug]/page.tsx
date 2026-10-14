@@ -13,6 +13,7 @@ import {
 import { CATEGORY_LABELS } from "@/lib/product-types";
 import { getProductBySlug, getPublishedSlugs, getRelatedProducts } from "@/lib/products";
 import { cloudinaryUrl } from "@/lib/cloudinary";
+import { toJsonLd } from "@/lib/json-ld";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
@@ -81,11 +82,11 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(productJsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(breadcrumbJsonLd) }}
       />
       <main id="main" className="min-h-screen bg-white">
         <section className="bg-white">

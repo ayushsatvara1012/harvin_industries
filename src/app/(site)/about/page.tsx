@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AboutHero, VisionMission, KeyFactors, FounderMessage } from "@/components/about";
 import { COMPANY_INTRO } from "@/data/company";
+import { toJsonLd } from "@/lib/json-ld";
 import { SITE_NAME, SITE_URL, OG_IMAGE } from "@/lib/site";
 
 const title = "About Us — Harvin Industries";
@@ -52,7 +53,7 @@ export default function AboutPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(organizationJsonLd) }}
       />
       <main id="main" className="min-h-screen bg-white">
         {/* Who we are, and the certification — the two things a first-time

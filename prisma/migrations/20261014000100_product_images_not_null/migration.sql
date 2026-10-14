@@ -1,0 +1,1 @@
+ALTER TABLE "Product" ALTER COLUMN "images" SET NOT NULL;

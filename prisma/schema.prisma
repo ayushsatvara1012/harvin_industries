@@ -34,7 +34,7 @@ model Product {
   category          Category
   tagline           String
   description       String
-  images            String[]
+  images            Json          @default("[]")
   specs             Json?
   productionSummary Json?
   productionTable   Json?

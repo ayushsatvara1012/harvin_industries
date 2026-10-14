@@ -192,8 +192,9 @@ pages do not change behaviour until phase 4 flips the data source.
 4. **Flip the data source (done, not yet deployed).** Pages read from the
    repository through `unstable_cache`. `data/products.ts` is gone; its rows live
    in `prisma/seed-data.ts` (seed only). Verified the rendered output matches.
-5. **Media to Cloudinary.** Migration script, Cloudinary `next/image` loader,
-   image URLs move to the database. `public/images` leaves the repo.
+5. **Media to Cloudinary (done, not yet deployed).** The 10 product images are on
+   Cloudinary, `images` is JSON `[{ publicId, alt }]`, and a `CloudinaryImage`
+   component builds the URLs. Fixed site imagery stays in `public/`.
 6. **Auth + admin.** Auth.js owner login, middleware guard, product CRUD,
    Cloudinary signed upload for images and brochure PDFs, revalidation on write.
 7. **Leads.** Persist submissions, admin inbox, WhatsApp CTA.
@@ -218,37 +219,15 @@ old static-data build and is not broken.
    the permission classifier).
 3. Re-check the live routes, and that unknown slugs and `/contact?product=` work.
 
-**Next phase: 5, media to Cloudinary.** Blocked on a Cloudinary account created
-with the company email, no card. Then: migration script, `next/image` loader,
-image URLs into the database, `public/images` leaves the repo.
+**Phase 5 is done and committed (2026-10-14), not deployed.** The live site still
+runs the old static build. Deploying now ships Phases 4 and 5 together, and needs
+`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` in `.env.local` at build time (it is inlined).
 
-**Phase 5 pre-work done without a Cloudinary account (2026-10-13), PROPOSED scope,
-not yet approved by the user:**
-- `public/` is 62 MB, 157 tracked files. Only 34 files (20 MB) are referenced by
-  `src/` or `prisma/`. The other 123 (44 MB) are referenced nowhere: 
-  `images/brochure/raw` (72 files, 20 MB), `brochure/pages` (18, 9 MB),
-  `brochure/factory` (7, 9 MB), `brochure/products` (10), the four
-  `images/products/*.jpg`, four `mockup/product-*-4k.webp`, `images/hero-plant.jpg`,
-  `hero_Image.jpeg` and the five template SVGs (`next`, `vercel`, `file`, `globe`,
-  `window`). The earlier UI audit (`docs/harvin-ui-audit-report.md`) found the same.
-  Everything is recoverable from git history. Needs the user's approval to delete.
-- Only 10 files (7.8 MB) are owner-managed product images, i.e. the `images`
-  arrays in the database rows: `images/machines/{hi-1500,hi-2000,hi-3000,
-  batching-plant,mixture-machine}.jpg` and `images/brochure/machines/<same>.png`.
-- The other 24 used files are fixed site imagery that the owner never edits:
-  `mockup/*-4k.webp` (11), `forms/*.png` (9), `hero_Image.webp`, the logo, and two
-  animation `.mp4` files (4.9 MB).
-- **Proposal:** move only the 10 product images to Cloudinary (they are the only
-  ones the CMS changes, and `CLAUDE.md` says product media is Cloudinary-only).
-  Keep the fixed site imagery and videos as Worker static assets: free, no
-  Cloudinary credits, no loader needed for them, and `next/image` already
-  optimizes them through the Images binding (verified live). Delete the 123
-  unreferenced files and move the 35 MB `Harvin_brochures/` sources out of the repo.
-- Schema decision for Phase 5/6: the `images` column is `String[]` with no alt text,
-  but §7 requires real alt text per image. Change it to JSON
-  `[{ publicId, alt }]` (Cloudinary public ID plus alt) when images move.
-- `next.config.ts` will need `images.remotePatterns` for `res.cloudinary.com` and a
-  loader that only applies to Cloudinary URLs.
+**Next phase: 6, auth + admin** (branch off `feature/cloudinary-media`). Zod product
+schemas first (they replace `src/lib/product-types.ts`), then Auth.js login and the
+`/admin` middleware guard, then the admin shell and product form. Phase 6 adds the
+signed-upload route; use a separate Cloudinary API key for the Worker, not the Root
+key, before going live.
 
 **Working rules that bit us (see Progress for detail):**
 - No payment method on any account. Free limits stop service, they never bill.
@@ -421,10 +400,25 @@ which is not the live host yet (`workers.dev`); settle the domain before launch.
     Likely cause: `app/products/[slug]/loading.tsx` streams a skeleton before the
     page can 404. Options: drop that `loading.tsx` (pages are cached, so it is
     barely visible), or accept `noindex` as sufficient.
-- **Next: Phase 5, media to Cloudinary.** Needs a Cloudinary account first, created
+- **Phase 5 done (2026-10-14).** See the entry below.
+- *(historical)* **Next: Phase 5, media to Cloudinary.** Needs a Cloudinary account first, created
   with the company email, no card. Then: migration script, `next/image` loader,
   image URLs into the database, and `public/images` leaves the repo. Persisting
   leads (Phase 7) wires into `contact/actions.ts`, not here.
+
+- **Phase 5 done** (branch `feature/cloudinary-media`). Cloud name `u2mb4lj7`. Two
+  migrations: `images` text[] to JSONB (data kept), then NOT NULL. Prisma could not
+  generate this non-interactively, so the SQL is hand-written and was checked with
+  `migrate diff` (no drift). The 10 product images were uploaded as
+  `harvin/machines/<slug>` and `<slug>-brochure` with a signed upload (a one-off
+  script, since deleted; recoverable from git if ever needed). `seed-data.ts` now
+  holds `{ publicId, alt }`. `CloudinaryImage` (client component, own loader, no
+  Worker Images binding) is used by the card, gallery and homepage feed; OG images
+  and JSON-LD use `cloudinaryUrl`. Cleanup: 123 unreferenced files, the 10 local
+  product images, `Harvin_brochures/` and the template SVGs were deleted;
+  `brochure/factory` and `brochure/products` moved to `docs/source/brochure/`.
+  `public/` went from 62 MB to 15 MB. Verified: lint, typecheck, build, dev routes
+  and every homepage asset return 200. Not verified: Worker preview and deploy.
 
 ## 9. Open Questions
 
@@ -436,5 +430,4 @@ which is not the live host yet (`workers.dev`); settle the domain before launch.
   steps back to collaborator, and who pays if Neon moves to the paid tier.
 - Confirm the registered `workers.dev` subdomain in the Cloudflare dashboard,
   since it is part of the public URL until a custom domain exists.
-- Approve the Phase 5 proposal above: delete the 123 unreferenced files, move
-  `Harvin_brochures/` out of the repo, and put only the 10 product images on Cloudinary.
+- Before launch: replace the Root Cloudinary API key with a dedicated key for the Worker.

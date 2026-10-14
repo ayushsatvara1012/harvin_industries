@@ -36,7 +36,7 @@ export function ProductionTable({
               </div>
               <div>
                 <dt className="text-xs text-brand-text-secondary">Pcs / Hour</dt>
-                <dd className="font-semibold text-brand-accent">{row.pcsPerHour.toLocaleString()}</dd>
+                <dd className="font-semibold text-brand-accent-text">{row.pcsPerHour.toLocaleString()}</dd>
               </div>
             </dl>
           </li>

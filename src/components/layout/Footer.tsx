@@ -120,16 +120,16 @@ export function Footer() {
         </div>
 
         {/* Bottom Sub-footer */}
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
           <p>© 2026 HARVIN INDUSTRIES. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-gray-400 transition-colors">
+            <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-gray-400 transition-colors">
+            <Link href="/terms" className="hover:text-white transition-colors">
               Terms & Conditions
             </Link>
-            <Link href="/sitemap" className="hover:text-gray-400 transition-colors">
+            <Link href="/sitemap" className="hover:text-white transition-colors">
               Sitemap
             </Link>
           </div>

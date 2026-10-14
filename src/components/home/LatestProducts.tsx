@@ -47,13 +47,19 @@ export async function LatestProducts() {
               className="group flex flex-col overflow-hidden rounded-sm border border-brand-border bg-white transition-colors duration-300 hover:border-brand-accent/40"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-200">
-                <CloudinaryImage
-                  publicId={product.images[0].publicId}
-                  alt={product.images[0].alt || `${product.name} — ${CATEGORY_LABELS[product.category]}`}
-                  fill
-                  sizes="(min-width: 1280px) 20vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {product.images[0] ? (
+                  <CloudinaryImage
+                    publicId={product.images[0].publicId}
+                    alt={product.images[0].alt || `${product.name} — ${CATEGORY_LABELS[product.category]}`}
+                    fill
+                    sizes="(min-width: 1280px) 20vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <Icon name="deployed_code" className="text-4xl text-brand-clay" />
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-1 flex-col justify-between gap-3 px-5 py-5">

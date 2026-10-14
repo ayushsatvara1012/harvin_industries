@@ -12,6 +12,7 @@ import {
 } from "@/components/products";
 import { CATEGORY_LABELS } from "@/lib/product-types";
 import { getProductBySlug, getPublishedSlugs, getRelatedProducts } from "@/lib/products";
+import { cloudinaryUrl } from "@/lib/cloudinary";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
@@ -38,13 +39,13 @@ export async function generateMetadata(
       url,
       siteName: SITE_NAME,
       type: "website",
-      images: product.images[0] ? [{ url: product.images[0] }] : undefined,
+      images: product.images[0] ? [{ url: cloudinaryUrl(product.images[0].publicId, 1200) }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description: product.tagline,
-      images: product.images[0] ? [product.images[0]] : undefined,
+      images: product.images[0] ? [cloudinaryUrl(product.images[0].publicId, 1200)] : undefined,
     },
   };
 }
@@ -62,7 +63,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
     "@type": "Product",
     name: product.name,
     description: product.tagline,
-    image: product.images.map((image) => `${SITE_URL}${image}`),
+    image: product.images.map((image) => cloudinaryUrl(image.publicId, 1200)),
     category: CATEGORY_LABELS[product.category],
     brand: { "@type": "Brand", name: SITE_NAME },
   };

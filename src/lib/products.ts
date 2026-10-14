@@ -6,6 +6,7 @@ import type {
   Category,
   FeatureGroup,
   Product,
+  ProductImage,
   ProductionRow,
   SpecRow,
 } from "@/lib/product-types";
@@ -24,7 +25,7 @@ function toProduct(row: ProductRow): Product {
     category: row.category,
     tagline: row.tagline,
     description: row.description,
-    images: row.images,
+    images: row.images as ProductImage[],
     specs: (row.specs as SpecRow[] | null) ?? undefined,
     productionSummary: (row.productionSummary as SpecRow[] | null) ?? undefined,
     productionTable: (row.productionTable as ProductionRow[] | null) ?? undefined,

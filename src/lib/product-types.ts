@@ -17,13 +17,16 @@ export type ProductionRow = {
 
 export type FeatureGroup = { title: string; items: string[] };
 
+// `publicId` is the Cloudinary public ID; `alt` is the real alt text (SEO plan §7).
+export type ProductImage = { publicId: string; alt: string };
+
 export type Product = {
   slug: string;
   name: string;
   category: Category;
   tagline: string;
   description: string;
-  images: string[];
+  images: ProductImage[];
   specs?: SpecRow[];
   productionSummary?: SpecRow[];
   productionTable?: ProductionRow[];

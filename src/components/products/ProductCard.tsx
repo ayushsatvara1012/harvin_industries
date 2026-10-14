@@ -1,6 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Icon } from "@/components/ui/Icon";
+import { CloudinaryImage, Icon } from "@/components/ui";
 import { type Product, CATEGORY_LABELS } from "@/lib/product-types";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -19,8 +18,8 @@ export function ProductCard({ product }: { product: Product }) {
     >
       <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg bg-brand-surface">
         {image ? (
-          <Image
-            src={image}
+          <CloudinaryImage
+            publicId={image.publicId}
             alt=""
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"

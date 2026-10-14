@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { Icon } from "@/components/ui";
+import { CloudinaryImage, Icon } from "@/components/ui";
+import type { ProductImage } from "@/lib/product-types";
 
-export function ProductGallery({ images, alt }: { images: string[]; alt: string }) {
+export function ProductGallery({ images, alt }: { images: ProductImage[]; alt: string }) {
   const [active, setActive] = useState(0);
   const mainImage = images[active];
 
@@ -12,9 +12,9 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
     <div className="grid gap-4">
       <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-brand-surface">
         {mainImage ? (
-          <Image
-            src={mainImage}
-            alt={alt}
+          <CloudinaryImage
+            publicId={mainImage.publicId}
+            alt={mainImage.alt || alt}
             fill
             priority
             sizes="(min-width: 1024px) 50vw, 100vw"
@@ -31,7 +31,7 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
         <div className="flex flex-wrap gap-4">
           {images.map((image, idx) => (
             <button
-              key={image}
+              key={image.publicId}
               type="button"
               onClick={() => setActive(idx)}
               aria-current={idx === active}
@@ -42,7 +42,7 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
                   : "opacity-70 hover:opacity-100"
               }`}
             >
-              <Image src={image} alt="" fill sizes="96px" className="object-cover" />
+              <CloudinaryImage publicId={image.publicId} alt="" fill sizes="96px" className="object-cover" />
             </button>
           ))}
         </div>

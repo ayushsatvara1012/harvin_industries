@@ -1,5 +1,5 @@
 // Source rows for `prisma db seed`. The live catalog is the Neon database; the
-// site never imports this file. Sourced from `Harvin_brochures/HARVIN BROUCHER.pdf`,
+// site never imports this file. Sourced from the owner's brochure,
 // with specs corrected against the owner-supplied machine-model and
 // mixture-machine documents in `docs/source/`.
 import type { Product } from "../src/lib/product-types";
@@ -12,7 +12,10 @@ export const PRODUCTS: Product[] = [
     tagline: "8 bricks per stroke — the entry point into Harvin's press range.",
     description:
       "Fully automatic fly ash brick and paver block making machine. Built for high-volume production with a hydraulic press, universal vibration, and a PLC-based control system.",
-    images: ["/images/machines/hi-1500.jpg", "/images/brochure/machines/hi-1500.png"],
+    images: [
+      { publicId: "harvin/machines/hi-1500", alt: "HI-1500 brick making machine" },
+      { publicId: "harvin/machines/hi-1500-brochure", alt: "HI-1500 machine, brochure render" },
+    ],
     outputCapacity: 1800,
     power: "45 HP",
     dailyOutput: "10,000 – 12,000 bricks",
@@ -83,7 +86,10 @@ export const PRODUCTS: Product[] = [
     tagline: "10 bricks per stroke — the balanced mid-range performer.",
     description:
       "Fully automatic fly ash brick and paver block making machine, stepped up from the HI-1500 with a larger pallet and higher hourly output for growing production units.",
-    images: ["/images/machines/hi-2000.jpg", "/images/brochure/machines/hi-2000.png"],
+    images: [
+      { publicId: "harvin/machines/hi-2000", alt: "HI-2000 brick making machine" },
+      { publicId: "harvin/machines/hi-2000-brochure", alt: "HI-2000 machine, brochure render" },
+    ],
     outputCapacity: 2200,
     power: "50 HP",
     dailyOutput: "14,000 – 17,000 bricks",
@@ -154,7 +160,10 @@ export const PRODUCTS: Product[] = [
     tagline: "14 bricks per stroke — the flagship for large-scale production.",
     description:
       "Harvin's highest-output press machine. Built for large construction and government contracts that need consistent, high-volume brick and block production.",
-    images: ["/images/machines/hi-3000.jpg", "/images/brochure/machines/hi-3000.png"],
+    images: [
+      { publicId: "harvin/machines/hi-3000", alt: "HI-3000 brick making machine" },
+      { publicId: "harvin/machines/hi-3000-brochure", alt: "HI-3000 machine, brochure render" },
+    ],
     outputCapacity: 2900,
     power: "75 HP",
     dailyOutput: "20,000+ bricks",
@@ -226,8 +235,8 @@ export const PRODUCTS: Product[] = [
     description:
       "A fully automated batching and mixing line — PLC-controlled dosing of up to five raw materials, automatic cement feeding, and automatic water metering — designed to feed a Harvin press machine at a steady 30 m³/hr.",
     images: [
-      "/images/machines/batching-plant.jpg",
-      "/images/brochure/machines/batching-plant.png",
+      { publicId: "harvin/machines/batching-plant", alt: "Batching Plant for concrete brick production" },
+      { publicId: "harvin/machines/batching-plant-brochure", alt: "Batching Plant, brochure render" },
     ],
     power: "15 KW (22.5 HP)",
     featureGroups: [
@@ -279,8 +288,8 @@ export const PRODUCTS: Product[] = [
     description:
       "Two mixing formats to match the output — a Turbo mixer for fly ash brick lines, and a heavy-duty Planetary mixer for high-strength concrete bricks, hollow blocks, and paver blocks.",
     images: [
-      "/images/machines/mixture-machine.jpg",
-      "/images/brochure/machines/mixture-machine.png",
+      { publicId: "harvin/machines/mixture-machine", alt: "Turbo and Planetary mixture machine" },
+      { publicId: "harvin/machines/mixture-machine-brochure", alt: "Mixture Machine, brochure render" },
     ],
     power: "10 to 20 HP",
     featureGroups: [

@@ -19,7 +19,7 @@ async function main() {
       category: product.category,
       tagline: product.tagline,
       description: product.description,
-      images: product.images,
+      images: product.images as Prisma.InputJsonValue,
       specs: json(product.specs),
       productionSummary: json(product.productionSummary),
       productionTable: json(product.productionTable),

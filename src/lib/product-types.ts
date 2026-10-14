@@ -1,43 +1,16 @@
-// The catalog lists machines only — bricks, pavers, and blocks are what the
-// machines produce, so they live in each machine's production table rather than
-// as products of their own.
-export type Category = "press" | "batching_plant" | "mixture";
-
-// `note` is the plain-language explanation of what the number means for a
-// buyer. Only rows that differ between models carry one — values shared across
-// the whole press range are explained once in `PRESS_COMMON_STANDARDS`.
-export type SpecRow = { label: string; value: string; note?: string };
-
-export type ProductionRow = {
-  product: string;
-  sizeMm: string;
-  pcsPerMould: number;
-  pcsPerHour: number;
-};
-
-export type FeatureGroup = { title: string; items: string[] };
-
-// `publicId` is the Cloudinary public ID; `alt` is the real alt text (SEO plan §7).
-export type ProductImage = { publicId: string; alt: string };
-
-export type Product = {
-  slug: string;
-  name: string;
-  category: Category;
-  tagline: string;
-  description: string;
-  images: ProductImage[];
-  specs?: SpecRow[];
-  productionSummary?: SpecRow[];
-  productionTable?: ProductionRow[];
-  featureGroups?: FeatureGroup[];
-  additionalOutputs?: string[];
-  outputCapacity?: number;
-  power?: string;
-  dailyOutput?: string;
-  bestFor?: string;
-  featured?: boolean;
-};
+// Shapes come from the Zod schemas so the admin form, the repository and the
+// public pages cannot drift. Types only here, so client bundles never pull in zod.
+export type {
+  Category,
+  FeatureGroup,
+  Product,
+  ProductImage,
+  ProductInput,
+  ProductStatus,
+  ProductionRow,
+  SpecRow,
+} from "@/lib/product-schema";
+import type { Category } from "@/lib/product-schema";
 
 export const CATEGORY_LABELS: Record<Category, string> = {
   press: "Press Machine",

@@ -5,7 +5,7 @@ import { useFormStatus } from "react-dom";
 import { Icon } from "@/components/ui";
 import { type Product, CATEGORY_LABELS } from "@/lib/product-types";
 import { OUTPUT_BANDS } from "@/data/contact";
-import { submitQuoteRequest } from "@/app/contact/actions";
+import { submitQuoteRequest } from "@/app/(site)/contact/actions";
 import { EMPTY_FORM_STATE } from "@/lib/quote-form";
 
 const FIELD_CLASSES =

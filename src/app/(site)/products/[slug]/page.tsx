@@ -104,7 +104,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
               <ProductGallery images={product.images} alt={product.name} />
 
               <div>
-                <p className="text-sm font-semibold uppercase tracking-widest text-brand-accent">
+                <p className="text-sm font-semibold uppercase tracking-widest text-brand-accent-text">
                   {CATEGORY_LABELS[product.category]}
                 </p>
                 <h1 className="mt-3 font-display text-4xl tracking-tight text-brand-ink sm:text-5xl">

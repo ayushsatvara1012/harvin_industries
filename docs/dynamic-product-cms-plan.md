@@ -195,8 +195,9 @@ pages do not change behaviour until phase 4 flips the data source.
 5. **Media to Cloudinary (done, not yet deployed).** The 10 product images are on
    Cloudinary, `images` is JSON `[{ publicId, alt }]`, and a `CloudinaryImage`
    component builds the URLs. Fixed site imagery stays in `public/`.
-6. **Auth + admin.** Auth.js owner login, middleware guard, product CRUD,
-   Cloudinary signed upload for images and brochure PDFs, revalidation on write.
+6. **Auth + admin (done, uncommitted on `feature/admin-cms`).** Auth.js owner login,
+   proxy guard, product CRUD, Cloudinary signed upload for images, tag
+   invalidation on write. Brochure PDFs are not built: the schema has no field.
 7. **Leads.** Persist submissions, admin inbox, WhatsApp CTA.
 8. **Cloudflare deploy.** Split in two because it was the riskiest step:
    - **8a, deploy spike (done early, see Progress).** OpenNext adapter, KV and D1
@@ -223,11 +224,17 @@ old static-data build and is not broken.
 runs the old static build. Deploying now ships Phases 4 and 5 together, and needs
 `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` in `.env.local` at build time (it is inlined).
 
-**Next phase: 6, auth + admin** (branch off `feature/cloudinary-media`). Zod product
-schemas first (they replace `src/lib/product-types.ts`), then Auth.js login and the
-`/admin` middleware guard, then the admin shell and product form. Phase 6 adds the
-signed-upload route; use a separate Cloudinary API key for the Worker, not the Root
-key, before going live.
+**Phase 6 is built and verified, not yet committed or deployed** (branch
+`feature/admin-cms`, off `feature/cloudinary-media`). Next: Phase 7, leads
+(persist `contact/actions.ts` submissions, admin inbox, WhatsApp CTA).
+
+**Before deploying Phases 4 to 6** (Worker secrets, set without printing them):
+`DATABASE_URL`, `AUTH_SECRET` (`npx auth secret`), `OWNER_EMAIL`,
+`OWNER_PASSWORD_HASH` (the owner runs `npm run auth:hash`; the hash has no `$`),
+`CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `AUTH_TRUST_HOST=true`. Use a
+dedicated Cloudinary key, not Root. `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` must be in
+`.env.local` at build time. The same values (except `DATABASE_URL`) go in `.dev.vars`
+to use the admin under `npm run preview`.
 
 **Working rules that bit us (see Progress for detail):**
 - No payment method on any account. Free limits stop service, they never bill.
@@ -419,6 +426,74 @@ which is not the live host yet (`workers.dev`); settle the domain before launch.
   `brochure/factory` and `brochure/products` moved to `docs/source/brochure/`.
   `public/` went from 62 MB to 15 MB. Verified: lint, typecheck, build, dev routes
   and every homepage asset return 200. Not verified: Worker preview and deploy.
+  **Phase 5 end-to-end verification (2026-10-14):** fresh checkout of the Phase 5
+  commit: `npm ci`, lint, typecheck, build all exit 0. DB: 5 rows, every image is
+  `[{ publicId, alt }]` with real alt text, 3 migrations applied, no drift, seed
+  idempotent, 0 differences vs `seed-data.ts`. Cloudinary: exactly the 10 assets, no
+  orphans, all delivered at 6 widths x 3 Accept headers (570 KB original becomes
+  about 61 KB); 141 transformations, 0.15 of 25 free credits. Browser (Worker
+  preview and `next start`): every product image loads, gallery switches, OG,
+  Twitter and JSON-LD image URLs are absolute and return images, no console errors,
+  no overflow, LCP 532 ms and CLS 0.0004 on a product page, Lighthouse 100/100/100
+  (accessibility, best practices, SEO). A missing `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
+  fails the build with a clear error. Fixed along the way: amber text on white and
+  grey footer text failed contrast (now `accent-text` and `gray-400`).
+  **Known, not fixed:** `f_auto` served WebP, not AVIF, to an AVIF-capable client; enabling AVIF in Cloudinary Settings > Optimization would
+  shrink images further. The committed `db.ts` still shares one client across
+  requests (Workers fail every second request, hidden by `withWakeRetry`); the fix
+  is in the Phase 6 work, so commit it before deploying.
+
+- **Phase 6 done** (`feature/admin-cms`, uncommitted). Zod schemas
+  (`src/lib/product-schema.ts`) replace the hand-written types; `product-types.ts`
+  re-exports them. Site pages moved into the `(site)` route group so `/admin` has no
+  site Navbar/Footer; `SiteShell` is shared by `(site)/layout.tsx` and `not-found.tsx`.
+  Auth.js v5 (pinned `5.0.0-beta.32`), credentials, JWT, 8 h session; password is
+  PBKDF2-SHA256 100k via Web Crypto (bcrypt in JS would exceed Worker CPU).
+  `requireOwner` / `assertOwner` (`src/lib/dal.ts`) are the real checks in every
+  admin page, action and route; `src/proxy.ts` only redirects when no session cookie
+  exists. Admin CRUD form edits specs, production table and features as row editors;
+  images upload straight to Cloudinary with a signed, folder- and format-pinned
+  signature from `/api/admin/cloudinary-sign`. Saves call `updateTag` for
+  `products` and `product:<slug>` (old and new slug on rename). Publishing needs at
+  least one image. Verified on dev and on workerd preview: guard, login, wrong
+  password, create, validation errors, edit, delete, public cache invalidation
+  right after a save, and a lossless round trip (DB equals `seed-data.ts`, 0 diffs).
+  **Bugs found and fixed while verifying:** (1) `db.ts` shared one Neon client across
+  requests, which Workers forbid ("Cannot perform I/O on behalf of a different
+  request"): every second request 500ed. Production now opens and closes a client per
+  operation (`withDb`); this also affected public cache misses. (2) A published
+  product with no image crashed the homepage; now blocked by the schema and
+  tolerated by the card. (3) Admin links prefetched every edit page at once, a burst
+  of Neon connections; admin links use `prefetch={false}`.
+  **Known gaps:** no brochure PDF field; removing an image does not delete it from
+  Cloudinary; no login rate limiting or lockout (PBKDF2 cost only); the soft 404 on
+  unknown slugs is unchanged; a few cross-request I/O warnings appeared only on the
+  first requests after the preview started and never failed a response.
+- **Legal pages and error handling done** (uncommitted, `feature/admin-cms`). New
+  `/privacy`, `/terms` and `/sitemap` pages (shared `components/legal`), the footer
+  links resolve, and the XML sitemap lists privacy and terms. The privacy policy
+  describes what the site really does: no analytics or tracking cookies (only the
+  owner's admin cookie), Cloudflare, Neon (Singapore), Cloudinary and Google (icon
+  font and the contact-page map) as processors, DPDP Act 2023 rights, retention in
+  general terms. The contact form links to it. The copy is a draft from what the
+  site does and needs the owner's or a lawyer's review before launch. Error
+  handling: unknown product slugs now return a real 404 (the soft 404 is fixed; the
+  list skeleton moved into a `(list)` route group so it no longer wraps product
+  pages, and the 404 body for an unknown slug is filled in client-side, which is
+  Next's behaviour for on-demand params, with the status, title and `noindex` correct);
+  the site error page offers retry, phone and email, and a reference ID; a root
+  `global-error.tsx`, `admin/error.tsx` and an admin not-found; the contact action
+  no longer throws if the catalog lookup fails; catalog reads share one result per
+  request (`cache()`) and the DB retry budget is 3 attempts, so an outage fails in
+  about 2 s instead of 13 s; the HTML sitemap and nav no longer break if the
+  catalog is down. Bug found and fixed: the unknown-slug 404 rendered two navbars
+  (root not-found brought its own shell inside the `(site)` layout); `(site)` now has
+  its own shell-less `not-found.tsx`. Lighthouse 100 across the board on all three
+  new pages. Workerd preview: all routes 200, unknown slug 404, no DB or I/O errors.
+  **Before launch:** `info@` and the phone number are still flagged `mock` in
+  `src/data/contact.ts` and the policy quotes them; the privacy policy says
+  enquiries are stored, which is true only once Phase 7 persists them (today the
+  action only logs them, including name and phone, to the server log).
 
 ## 9. Open Questions
 

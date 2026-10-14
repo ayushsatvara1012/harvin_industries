@@ -11,21 +11,33 @@ function createClient() {
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
-export const db = globalForPrisma.prisma ?? createClient();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+// Workers forbid reusing an I/O object (the Neon websocket) across requests, so a
+// shared client fails on every second request. Production opens a client per
+// operation and closes it; dev keeps one so hot reloads do not leak connections.
+export async function withDb<T>(run: (db: PrismaClient) => Promise<T>): Promise<T> {
+  if (process.env.NODE_ENV !== "production") {
+    globalForPrisma.prisma ??= createClient();
+    return run(globalForPrisma.prisma);
+  }
+  const client = createClient();
+  try {
+    return await run(client);
+  } finally {
+    await client.$disconnect().catch(() => {});
+  }
+}
 
 // Neon's free tier suspends after idle, so the first query can fail while the
 // compute wakes. Retry briefly instead of surfacing that as an error.
-export async function withWakeRetry<T>(run: () => Promise<T>, attempts = 4): Promise<T> {
+export async function withWakeRetry<T>(run: (db: PrismaClient) => Promise<T>, attempts = 3): Promise<T> {
   let lastError: unknown;
   for (let attempt = 0; attempt < attempts; attempt++) {
     try {
-      return await run();
+      return await withDb(run);
     } catch (error) {
       lastError = error;
       console.error(`[db] query failed (attempt ${attempt + 1}/${attempts})`, error);
-      await new Promise((resolve) => setTimeout(resolve, 400 * 2 ** attempt));
+      if (attempt < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 300 * 2 ** attempt));
     }
   }
   throw lastError;

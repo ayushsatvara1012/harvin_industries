@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import type { Product as ProductRow } from "@/generated/prisma/client";
 import type {
@@ -10,7 +11,7 @@ import type {
   ProductionRow,
   SpecRow,
 } from "@/lib/product-types";
-import { db, withWakeRetry } from "@/lib/db";
+import { withWakeRetry } from "@/lib/db";
 
 export const PRODUCTS_TAG = "products";
 export const productTag = (slug: string) => `product:${slug}`;
@@ -18,7 +19,7 @@ export const productTag = (slug: string) => `product:${slug}`;
 // Safety net if a revalidateTag call is ever missed: the cache refreshes hourly.
 const REVALIDATE_SECONDS = 3600;
 
-function toProduct(row: ProductRow): Product {
+export function toProduct(row: ProductRow): Product {
   return {
     slug: row.slug,
     name: row.name,
@@ -42,15 +43,19 @@ function toProduct(row: ProductRow): Product {
 const PUBLISHED = { status: "published" } as const;
 const CATALOG_ORDER = [{ sortOrder: "asc" }, { id: "asc" }] as const;
 
-export const getAllProducts = unstable_cache(
-  async (): Promise<Product[]> => {
-    const rows = await withWakeRetry(() =>
-      db.product.findMany({ where: PUBLISHED, orderBy: [...CATALOG_ORDER] }),
-    );
-    return rows.map(toProduct);
-  },
-  ["products:all"],
-  { tags: [PRODUCTS_TAG], revalidate: REVALIDATE_SECONDS },
+// `cache` shares one result (or one failure) across the header, the page and the
+// sitemap within a request, so an outage runs the retry loop once, not per caller.
+export const getAllProducts = cache(
+  unstable_cache(
+    async (): Promise<Product[]> => {
+      const rows = await withWakeRetry((db) =>
+        db.product.findMany({ where: PUBLISHED, orderBy: [...CATALOG_ORDER] }),
+      );
+      return rows.map(toProduct);
+    },
+    ["products:all"],
+    { tags: [PRODUCTS_TAG], revalidate: REVALIDATE_SECONDS },
+  ),
 );
 
 export async function getPressModels(): Promise<Product[]> {
@@ -60,10 +65,10 @@ export async function getPressModels(): Promise<Product[]> {
 
 // The cache serialises to JSON, which has no `undefined`, so a missing product is
 // cached as null and mapped back here.
-export async function getProductBySlug(slug: string): Promise<Product | undefined> {
+export const getProductBySlug = cache(async (slug: string): Promise<Product | undefined> => {
   const product = await unstable_cache(
     async () => {
-      const row = await withWakeRetry(() =>
+      const row = await withWakeRetry((db) =>
         db.product.findFirst({ where: { ...PUBLISHED, slug } }),
       );
       return row ? toProduct(row) : null;
@@ -72,7 +77,7 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
     { tags: [PRODUCTS_TAG, productTag(slug)], revalidate: REVALIDATE_SECONDS },
   )();
   return product ?? undefined;
-}
+});
 
 export async function getRelatedProducts(
   product: { slug: string; category: Category },

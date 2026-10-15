@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Forum, Oswald } from "next/font/google";
 import { toJsonLd } from "@/lib/json-ld";
+import { EMAIL, PHONE } from "@/data/contact";
 import { OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -58,8 +59,8 @@ const organizationJsonLd = {
   name: SITE_NAME,
   url: SITE_URL,
   logo: `${SITE_URL}/harvin_logo.svg`,
-  email: "info@harvinindustries.com",
-  telephone: "+91-98985-75358",
+  email: EMAIL,
+  telephone: PHONE,
   address: {
     "@type": "PostalAddress",
     addressLocality: "Ahmedabad",

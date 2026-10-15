@@ -1,6 +1,7 @@
 import { getAllProducts } from "@/lib/products";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 export async function SiteShell({ children }: { children: React.ReactNode }) {
   // The shell must still render if the catalog cannot load, so a database outage
@@ -18,6 +19,7 @@ export async function SiteShell({ children }: { children: React.ReactNode }) {
       <Navbar products={products} />
       {children}
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AboutHero, VisionMission, KeyFactors, FounderMessage } from "@/components/about";
 import { COMPANY_INTRO } from "@/data/company";
+import { PHONE } from "@/data/contact";
 import { toJsonLd } from "@/lib/json-ld";
 import { SITE_NAME, SITE_URL, OG_IMAGE } from "@/lib/site";
 
@@ -44,7 +45,7 @@ export default function AboutPage() {
       postalCode: "382430",
       addressCountry: "IN",
     },
-    telephone: "+91-98985-75358",
+    telephone: PHONE,
     areaServed: "IN",
     hasCredential: "ISO 9001:2015",
   };

@@ -29,7 +29,9 @@ export const ADDRESS_LINES = [
 
 export const PHONE = "+91 98985 75358";
 export const PHONE_HREF = "tel:+919898575358";
-export const EMAIL = "info@harvinindustries.com";
+export const WHATSAPP_HREF =
+  "https://wa.me/919898575358?text=Hello%20Harvin%20Industries%2C%20I%20would%20like%20a%20quote%20for%20a%20brick%20making%20machine.";
+export const EMAIL = "dhavalsathawara46@gmail.com";
 export const GSTIN = "24FNRPS3414P1Z7";
 
 export const CONTACT_DETAILS: ContactDetail[] = [
@@ -43,16 +45,13 @@ export const CONTACT_DETAILS: ContactDetail[] = [
     icon: "call",
     label: "Phone",
     value: PHONE,
-    secondary: "+91 00000 00000",
     href: PHONE_HREF,
-    mock: true,
   },
   {
     icon: "mail",
     label: "Email",
     value: EMAIL,
     href: `mailto:${EMAIL}`,
-    mock: true,
   },
   {
     icon: "person",

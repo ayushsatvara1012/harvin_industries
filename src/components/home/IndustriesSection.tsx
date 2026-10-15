@@ -50,7 +50,7 @@ export function IndustriesSection() {
               className="relative flex h-56 flex-col overflow-hidden bg-white border border-brand-border/80 px-5 py-5 text-left shadow-sm"
             >
               <div className="relative z-10 flex items-start justify-between">
-                <span className="font-stat text-xs tracking-[0.2em] text-brand-text-secondary/60">
+                <span className="font-stat text-xs tracking-[0.2em] text-brand-text-secondary">
                   {String(idx + 1).padStart(2, "0")}
                 </span>
                 <h3 className="text-base font-medium font-stat text-brand-text leading-tight">

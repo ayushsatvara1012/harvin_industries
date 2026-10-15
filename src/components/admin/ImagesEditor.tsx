@@ -98,44 +98,44 @@ export function ImagesEditor({
             <p className="text-xs font-semibold uppercase tracking-wide text-brand-text-secondary">
               {index === 0 ? "Main image" : `Image ${index + 1}`}
             </p>
-            <input
-              aria-label={`Alt text for image ${index + 1}`}
-              value={image.alt}
-              onChange={(event) =>
-                onChange(images.map((item, i) => (i === index ? { ...item, alt: event.target.value } : item)))
-              }
-              placeholder="Describe what the image shows"
-              className={`${inputClass} mt-1`}
-            />
+            <div className="mt-1 flex items-center gap-1">
+              <input
+                aria-label={`Alt text for image ${index + 1}`}
+                value={image.alt}
+                onChange={(event) =>
+                  onChange(images.map((item, i) => (i === index ? { ...item, alt: event.target.value } : item)))
+                }
+                placeholder="Describe what the image shows"
+                className={`${inputClass} min-w-0 flex-1`}
+              />
+              <button
+                type="button"
+                aria-label="Move image earlier"
+                disabled={index === 0}
+                onClick={() => move(index, -1)}
+                className="flex size-9 shrink-0 items-center justify-center rounded-full hover:bg-brand-surface-alt disabled:opacity-30"
+              >
+                <Icon name="arrow_upward" className="text-xl" />
+              </button>
+              <button
+                type="button"
+                aria-label="Move image later"
+                disabled={index === images.length - 1}
+                onClick={() => move(index, 1)}
+                className="flex size-9 shrink-0 items-center justify-center rounded-full hover:bg-brand-surface-alt disabled:opacity-30"
+              >
+                <Icon name="arrow_downward" className="text-xl" />
+              </button>
+              <button
+                type="button"
+                aria-label="Remove image"
+                onClick={() => onChange(images.filter((_, i) => i !== index))}
+                className="flex size-9 shrink-0 items-center justify-center rounded-full text-brand-text-secondary hover:bg-red-50 hover:text-red-700"
+              >
+                <Icon name="delete" className="text-xl" />
+              </button>
+            </div>
             {errorFor?.(index) && <p className="mt-1 text-xs font-medium text-red-700">{errorFor(index)}</p>}
-          </div>
-          <div className="flex shrink-0 flex-col">
-            <button
-              type="button"
-              aria-label="Move image earlier"
-              disabled={index === 0}
-              onClick={() => move(index, -1)}
-              className="rounded-full p-1 hover:bg-brand-surface-alt disabled:opacity-30"
-            >
-              <Icon name="arrow_upward" className="text-xl" />
-            </button>
-            <button
-              type="button"
-              aria-label="Move image later"
-              disabled={index === images.length - 1}
-              onClick={() => move(index, 1)}
-              className="rounded-full p-1 hover:bg-brand-surface-alt disabled:opacity-30"
-            >
-              <Icon name="arrow_downward" className="text-xl" />
-            </button>
-            <button
-              type="button"
-              aria-label="Remove image"
-              onClick={() => onChange(images.filter((_, i) => i !== index))}
-              className="rounded-full p-1 text-brand-text-secondary hover:bg-red-50 hover:text-red-700"
-            >
-              <Icon name="delete" className="text-xl" />
-            </button>
           </div>
         </div>
       ))}

@@ -23,7 +23,7 @@ import type { SpecRowValues, ProductionRowValues } from "@/lib/product-form";
 const SPEC_COLUMNS: Column<SpecRowValues>[] = [
   { key: "label", label: "Label" },
   { key: "value", label: "Value" },
-  { key: "note", label: "Note", placeholder: "optional" },
+  { key: "note", label: "Note", placeholder: "Optional, in plain language", multiline: true },
 ];
 
 const PRODUCTION_COLUMNS: Column<ProductionRowValues>[] = [
@@ -116,7 +116,7 @@ export function ProductForm({ id, initial }: { id: number | null; initial: Produ
               id="category"
               value={values.category}
               onChange={(event) => set("category", event.target.value as ProductFormValues["category"])}
-              className={inputClass}
+              className={`${inputClass} h-[42px]`}
             >
               {CATEGORIES.map((category) => (
                 <option key={category} value={category}>
@@ -272,7 +272,7 @@ export function ProductForm({ id, initial }: { id: number | null; initial: Produ
         <Field label="Additional outputs" htmlFor="additionalOutputs" hint="Other things this machine can make. One per line.">
           <textarea
             id="additionalOutputs"
-            rows={3}
+            rows={5}
             value={values.additionalOutputsText}
             onChange={(event) => set("additionalOutputsText", event.target.value)}
             className={inputClass}
@@ -287,7 +287,7 @@ export function ProductForm({ id, initial }: { id: number | null; initial: Produ
               id="status"
               value={values.status}
               onChange={(event) => set("status", event.target.value as ProductFormValues["status"])}
-              className={inputClass}
+              className={`${inputClass} h-[42px]`}
             >
               <option value="draft">Draft</option>
               <option value="published">Published</option>
@@ -302,15 +302,17 @@ export function ProductForm({ id, initial }: { id: number | null; initial: Produ
               className={inputClass}
             />
           </Field>
-          <label className="flex items-center gap-2 self-end pb-2.5 text-sm font-semibold text-brand-ink">
-            <input
-              type="checkbox"
-              checked={values.featured}
-              onChange={(event) => set("featured", event.target.checked)}
-              className="size-4 accent-brand-yellow"
-            />
-            Featured
-          </label>
+          <Field label="Featured">
+            <label className="flex h-[42px] items-center gap-2 text-sm text-brand-text">
+              <input
+                type="checkbox"
+                checked={values.featured}
+                onChange={(event) => set("featured", event.target.checked)}
+                className="size-4 accent-brand-yellow"
+              />
+              Show as a featured machine
+            </label>
+          </Field>
         </div>
       </Section>
 

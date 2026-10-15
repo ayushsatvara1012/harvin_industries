@@ -27,8 +27,8 @@ export function Field({
       <label htmlFor={htmlFor} className="block text-sm font-semibold text-brand-ink">
         {label}
       </label>
-      {hint && <p className="mt-0.5 text-xs text-brand-text-secondary">{hint}</p>}
       <div className="mt-1.5">{children}</div>
+      {hint && <p className="mt-1.5 text-xs text-brand-text-secondary">{hint}</p>}
       {error && (
         <p role="alert" className="mt-1 text-xs font-medium text-red-700">
           {error}

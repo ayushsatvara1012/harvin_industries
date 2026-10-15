@@ -1,8 +1,9 @@
 "use server";
 
+import { createLead } from "@/lib/leads";
 import { getPublishedSlugs } from "@/lib/products";
 import { isValidSlug } from "@/lib/product-schema";
-import { OUTPUT_BANDS } from "@/data/contact";
+import { OUTPUT_BANDS, PHONE } from "@/data/contact";
 import type { QuoteFormState } from "@/lib/quote-form";
 
 const VALID_BANDS = new Set(OUTPUT_BANDS);
@@ -72,11 +73,17 @@ export async function submitQuoteRequest(
     };
   }
 
-  // TODO: persist as a `Lead` row once Prisma/Neon is wired up (see section 3 of
-  // docs/harvin-industries-plan.md), and optionally notify the owner by email.
-  // Until then the submission is validated and accepted but not stored, so the
-  // form must not be linked from a live deploy.
-  console.info("[contact] quote request received", { ...values, email: values.email ? "[redacted]" : "" });
+  try {
+    await createLead(values);
+  } catch (error) {
+    console.error("[contact] could not store the enquiry", error);
+    return {
+      status: "error",
+      message: `We could not save your enquiry. Please try again, or call us on ${PHONE}.`,
+      errors: {},
+      values,
+    };
+  }
 
   return {
     status: "success",

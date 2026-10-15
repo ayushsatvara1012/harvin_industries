@@ -1,5 +1,6 @@
 import { Icon, SectionHeader } from "@/components/ui";
 import { ADDRESS_LINES, MAP_EMBED_SRC, MAP_IS_MOCK } from "@/data/contact";
+import { MapEmbed } from "./MapEmbed";
 
 const DIRECTIONS_HREF =
   "https://www.google.com/maps/dir/?api=1&destination=NK+Industrial+Park+Bakrol+Bujrang+Ahmedabad+382430";
@@ -37,14 +38,7 @@ export function ContactMap() {
         </div>
 
         <div className="mt-10 overflow-hidden rounded-xl border border-brand-border bg-white shadow-sm">
-          <iframe
-            src={MAP_EMBED_SRC}
-            title="Harvin Industries location on Google Maps"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            allowFullScreen
-            className="block h-[320px] w-full border-0 sm:h-[420px] lg:h-[480px]"
-          />
+          <MapEmbed src={MAP_EMBED_SRC} title="Harvin Industries location on Google Maps" />
         </div>
       </div>
     </section>

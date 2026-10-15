@@ -126,6 +126,10 @@ export default function PrivacyPage() {
           sites. The only cookie we set is a sign-in cookie for our own staff in the admin area, which visitors never
           receive.
         </p>
+        <p>
+          The map on the contact page is provided by Google. It loads only after you choose &quot;Load the map&quot;, and
+          Google may then set its own cookies under its own policy.
+        </p>
       </LegalSection>
 
       <LegalSection id="retention" number={6} title="How long we keep it">

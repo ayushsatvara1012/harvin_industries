@@ -3,22 +3,42 @@ import { signOut } from "@/auth";
 import { Logo } from "@/components/layout";
 import { Icon } from "@/components/ui";
 import { requireOwner } from "@/lib/dal";
+import { countUnhandledLeads } from "@/lib/leads";
+
+async function unhandledCount() {
+  try {
+    return await countUnhandledLeads();
+  } catch (error) {
+    console.error("[admin] could not count enquiries", error);
+    return 0;
+  }
+}
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
   await requireOwner();
+  const newLeads = await unhandledCount();
 
   return (
     <>
       <header className="border-b border-brand-border bg-brand-ink text-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-6">
             <Link href="/admin/products" prefetch={false} className="flex items-center gap-3">
               <Logo className="h-8 text-white" />
               <span className="font-display text-xl tracking-wide">Harvin Admin</span>
             </Link>
-            <nav aria-label="Admin" className="hidden items-center gap-4 text-sm font-semibold sm:flex">
+            <nav aria-label="Admin" className="flex items-center gap-4 text-sm font-semibold">
               <Link href="/admin/products" prefetch={false} className="text-brand-yellow-light">
                 Products
+              </Link>
+              <Link href="/admin/leads" prefetch={false} className="inline-flex items-center gap-2 text-brand-yellow-light">
+                Enquiries
+                {newLeads > 0 && (
+                  <span className="rounded-full bg-brand-yellow px-2 py-0.5 text-xs font-bold text-brand-ink">
+                    {newLeads}
+                    <span className="sr-only"> new</span>
+                  </span>
+                )}
               </Link>
             </nav>
           </div>

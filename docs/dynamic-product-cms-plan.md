@@ -195,7 +195,7 @@ pages do not change behaviour until phase 4 flips the data source.
 5. **Media to Cloudinary (done, not yet deployed).** The 10 product images are on
    Cloudinary, `images` is JSON `[{ publicId, alt }]`, and a `CloudinaryImage`
    component builds the URLs. Fixed site imagery stays in `public/`.
-6. **Auth + admin (done, uncommitted on `feature/admin-cms`).** Auth.js owner login,
+6. **Auth + admin (done, merged to `main`).** Auth.js owner login,
    proxy guard, product CRUD, Cloudinary signed upload for images, tag
    invalidation on write. Brochure PDFs are not built: the schema has no field.
 7. **Leads (done, 2026-10-15).** Contact action stores a `Lead`, admin inbox at `/admin/leads` with mark handled/delete, unhandled badge in the admin nav, floating WhatsApp button, real phone and a temporary business email (`dhavalsathawara46@gmail.com`; swap for a company address before launch).
@@ -208,27 +208,49 @@ pages do not change behaviour until phase 4 flips the data source.
 
 ## Resume Here (read this first in a new session)
 
-**State:** Phases 1, 2, 3, 4 and 8a are done and committed on
-`feature/dynamic-product-cms` (not pushed, not merged to `main`). Phase 4 is
-verified locally but **not deployed**: the live `workers.dev` site still runs the
-old static-data build and is not broken.
+**State (2026-10-15):** Phases 1 to 7 and 8a are done and merged into `main`
+(pushed, tip `5b0f7c1`). `main` is the only branch; the old feature branches were
+deleted after the merge. Nothing from Phases 4 to 7 is **deployed**: the live
+`workers.dev` site still runs the old static-data build and is not broken.
 
-**Before the next deploy:**
-1. Set the Worker secret from `.env.local` without printing it:
+**Phase 7 (leads) shipped:** the contact action stores a `Lead`, `/admin/leads`
+lists them (mark handled, delete), the admin nav shows a new-enquiry count, and a
+floating WhatsApp button links to `+91 98985 75358`. Contact email is the temporary
+`dhavalsathawara46@gmail.com`; swap for a company address before launch.
+
+**Domain and SEO (`src/lib/site.ts`):** `SITE_URL` comes from `NEXT_PUBLIC_SITE_URL`
+(read at build time) checked against an allowlist: `https://harvinindustries.com`,
+`https://harvin-industries.vercel.app`, `http://localhost:<port>`. Unset means the
+real domain in a production build and localhost in `next dev`; an unlisted value
+falls back to the real domain. Only the real domain is indexable: other hosts get
+`noindex`, a `Disallow: /` robots.txt and a 404 for `/llms.txt`. Structured data is
+one linked `@graph` (Organization + WebSite) that About, Contact and Product
+reference. No FAQ markup yet: it needs real owner-supplied Q&A.
+
+**Security, do first:** a real Cloudinary Root API key and secret were committed in
+`.env.example` (commit `0d21b49`) and are in the history on GitHub. The file is
+blank now, but the key must be **rotated** in Cloudinary, and the Worker should use
+a dedicated key.
+
+**Next steps, in order:**
+1. Rotate the Cloudinary key (above).
+2. Deploy Phases 4 to 7: set the Worker secrets below, then the user runs
+   `! npm run deploy` (assistant deploys and some pushes are blocked by the
+   permission classifier). First `DATABASE_URL`:
    `grep '^DATABASE_URL=' .env.local | cut -d= -f2- | tr -d '"' | npx wrangler secret put DATABASE_URL`
-2. The user runs `! npm run deploy` (the assistant's own deploys are blocked by
-   the permission classifier).
-3. Re-check the live routes, and that unknown slugs and `/contact?product=` work.
+   Re-check the live routes, unknown slugs, `/contact?product=`, a test enquiry in
+   `/admin/leads`, `/robots.txt`, `/sitemap.xml` and `/llms.txt`.
+3. Phase 8b: custom domain, then confirm ISR and `revalidateTag` in production.
+   Set `NEXT_PUBLIC_SITE_URL` at build time for any non-default host.
+4. Owner to confirm: a company email, the map pin (still flagged as a placeholder),
+   handover terms, real FAQ content, brochure PDF field (not built).
 
-**Phase 5 is done and committed (2026-10-14), not deployed.** The live site still
-runs the old static build. Deploying now ships Phases 4 and 5 together, and needs
-`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` in `.env.local` at build time (it is inlined).
+**Branch rule:** `main` is production. Work on a branch (`feature/`, `bugfix/`,
+`chore/`), merge only when asked, push only when asked. Check
+`git branch --show-current` before committing: one commit once landed on `main`
+because the branch switch had not taken effect.
 
-**Phase 6 is built, verified and committed (2026-10-15), not deployed** (branch
-`feature/admin-cms`, off `feature/cloudinary-media`). Next: Phase 7, leads
-(persist `contact/actions.ts` submissions, admin inbox, WhatsApp CTA).
-
-**Before deploying Phases 4 to 6** (Worker secrets, set without printing them):
+**Before deploying Phases 4 to 7** (Worker secrets, set without printing them):
 `DATABASE_URL`, `AUTH_SECRET` (`npx auth secret`), `OWNER_EMAIL`,
 `OWNER_PASSWORD_HASH` (the owner runs `npm run auth:hash`; the hash has no `$`),
 `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `AUTH_TRUST_HOST=true`. Use a

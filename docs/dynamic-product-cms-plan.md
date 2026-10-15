@@ -198,7 +198,7 @@ pages do not change behaviour until phase 4 flips the data source.
 6. **Auth + admin (done, uncommitted on `feature/admin-cms`).** Auth.js owner login,
    proxy guard, product CRUD, Cloudinary signed upload for images, tag
    invalidation on write. Brochure PDFs are not built: the schema has no field.
-7. **Leads.** Persist submissions, admin inbox, WhatsApp CTA.
+7. **Leads (done, 2026-10-15).** Contact action stores a `Lead`, admin inbox at `/admin/leads` with mark handled/delete, unhandled badge in the admin nav, floating WhatsApp button, real phone and a temporary business email (`dhavalsathawara46@gmail.com`; swap for a company address before launch).
 8. **Cloudflare deploy.** Split in two because it was the riskiest step:
    - **8a, deploy spike (done early, see Progress).** OpenNext adapter, KV and D1
      cache bindings, static site live on `workers.dev`.
@@ -224,7 +224,7 @@ old static-data build and is not broken.
 runs the old static build. Deploying now ships Phases 4 and 5 together, and needs
 `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` in `.env.local` at build time (it is inlined).
 
-**Phase 6 is built and verified, not yet committed or deployed** (branch
+**Phase 6 is built, verified and committed (2026-10-15), not deployed** (branch
 `feature/admin-cms`, off `feature/cloudinary-media`). Next: Phase 7, leads
 (persist `contact/actions.ts` submissions, admin inbox, WhatsApp CTA).
 

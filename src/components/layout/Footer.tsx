@@ -121,9 +121,9 @@ export function Footer() {
         </div>
 
         {/* Bottom Sub-footer */}
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
+        <div className="mt-14 pt-6 pb-16 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
           <p>© 2026 HARVIN INDUSTRIES. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
@@ -132,6 +132,9 @@ export function Footer() {
             </Link>
             <Link href="/sitemap" className="hover:text-white transition-colors">
               Sitemap
+            </Link>
+            <Link href="/admin/login" prefetch={false} className="hover:text-white transition-colors">
+              Admin
             </Link>
           </div>
         </div>

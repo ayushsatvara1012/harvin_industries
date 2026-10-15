@@ -3,7 +3,7 @@ import { ContactHero, ContactMap } from "@/components/contact";
 import { getAllProducts, getProductBySlug } from "@/lib/products";
 import { ADDRESS_LINES, EMAIL, GSTIN, PHONE } from "@/data/contact";
 import { toJsonLd } from "@/lib/json-ld";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const title = "Contact & Quotations — Harvin Industries";
 const description =
@@ -42,7 +42,9 @@ export default async function ContactPage(props: PageProps<"/contact">) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": `${SITE_URL}/contact#localbusiness`,
     name: SITE_NAME,
+    parentOrganization: { "@id": ORGANIZATION_ID },
     url: `${SITE_URL}/contact`,
     telephone: PHONE,
     email: EMAIL,

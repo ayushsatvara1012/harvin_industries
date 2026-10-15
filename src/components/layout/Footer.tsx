@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button, Icon } from "@/components/ui";
+import { EMAIL, PHONE, PHONE_HREF } from "@/data/contact";
 import { type Category, CATEGORY_LABELS } from "@/lib/product-types";
 import { BrandLogo } from "./BrandLogo";
 
@@ -96,17 +97,17 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Icon name="call" className="text-brand-yellow text-lg shrink-0" />
-                <a href="tel:+919898575358" className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
-                  +91 98985 75358
+                <a href={PHONE_HREF} className="inline-block py-1.5 hover:text-brand-yellow transition-colors">
+                  {PHONE}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Icon name="mail" className="text-brand-yellow text-lg shrink-0" />
                 <a
-                  href="mailto:info@harvinindustries.com"
+                  href={`mailto:${EMAIL}`}
                   className="inline-block py-1.5 hover:text-brand-yellow transition-colors"
                 >
-                  info@harvinindustries.com
+                  {EMAIL}
                 </a>
               </li>
             </ul>

@@ -14,7 +14,7 @@ import { CATEGORY_LABELS } from "@/lib/product-types";
 import { getProductBySlug, getPublishedSlugs, getRelatedProducts } from "@/lib/products";
 import { cloudinaryUrl } from "@/lib/cloudinary";
 import { toJsonLd } from "@/lib/json-ld";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
   return (await getPublishedSlugs()).map((slug) => ({ slug }));
@@ -63,10 +63,12 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
+    url: `${SITE_URL}/products/${product.slug}`,
     description: product.tagline,
     image: product.images.map((image) => cloudinaryUrl(image.publicId, 1200)),
     category: CATEGORY_LABELS[product.category],
     brand: { "@type": "Brand", name: SITE_NAME },
+    manufacturer: { "@id": ORGANIZATION_ID },
   };
 
   const breadcrumbJsonLd = {

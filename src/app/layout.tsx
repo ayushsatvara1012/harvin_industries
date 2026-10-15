@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Forum, Oswald } from "next/font/google";
 import { toJsonLd } from "@/lib/json-ld";
-import { EMAIL, PHONE } from "@/data/contact";
-import { OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/site";
+import { COMPANY_INTRO } from "@/data/company";
+import { ADDRESS_LINES, EMAIL, PHONE } from "@/data/contact";
+import { IS_INDEXABLE, OG_IMAGE, ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -28,6 +29,7 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  robots: IS_INDEXABLE ? undefined : { index: false, follow: false },
   title,
   description,
   alternates: {
@@ -53,20 +55,38 @@ export const metadata: Metadata = {
   },
 };
 
-const organizationJsonLd = {
+const siteJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: SITE_NAME,
-  url: SITE_URL,
-  logo: `${SITE_URL}/harvin_logo.svg`,
-  email: EMAIL,
-  telephone: PHONE,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Ahmedabad",
-    addressRegion: "Gujarat",
-    addressCountry: "IN",
-  },
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": ORGANIZATION_ID,
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}/harvin_logo.svg`,
+      description: COMPANY_INTRO,
+      email: EMAIL,
+      telephone: PHONE,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: ADDRESS_LINES.slice(0, 2).join(", "),
+        addressLocality: "Bakrol Bujrang, Ahmedabad",
+        addressRegion: "Gujarat",
+        postalCode: "382430",
+        addressCountry: "IN",
+      },
+      areaServed: "IN",
+      hasCredential: "ISO 9001:2015",
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE_NAME,
+      inLanguage: "en-IN",
+      publisher: { "@id": ORGANIZATION_ID },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -83,7 +103,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: toJsonLd(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(siteJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col font-sans">

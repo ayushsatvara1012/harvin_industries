@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { AboutHero, VisionMission, KeyFactors, FounderMessage } from "@/components/about";
 import { COMPANY_INTRO } from "@/data/company";
-import { PHONE } from "@/data/contact";
 import { toJsonLd } from "@/lib/json-ld";
-import { SITE_NAME, SITE_URL, OG_IMAGE } from "@/lib/site";
+import { ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const title = "About Us — Harvin Industries";
 const description =
@@ -30,31 +29,21 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  const organizationJsonLd = {
+  const aboutJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: SITE_NAME,
-    url: SITE_URL,
-    logo: `${SITE_URL}${OG_IMAGE}`,
+    "@type": "AboutPage",
+    url: `${SITE_URL}/about`,
+    name: `About ${SITE_NAME}`,
     description: COMPANY_INTRO,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Shed No 28, NK Industrial Park, Gatrad Bakrol Bujrang Kuha Road",
-      addressLocality: "Bakrol Bujrang, Ahmedabad",
-      addressRegion: "Gujarat",
-      postalCode: "382430",
-      addressCountry: "IN",
-    },
-    telephone: PHONE,
-    areaServed: "IN",
-    hasCredential: "ISO 9001:2015",
+    inLanguage: "en-IN",
+    about: { "@id": ORGANIZATION_ID },
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: toJsonLd(organizationJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(aboutJsonLd) }}
       />
       <main id="main" className="min-h-screen bg-white">
         {/* Who we are, and the certification — the two things a first-time

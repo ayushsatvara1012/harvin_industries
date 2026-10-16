@@ -62,7 +62,7 @@ export function ManufacturingSection() {
             {PROCESS_STEPS.map((step) => (
               <div
                 key={step.title}
-                className="relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl bg-brand-ink aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] shadow-md"
+                className="relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl skeleton-media-dark aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] shadow-md"
               >
                 {/* Full-bleed Photo */}
                 <Image
@@ -131,7 +131,7 @@ export function ManufacturingSection() {
           <div
             ref={reelContainerRef}
             id="manufacturing-reel-video"
-            className="relative w-full aspect-[16/10] sm:aspect-[24/9] overflow-hidden rounded-2xl sm:rounded-3xl bg-brand-ink shadow-2xl border border-brand-border"
+            className="relative w-full aspect-[16/10] sm:aspect-[24/9] overflow-hidden rounded-2xl sm:rounded-3xl skeleton-media-dark shadow-2xl border border-brand-border"
           >
             <LazyVideo
               ref={reelRef}

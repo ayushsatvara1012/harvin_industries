@@ -13,7 +13,7 @@ export function AdvantageSection() {
   return (
     <section id="advantage" className="relative scroll-mt-20 bg-brand-ink text-white overflow-hidden">
       {/* Photograph filling the right of the band */}
-      <div className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[46%]">
+      <div className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[46%] skeleton-media-dark">
         <Image
           src="/images/mockup/advantage-warehouse-4k.webp"
           alt="Industrial Block Inventory and Warehouse"

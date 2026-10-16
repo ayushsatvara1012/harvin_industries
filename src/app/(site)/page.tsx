@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import {
   Hero,
   AboutSnippet,
   LatestProducts,
+  ProductsSectionSkeleton,
   ManufacturingSection,
   AdvantageSection,
   IndustriesSection,
@@ -19,7 +21,9 @@ export default function Home() {
         <AboutSnippet />
 
         {/* 3. Our Products Section with Integrated Stats Strip */}
-        <LatestProducts />
+        <Suspense fallback={<ProductsSectionSkeleton />}>
+          <LatestProducts />
+        </Suspense>
 
         {/* 4. Our Manufacturing Section */}
         <ManufacturingSection />

@@ -7,3 +7,4 @@ export { CloudinaryImage } from "./CloudinaryImage";
 export { IsometricLines } from "./IsometricLines";
 export { LazyVideo } from "./LazyVideo";
 export type { LazyVideoHandle } from "./LazyVideo";
+export { Skeleton } from "./Skeleton";

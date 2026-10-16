@@ -107,7 +107,7 @@ export function Hero() {
     >
       {/* Background Media Layers: Video for Slide 01, Images for Slide 02 & 03 with smooth transitions */}
       <div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 skeleton-media-dark"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >

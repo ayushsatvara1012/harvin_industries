@@ -8,3 +8,4 @@ export { ProductionTable } from "./ProductionTable";
 export { FeatureGroups } from "./FeatureGroups";
 export { PressStandards } from "./PressStandards";
 export { ModelComparison } from "./ModelComparison";
+export { ProductCardSkeleton } from "./ProductCardSkeleton";

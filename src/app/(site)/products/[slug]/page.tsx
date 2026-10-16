@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button, Icon, SectionHeader } from "@/components/ui";
 import {
   ProductCard,
+  ProductCardSkeleton,
   ProductGallery,
   ProductionTable,
   FeatureGroups,
   SpecTable,
   PressStandards,
 } from "@/components/products";
-import { CATEGORY_LABELS } from "@/lib/product-types";
+import { CATEGORY_LABELS, type Product } from "@/lib/product-types";
 import { getProductBySlug, getPublishedSlugs, getRelatedProducts } from "@/lib/products";
 import { cloudinaryUrl } from "@/lib/cloudinary";
 import { toJsonLd } from "@/lib/json-ld";
@@ -51,12 +53,46 @@ export async function generateMetadata(
   };
 }
 
+function RelatedSection({ children }: { children: React.ReactNode }) {
+  return (
+    <section className="bg-brand-surface-alt">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Related Machines" size="md">
+          You may also need
+        </SectionHeader>
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{children}</div>
+      </div>
+    </section>
+  );
+}
+
+function RelatedProductsSkeleton() {
+  return (
+    <RelatedSection>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <ProductCardSkeleton key={i} />
+      ))}
+    </RelatedSection>
+  );
+}
+
+async function RelatedProducts({ product }: { product: Product }) {
+  const related = await getRelatedProducts(product);
+  if (related.length === 0) return null;
+  return (
+    <RelatedSection>
+      {related.map((item) => (
+        <ProductCard key={item.slug} product={item} />
+      ))}
+    </RelatedSection>
+  );
+}
+
 export default async function ProductDetailPage(props: PageProps<"/products/[slug]">) {
   const { slug } = await props.params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const related = await getRelatedProducts(product);
   const quoteHref = `/contact?product=${product.slug}`;
 
   const productJsonLd = {
@@ -215,20 +251,9 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
           </section>
         )}
 
-        {related.length > 0 && (
-          <section className="bg-brand-surface-alt">
-            <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-              <SectionHeader eyebrow="Related Machines" size="md">
-                You may also need
-              </SectionHeader>
-              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {related.map((item) => (
-                  <ProductCard key={item.slug} product={item} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
+        <Suspense fallback={<RelatedProductsSkeleton />}>
+          <RelatedProducts product={product} />
+        </Suspense>
       </main>
     </>
   );

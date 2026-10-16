@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
       href={`/products/${product.slug}`}
       className="group rounded-xl border border-brand-border bg-brand-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand-accent/40 hover:shadow-lg"
     >
-      <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg bg-brand-surface">
+      <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg skeleton-media">
         {image ? (
           <CloudinaryImage
             publicId={image.publicId}

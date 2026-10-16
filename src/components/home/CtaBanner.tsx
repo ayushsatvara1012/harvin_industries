@@ -5,7 +5,7 @@ export function CtaBanner() {
   return (
     <section className="relative overflow-hidden bg-brand-ink">
       {/* Full-bleed photo anchored to the right edge */}
-      <div className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[42%]">
+      <div className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[42%] skeleton-media-dark">
         <Image
           src="/images/mockup/cta-blocks-4k.webp"
           alt="Manufactured Concrete Blocks Ready For Dispatch"

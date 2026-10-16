@@ -172,3 +172,46 @@ body::-webkit-scrollbar {
   }
 }
 
+
+/* Skeleton loading. `.skeleton` is a standalone placeholder block; the
+   `.skeleton-media` classes sit under an image or video frame and show the
+   shimmer until the picture paints over it (the shimmer is a ::before so the
+   later, positioned <img> covers it). Reduced motion stops the sweep. */
+.skeleton,
+.skeleton-media {
+  background-color: var(--color-brand-border);
+}
+
+.skeleton-dark,
+.skeleton-media-dark {
+  background-color: var(--color-brand-dark-surface);
+}
+
+.skeleton,
+.skeleton-dark {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after,
+.skeleton-dark::after,
+.skeleton-media::before,
+.skeleton-media-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.6), transparent);
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-dark::after,
+.skeleton-media-dark::before {
+  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.08), transparent);
+}
+
+@keyframes skeleton-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}

@@ -46,7 +46,7 @@ export async function LatestProducts() {
               href={`/products/${product.slug}`}
               className="group flex flex-col overflow-hidden rounded-sm border border-brand-border bg-white transition-colors duration-300 hover:border-brand-accent/40"
             >
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-200">
+              <div className="relative aspect-[4/3] w-full overflow-hidden skeleton-media">
                 {product.images[0] ? (
                   <CloudinaryImage
                     publicId={product.images[0].publicId}

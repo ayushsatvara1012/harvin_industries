@@ -5,7 +5,13 @@ export const OG_IMAGE = "/hero_Image.webp";
 
 export const CANONICAL_URL = "https://harvinindustries.com";
 
-const ALLOWED_SITE_URLS = [CANONICAL_URL, "https://harvin-industries.vercel.app"];
+// Every host except CANONICAL_URL is a staging host: it renders with its own origin
+// but stays noindex until the real domain is live.
+const ALLOWED_SITE_URLS = [
+  CANONICAL_URL,
+  "https://harvin-industries.vercel.app",
+  "https://harvin-industries.harvin-industries.workers.dev",
+];
 const LOCALHOST = /^http:\/\/localhost:\d{2,5}$/;
 
 function resolveSiteUrl() {

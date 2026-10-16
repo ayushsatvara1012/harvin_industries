@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { CloudinaryImage, Icon, SectionHeader } from "@/components/ui";
 import { CATEGORY_LABELS } from "@/lib/product-types";
 import { OUTPUT_FORMS } from "@/data/catalog-content";
@@ -140,8 +139,8 @@ export async function LatestProducts() {
                   {/* 3D Photorealistic Render Showcase */}
                   <div className="my-2.5 flex items-center justify-center py-1">
                     <div className="relative w-24 h-24 sm:w-28 sm:h-28 drop-shadow-md">
-                      <Image
-                        src={form.image}
+                      <CloudinaryImage
+                        publicId={form.image}
                         alt={`${form.name} 3D realistic masonry model`}
                         fill
                         sizes="(min-width: 1280px) 15vw, (min-width: 640px) 25vw, 40vw"

@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { Button, Icon } from "@/components/ui";
+import { Button, CloudinaryImage, Icon } from "@/components/ui";
+import { MEDIA } from "@/data/media";
 
 const SLIDES = [
   {
@@ -13,7 +13,7 @@ const SLIDES = [
     description:
       "Advanced machinery for fly ash bricks, concrete blocks and modern construction materials.",
     type: "image" as const,
-    src: "/hero_Image.webp",
+    src: MEDIA.heroBanner,
     alt: "Harvin Industries Heavy-Duty Brick & Block Machine Plant",
   },
   {
@@ -24,7 +24,7 @@ const SLIDES = [
     description:
       "Heavy-duty hydraulic press technology delivering unmatched cycle speeds and dimensional accuracy.",
     type: "image" as const,
-    src: "/images/mockup/product-automatic-plant-4k.webp",
+    src: MEDIA.automaticPlant,
     alt: "Automatic Hydraulic Brick Press Plant in Operation",
   },
   {
@@ -35,7 +35,7 @@ const SLIDES = [
     description:
       "Complete automatic plant solutions tailored for high-volume commercial brick and block production.",
     type: "image" as const,
-    src: "/images/mockup/factory-hq-4k.webp",
+    src: MEDIA.factoryHq,
     alt: "Harvin Industries Modern Manufacturing Facility",
   },
 ];
@@ -120,8 +120,8 @@ export function Hero() {
                 isCurrent ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
             >
-              <Image
-                src={s.src}
+              <CloudinaryImage
+                publicId={s.src}
                 alt={s.alt}
                 fill
                 priority={idx === 0}

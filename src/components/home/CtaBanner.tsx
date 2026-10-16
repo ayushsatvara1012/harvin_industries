@@ -1,13 +1,13 @@
-import Image from "next/image";
-import { Button } from "@/components/ui";
+import { Button, CloudinaryImage } from "@/components/ui";
+import { MEDIA } from "@/data/media";
 
 export function CtaBanner() {
   return (
     <section className="relative overflow-hidden bg-brand-ink">
       {/* Full-bleed photo anchored to the right edge */}
       <div className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[42%] skeleton-media-dark">
-        <Image
-          src="/images/mockup/cta-blocks-4k.webp"
+        <CloudinaryImage
+          publicId={MEDIA.ctaBlocks}
           alt="Manufactured Concrete Blocks Ready For Dispatch"
           fill
           sizes="42vw"
@@ -42,8 +42,8 @@ export function CtaBanner() {
 
         {/* Photo stacks beneath the copy on small screens */}
         <div className="relative mt-10 aspect-[16/7] w-full overflow-hidden lg:hidden">
-          <Image
-            src="/images/mockup/cta-blocks-4k.webp"
+          <CloudinaryImage
+            publicId={MEDIA.ctaBlocks}
             alt="Manufactured Concrete Blocks Ready For Dispatch"
             fill
             sizes="100vw"

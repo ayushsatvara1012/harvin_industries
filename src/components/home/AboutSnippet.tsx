@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button, Icon, LazyVideo } from "@/components/ui";
+import { MEDIA, VIDEOS } from "@/data/media";
 
 const TABS = [
   {
@@ -98,8 +99,8 @@ export function AboutSnippet() {
         {/* 2. Video Stage: Stays inside view width with padding, native 16:9, zero text */}
         <div className="mt-10 sm:mt-12 relative w-full aspect-video overflow-hidden rounded-2xl sm:rounded-3xl border border-brand-border skeleton-media-dark shadow-2xl">
           <LazyVideo
-            src="/Harvin_animation_timeline.mp4"
-            poster="/images/mockup/factory-hq-4k.webp"
+            videoId={VIDEOS.companyTimeline}
+            posterId={MEDIA.factoryHq}
             posterAlt="Harvin Industries manufacturing evolution timeline: Ancient hand mould to modern hydraulic automation"
             sizes="(min-width: 1280px) 1200px, 100vw"
             className="absolute inset-0 h-full w-full"

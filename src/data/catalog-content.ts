@@ -1,4 +1,5 @@
 import type { SpecRow } from "@/lib/product-types";
+import { formImage } from "@/data/media";
 
 // The three press models share identical pressing, compaction and cycle figures.
 // Stating them once here keeps the three detail pages from reading as copies of
@@ -26,13 +27,13 @@ export const PRESS_COMMON_STANDARDS: SpecRow[] = [
 export type OutputForm = { name: string; icon: string; detail: string; image: string };
 
 export const OUTPUT_FORMS: OutputForm[] = [
-  { name: "Fly Ash Brick", icon: "view_module", detail: "230 × 110 × 75 mm", image: "/images/forms/fly-ash-brick.webp" },
-  { name: "Solid Brick", icon: "rectangle", detail: "300 × 200 × 200 mm", image: "/images/forms/solid-brick.webp" },
-  { name: "Hollow Block", icon: "grid_view", detail: "390 × 190 × 190 mm", image: "/images/forms/hollow-block.webp" },
-  { name: "I-Shape Paver", icon: "extension", detail: "200 × 165 × 60 mm", image: "/images/forms/i-shape-paver.webp" },
-  { name: "Zig Zag Paver", icon: "stairs", detail: "225 × 112.5 × 80 mm", image: "/images/forms/zig-zag-paver.webp" },
-  { name: "Retention Block", icon: "fence", detail: "Optional mould", image: "/images/forms/retention-block.webp" },
-  { name: "Curb Block", icon: "road", detail: "Optional mould", image: "/images/forms/curb-block.webp" },
-  { name: "Curb Stone", icon: "straighten", detail: "Optional mould", image: "/images/forms/curb-stone.webp" },
-  { name: "Drain Block", icon: "water_drop", detail: "Optional mould", image: "/images/forms/drain-block.webp" },
+  { name: "Fly Ash Brick", icon: "view_module", detail: "230 × 110 × 75 mm", image: formImage("fly-ash-brick") },
+  { name: "Solid Brick", icon: "rectangle", detail: "300 × 200 × 200 mm", image: formImage("solid-brick") },
+  { name: "Hollow Block", icon: "grid_view", detail: "390 × 190 × 190 mm", image: formImage("hollow-block") },
+  { name: "I-Shape Paver", icon: "extension", detail: "200 × 165 × 60 mm", image: formImage("i-shape-paver") },
+  { name: "Zig Zag Paver", icon: "stairs", detail: "225 × 112.5 × 80 mm", image: formImage("zig-zag-paver") },
+  { name: "Retention Block", icon: "fence", detail: "Optional mould", image: formImage("retention-block") },
+  { name: "Curb Block", icon: "road", detail: "Optional mould", image: formImage("curb-block") },
+  { name: "Curb Stone", icon: "straighten", detail: "Optional mould", image: formImage("curb-stone") },
+  { name: "Drain Block", icon: "water_drop", detail: "Optional mould", image: formImage("drain-block") },
 ];

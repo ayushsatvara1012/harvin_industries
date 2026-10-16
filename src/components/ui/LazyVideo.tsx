@@ -1,6 +1,7 @@
 "use client";
 
-import Image from "next/image";
+import { cloudinaryUrl, cloudinaryVideoUrl } from "@/lib/cloudinary";
+import { CloudinaryImage } from "./CloudinaryImage";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 export type LazyVideoHandle = {
@@ -8,8 +9,10 @@ export type LazyVideoHandle = {
 };
 
 type LazyVideoProps = {
-  src: string;
-  poster: string;
+  /** Cloudinary public ID of the video. */
+  videoId: string;
+  /** Cloudinary public ID of the poster image. */
+  posterId: string;
   posterAlt: string;
   className?: string;
   sizes?: string;
@@ -20,12 +23,12 @@ type LazyVideoProps = {
 /**
  * Mounts <video> only once it nears the viewport (IntersectionObserver) and
  * never mounts it at all under prefers-reduced-motion — the poster (routed
- * through next/image) stands in until then. A display:none ancestor (e.g. a
+ * through Cloudinary) stands in until then. A display:none ancestor (e.g. a
  * `hidden lg:block` responsive twin) never intersects, so an off-screen copy
  * never downloads its source either.
  */
 export const LazyVideo = forwardRef<LazyVideoHandle, LazyVideoProps>(function LazyVideo(
-  { src, poster, posterAlt, className, sizes = "100vw", showControls = false },
+  { videoId, posterId, posterAlt, className, sizes = "100vw", showControls = false },
   ref
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,8 +74,8 @@ export const LazyVideo = forwardRef<LazyVideoHandle, LazyVideoProps>(function La
       {shouldLoad && !reducedMotion ? (
         <video
           ref={videoRef}
-          src={src}
-          poster={poster}
+          src={cloudinaryVideoUrl(videoId)}
+          poster={cloudinaryUrl(posterId, 1280)}
           autoPlay
           loop
           muted
@@ -81,7 +84,7 @@ export const LazyVideo = forwardRef<LazyVideoHandle, LazyVideoProps>(function La
           className="h-full w-full object-cover"
         />
       ) : (
-        <Image src={poster} alt={posterAlt} fill sizes={sizes} className="object-cover" />
+        <CloudinaryImage publicId={posterId} alt={posterAlt} fill sizes={sizes} className="object-cover" />
       )}
 
       {showControls && shouldLoad && !reducedMotion && (

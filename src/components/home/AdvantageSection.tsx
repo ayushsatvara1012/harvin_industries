@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { Icon, SectionHeader } from "@/components/ui";
+import { CloudinaryImage, Icon, SectionHeader } from "@/components/ui";
+import { MEDIA } from "@/data/media";
 
 const ADVANTAGES = [
   { icon: "shield", title: "Robust & Reliable Machines" },
@@ -14,8 +14,8 @@ export function AdvantageSection() {
     <section id="advantage" className="relative scroll-mt-20 bg-brand-ink text-white overflow-hidden">
       {/* Photograph filling the right of the band */}
       <div className="absolute inset-y-0 right-0 z-0 hidden lg:block w-[46%] skeleton-media-dark">
-        <Image
-          src="/images/mockup/advantage-warehouse-4k.webp"
+        <CloudinaryImage
+          publicId={MEDIA.advantageWarehouse}
           alt="Industrial Block Inventory and Warehouse"
           fill
           sizes="46vw"
@@ -76,8 +76,8 @@ export function AdvantageSection() {
 
         {/* Small screens get the photo stacked underneath */}
         <div className="relative mt-12 aspect-[16/9] w-full overflow-hidden lg:hidden">
-          <Image
-            src="/images/mockup/advantage-warehouse-4k.webp"
+          <CloudinaryImage
+            publicId={MEDIA.advantageWarehouse}
             alt="Industrial Block Inventory and Warehouse"
             fill
             sizes="100vw"

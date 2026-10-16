@@ -3,8 +3,13 @@ import { Inter, Forum, Oswald } from "next/font/google";
 import { toJsonLd } from "@/lib/json-ld";
 import { COMPANY_INTRO } from "@/data/company";
 import { ADDRESS_LINES, EMAIL, PHONE } from "@/data/contact";
-import { IS_INDEXABLE, OG_IMAGE, ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
+import { cloudinaryCoverUrl, cloudinaryOriginalUrl } from "@/lib/cloudinary";
+import { BRAND, MEDIA } from "@/data/media";
+import { IS_INDEXABLE, ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
+
+const LOGO_URL = cloudinaryOriginalUrl(BRAND.logo, "svg");
+const OG_IMAGE = cloudinaryCoverUrl(MEDIA.heroBanner, 1200, 630);
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,14 +41,14 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "/harvin_logo.svg",
+    icon: LOGO_URL,
   },
   openGraph: {
     title,
     description,
     url: "/",
     siteName: SITE_NAME,
-    images: [{ url: OG_IMAGE }],
+    images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
     locale: "en_IN",
     type: "website",
   },
@@ -63,7 +68,7 @@ const siteJsonLd = {
       "@id": ORGANIZATION_ID,
       name: SITE_NAME,
       url: SITE_URL,
-      logo: `${SITE_URL}/harvin_logo.svg`,
+      logo: LOGO_URL,
       description: COMPANY_INTRO,
       email: EMAIL,
       telephone: PHONE,

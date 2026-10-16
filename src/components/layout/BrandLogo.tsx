@@ -5,7 +5,7 @@ interface BrandLogoProps {
   className?: string;
 }
 
-/* Full Harvin lockup, inlined from public/Harvin_brand_logo.svg. The artwork's
+/* Full Harvin lockup, inlined from the original in Cloudinary (BRAND.lockup). The artwork's
    black is swapped for currentColor so the mark can sit on the dark navbar
    without losing its yellow accent. */
 export function BrandLogo({ variant = "light", className = "" }: BrandLogoProps) {

@@ -9,7 +9,7 @@ const contentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: blob: https://res.cloudinary.com",
-  "media-src 'self'",
+  "media-src 'self' https://res.cloudinary.com",
   "connect-src 'self' https://api.cloudinary.com",
   "frame-src https://www.google.com",
   "object-src 'none'",

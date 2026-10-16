@@ -1,38 +1,38 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
-import { Button, LazyVideo, SectionHeader, type LazyVideoHandle } from "@/components/ui";
+import { Button, CloudinaryImage, LazyVideo, SectionHeader, type LazyVideoHandle } from "@/components/ui";
+import { MEDIA, VIDEOS } from "@/data/media";
 
 const PROCESS_STEPS = [
   {
     step: "01",
     title: "Raw Material\n& Fabrication",
-    image: "/images/mockup/mfg-fabrication-4k.webp",
+    image: MEDIA.mfgFabrication,
     alt: "Raw Material and Steel Fabrication",
   },
   {
     step: "02",
     title: "Machining",
-    image: "/images/mockup/mfg-machining-4k.webp",
+    image: MEDIA.mfgMachining,
     alt: "Precision CNC Machining",
   },
   {
     step: "03",
     title: "Assembly",
-    image: "/images/mockup/mfg-assembly-4k.webp",
+    image: MEDIA.mfgAssembly,
     alt: "Heavy Industrial Machine Assembly",
   },
   {
     step: "04",
     title: "Testing &\nQuality Check",
-    image: "/images/mockup/mfg-testing-4k.webp",
+    image: MEDIA.mfgTesting,
     alt: "Control System Testing and Quality Check",
   },
   {
     step: "05",
     title: "Final Dispatch",
-    image: "/images/mockup/mfg-dispatch-4k.webp",
+    image: MEDIA.mfgDispatch,
     alt: "Machine Loading and Final Dispatch",
   },
 ];
@@ -65,8 +65,8 @@ export function ManufacturingSection() {
                 className="relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl skeleton-media-dark aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] shadow-md"
               >
                 {/* Full-bleed Photo */}
-                <Image
-                  src={step.image}
+                <CloudinaryImage
+                  publicId={step.image}
                   alt={step.alt}
                   fill
                   sizes="(min-width: 1024px) 18vw, (min-width: 640px) 30vw, 45vw"
@@ -135,8 +135,8 @@ export function ManufacturingSection() {
           >
             <LazyVideo
               ref={reelRef}
-              src="/harvin_animation.mp4"
-              poster="/images/mockup/hero-plant-4k.webp"
+              videoId={VIDEOS.manufacturingReel}
+              posterId={MEDIA.heroPlant}
               posterAlt="Harvin Industries automated manufacturing plant in operation"
               sizes="100vw"
               className="absolute inset-0"

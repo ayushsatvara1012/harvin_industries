@@ -61,7 +61,13 @@ brand/company facts pulled from the brochure.
 - Server Components by default; `"use client"` only where interactivity is needed.
 - All CMS/admin routes live under `/admin` and are protected by middleware — never
   render admin data on a page that skips the auth check.
-- Product images/brochures are never committed to the repo — Cloudinary only.
+- No image or video is ever committed to the repo — Cloudinary only. That covers
+  product photos (managed in `/admin`) and all site imagery, hero/section videos,
+  logos and brochure sources (`harvin/site/*`, `harvin/source/*`). Site media is
+  referenced by public ID from `src/data/media.ts`; render it with
+  `CloudinaryImage` or `LazyVideo`, never a `/path` in `public/`. To add or swap a
+  picture, upload it in the Cloudinary console and use its ID. The only binary left
+  in the repo is `src/app/favicon.ico` (the app router needs it at that path).
 - Env vars (`DATABASE_URL`, `CLOUDINARY_*`, `NEXTAUTH_SECRET`, etc.) live in `.env.local`,
   never committed. `.env.example` documents required keys with no real values.
 - The Prisma schema is the single source of truth for a product's shape — don't

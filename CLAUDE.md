@@ -28,7 +28,9 @@ brand/company facts pulled from the brochure.
   is fill-only — it fails contrast as text on light backgrounds, use
   `accent-text` there instead. Tokens live in `src/app/globals.css` as
   `--color-brand-*` (Tailwind v4 `@theme`, not `tailwind.config.ts`) — use
-  `brand-*` Tailwind classes, never hardcode these hex values inline.
+  `brand-*` Tailwind classes, never hardcode these hex values inline. The logo
+  mark's own highlight stripe is `brand-logo-yellow` (`#ffee00`), deliberately
+  separate from the UI yellow; use the `<Logo />` component, never inline the SVG.
 - Fonts: **Forum** (serif display, weight 400) for headings via `font-display`,
   **Inter** for body via `font-sans` — loaded in `src/app/layout.tsx`.
 - Icons: Google Material Symbols Outlined, loaded via stylesheet link in

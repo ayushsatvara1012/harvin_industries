@@ -12,7 +12,7 @@ export function Logo({ className = "" }: { className?: string }) {
       <path d="M56.1934 222.156L79.2995 235.513V56.9193L56.1934 70.2758V222.156Z" fill="currentColor"/>
       <path d="M242.282 199.05L219.176 212.351V103.357L242.282 116.629V199.05Z" fill="currentColor"/>
       <path d="M200.578 221.931L177.472 235.287V56.6938L200.578 70.0502V221.931Z" fill="currentColor"/>
-      <path d="M96.0372 85.6336V46.9731L119.143 33.6448V98.3701L96.0372 85.6336Z" fill="#FFEE00"/>
+      <path d="M96.0372 85.6336V46.9731L119.143 33.6448V98.3701L96.0372 85.6336Z" className="fill-brand-logo-yellow"/>
       <path d="M119.143 144.977V258.394L96.0372 245.065V105.351L137.339 129.197V33.6445L160.424 46.9728V168.81L119.143 144.977Z" fill="currentColor"/>
       <path d="M160.847 244.953L137.741 258.394V175.099L149.294 181.794L160.847 188.489V244.953Z" fill="currentColor"/>
     </svg>

@@ -23,9 +23,12 @@
   /* Deep near-black for body copy on light backgrounds (#272d37 / gray-800) */
   --color-brand-text-secondary: #272d37;
   --color-brand-border: #e5e7eb;
+  /* The logo artwork's own highlight stripe; deliberately not the UI yellow. */
+  --color-brand-logo-yellow: #ffee00;
 }
 
 @theme inline {
+  --color-brand-logo-yellow: var(--color-brand-logo-yellow);
   --color-brand-ink: var(--color-brand-ink);
   --color-brand-dark-card: var(--color-brand-dark-card);
   --color-brand-dark-surface: var(--color-brand-dark-surface);

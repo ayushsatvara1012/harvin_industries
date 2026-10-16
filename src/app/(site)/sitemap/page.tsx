@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Eyebrow, IsometricLines } from "@/components/ui";
 import { getAllProducts } from "@/lib/products";
 import { CATEGORY_LABELS, type Product } from "@/lib/product-types";
-import { SITE_NAME } from "@/lib/site";
+import { OG_IMAGE, OG_IMAGES, SITE_NAME } from "@/lib/site";
 
 const title = "Sitemap — Harvin Industries";
 const description = "Every page on the Harvin Industries website: company, brick and block making machines, contact and legal.";
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/sitemap" },
-  openGraph: { title, description, url: "/sitemap", siteName: SITE_NAME, type: "website" },
-  twitter: { card: "summary", title, description },
+  openGraph: { title, description, url: "/sitemap", siteName: SITE_NAME, type: "website", images: OG_IMAGES },
+  twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
 };
 
 const COMPANY_LINKS = [

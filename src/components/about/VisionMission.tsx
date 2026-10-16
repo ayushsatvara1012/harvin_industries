@@ -28,9 +28,11 @@ export function VisionMission() {
                 key={pillar.title}
                 className="relative flex flex-col gap-4 bg-white p-6 sm:p-8"
               >
-                <span className="font-stat pointer-events-none absolute right-5 top-4 text-[64px] leading-none text-brand-border/70">
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
+                <span
+                  aria-hidden="true"
+                  data-num={String(idx + 1).padStart(2, "0")}
+                  className="font-stat pointer-events-none absolute right-5 top-4 text-[64px] leading-none text-brand-border/70 before:content-[attr(data-num)]"
+                />
 
                 <span className="relative flex h-12 w-12 items-center justify-center rounded-sm border border-brand-yellow/40 bg-brand-yellow/10 text-brand-accent-text">
                   <Icon name={pillar.icon} className="text-[24px]" />

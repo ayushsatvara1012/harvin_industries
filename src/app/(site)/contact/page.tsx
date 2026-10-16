@@ -3,7 +3,7 @@ import { ContactHero, ContactMap } from "@/components/contact";
 import { getAllProducts, getProductBySlug } from "@/lib/products";
 import { ADDRESS_LINES, EMAIL, GSTIN, PHONE } from "@/data/contact";
 import { toJsonLd } from "@/lib/json-ld";
-import { ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
+import { OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const title = "Contact & Quotations — Harvin Industries";
 const description =
@@ -21,11 +21,13 @@ export const metadata: Metadata = {
     url: "/contact",
     siteName: SITE_NAME,
     type: "website",
+    images: OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [OG_IMAGE],
   },
 };
 

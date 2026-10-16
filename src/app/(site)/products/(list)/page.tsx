@@ -10,7 +10,7 @@ import {
 } from "@/components/products";
 import { type Category, type Product } from "@/lib/product-types";
 import { getAllProducts } from "@/lib/products";
-import { SITE_NAME } from "@/lib/site";
+import { OG_IMAGE, OG_IMAGES, SITE_NAME } from "@/lib/site";
 
 const title = "Products — Harvin Industries";
 const description =
@@ -28,11 +28,13 @@ export const metadata: Metadata = {
     url: "/products",
     siteName: SITE_NAME,
     type: "website",
+    images: OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [OG_IMAGE],
   },
 };
 

@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { AboutHero, VisionMission, KeyFactors, FounderMessage } from "@/components/about";
 import { COMPANY_INTRO } from "@/data/company";
 import { toJsonLd } from "@/lib/json-ld";
-import { ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
+import { OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const title = "About Us — Harvin Industries";
 const description =
-  "Harvin Industries is an ISO 9001:2015 certified, Ahmedabad-based manufacturer of fly ash brick, concrete brick, and paver block making machines. Our vision, mission, and the people behind the machines.";
+  "ISO 9001:2015 certified Ahmedabad manufacturer of fly ash brick, concrete block and paver block making machines. Our vision, mission and the people behind them.";
 
 export const metadata: Metadata = {
   title,
@@ -20,11 +20,13 @@ export const metadata: Metadata = {
     url: "/about",
     siteName: SITE_NAME,
     type: "website",
+    images: OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [OG_IMAGE],
   },
 };
 

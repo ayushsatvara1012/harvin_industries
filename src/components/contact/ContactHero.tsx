@@ -89,7 +89,7 @@ export function ContactHero({
                   href="https://www.google.com/maps/search/?api=1&query=NK+Industrial+Park+Bakrol+Bujrang+Ahmedabad+382430"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-yellow hover:underline"
+                  className="mt-2 inline-flex min-h-6 items-center gap-1 text-xs font-semibold text-brand-yellow hover:underline"
                 >
                   <span>View on Google Maps</span>
                   <Icon name="arrow_forward" className="text-xs" />

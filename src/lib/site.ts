@@ -1,4 +1,19 @@
+import { MEDIA } from "@/data/media";
+import { cloudinaryCoverUrl } from "@/lib/cloudinary";
+
 export const SITE_NAME = "Harvin Industries";
+
+// Link-preview image. A page that sets its own openGraph replaces the layout's,
+// so every page spreads these in rather than relying on inheritance.
+export const OG_IMAGE = cloudinaryCoverUrl(MEDIA.heroBanner, 1200, 630);
+export const OG_IMAGES = [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Harvin Industries brick and block making machines" }];
+
+// Search snippets cut off near 160 characters; break on a word and add an ellipsis.
+export function metaDescription(text: string, max = 158): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  return `${clean.slice(0, max - 1).replace(/\s+\S*$/, "")}…`;
+}
 
 export const CANONICAL_URL = "https://harvinindustries.com";
 

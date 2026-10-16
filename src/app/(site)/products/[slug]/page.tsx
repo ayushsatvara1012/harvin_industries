@@ -16,7 +16,7 @@ import { CATEGORY_LABELS, type Product } from "@/lib/product-types";
 import { getProductBySlug, getPublishedSlugs, getRelatedProducts } from "@/lib/products";
 import { cloudinaryUrl } from "@/lib/cloudinary";
 import { toJsonLd } from "@/lib/json-ld";
-import { ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
+import { metaDescription, ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
   return (await getPublishedSlugs()).map((slug) => ({ slug }));
@@ -28,17 +28,18 @@ export async function generateMetadata(
   const { slug } = await props.params;
   const product = await getProductBySlug(slug);
   if (!product) return {};
-  const title = `${product.name} — Harvin Industries`;
+  const title = `${product.name} ${CATEGORY_LABELS[product.category]} — Harvin Industries`;
+  const description = metaDescription(`${product.tagline} ${product.description}`);
   const url = `/products/${product.slug}`;
   return {
     title,
-    description: product.tagline,
+    description,
     alternates: {
       canonical: url,
     },
     openGraph: {
       title,
-      description: product.tagline,
+      description,
       url,
       siteName: SITE_NAME,
       type: "website",
@@ -47,7 +48,7 @@ export async function generateMetadata(
     twitter: {
       card: "summary_large_image",
       title,
-      description: product.tagline,
+      description,
       images: product.images[0] ? [cloudinaryUrl(product.images[0].publicId, 1200)] : undefined,
     },
   };

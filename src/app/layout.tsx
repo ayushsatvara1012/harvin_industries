@@ -3,13 +3,12 @@ import { Inter, Forum, Oswald } from "next/font/google";
 import { toJsonLd } from "@/lib/json-ld";
 import { COMPANY_INTRO } from "@/data/company";
 import { ADDRESS_LINES, EMAIL, PHONE } from "@/data/contact";
-import { cloudinaryCoverUrl, cloudinaryOriginalUrl } from "@/lib/cloudinary";
-import { BRAND, MEDIA } from "@/data/media";
-import { IS_INDEXABLE, ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
+import { cloudinaryOriginalUrl } from "@/lib/cloudinary";
+import { BRAND } from "@/data/media";
+import { IS_INDEXABLE, OG_IMAGE, OG_IMAGES, ORGANIZATION_ID, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const LOGO_URL = cloudinaryOriginalUrl(BRAND.logo, "svg");
-const OG_IMAGE = cloudinaryCoverUrl(MEDIA.heroBanner, 1200, 630);
 
 const inter = Inter({
   variable: "--font-inter",
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
     description,
     url: "/",
     siteName: SITE_NAME,
-    images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
+    images: OG_IMAGES,
     locale: "en_IN",
     type: "website",
   },

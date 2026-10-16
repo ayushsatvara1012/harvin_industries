@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LegalList, LegalPage, LegalSection, type LegalSectionLink } from "@/components/legal";
 import { ADDRESS_LINES, EMAIL, GSTIN, PHONE } from "@/data/contact";
-import { SITE_NAME } from "@/lib/site";
+import { OG_IMAGE, OG_IMAGES, SITE_NAME } from "@/lib/site";
 
 const title = "Privacy Policy — Harvin Industries";
 const description =
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/privacy" },
-  openGraph: { title, description, url: "/privacy", siteName: SITE_NAME, type: "website" },
-  twitter: { card: "summary", title, description },
+  openGraph: { title, description, url: "/privacy", siteName: SITE_NAME, type: "website", images: OG_IMAGES },
+  twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
 };
 
 const SECTIONS: LegalSectionLink[] = [

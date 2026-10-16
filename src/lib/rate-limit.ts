@@ -1,7 +1,7 @@
 import "server-only";
 
 import { headers } from "next/headers";
-import { withDb } from "@/lib/db";
+import { withDb, withWakeRetry } from "@/lib/db";
 
 type Limit = { scope: string; max: number; windowSeconds: number };
 
@@ -20,25 +20,30 @@ async function clientKey() {
 export async function isRateLimited({ scope, max, windowSeconds }: Limit): Promise<boolean> {
   try {
     const key = `${scope}:${await clientKey()}`;
-    const rows = await withDb((db) =>
-      db.$transaction([
-        db.$queryRaw<{ count: number }[]>`
-          INSERT INTO "RateLimit" ("key", "count", "windowStart")
-          VALUES (${key}, 1, now())
-          ON CONFLICT ("key") DO UPDATE SET
-            "count" = CASE
-              WHEN "RateLimit"."windowStart" < now() - make_interval(secs => ${windowSeconds}::int) THEN 1
-              ELSE "RateLimit"."count" + 1
-            END,
-            "windowStart" = CASE
-              WHEN "RateLimit"."windowStart" < now() - make_interval(secs => ${windowSeconds}::int) THEN now()
-              ELSE "RateLimit"."windowStart"
-            END
-          RETURNING "count"`,
-        db.$executeRaw`DELETE FROM "RateLimit" WHERE "windowStart" < now() - interval '1 day'`,
-      ]),
+    // A single statement with a wake retry: the free database suspends when idle, and a
+    // transaction here timed out on the first request after a pause, which silently
+    // turned the limit off.
+    const rows = await withWakeRetry((db) =>
+      db.$queryRaw<{ count: number }[]>`
+        INSERT INTO "RateLimit" ("key", "count", "windowStart")
+        VALUES (${key}, 1, now())
+        ON CONFLICT ("key") DO UPDATE SET
+          "count" = CASE
+            WHEN "RateLimit"."windowStart" < now() - make_interval(secs => ${windowSeconds}::int) THEN 1
+            ELSE "RateLimit"."count" + 1
+          END,
+          "windowStart" = CASE
+            WHEN "RateLimit"."windowStart" < now() - make_interval(secs => ${windowSeconds}::int) THEN now()
+            ELSE "RateLimit"."windowStart"
+          END
+        RETURNING "count"`,
     );
-    return rows[0][0].count > max;
+    if (Math.random() < 0.05) {
+      await withDb((db) => db.$executeRaw`DELETE FROM "RateLimit" WHERE "windowStart" < now() - interval '1 day'`).catch(
+        () => {},
+      );
+    }
+    return rows[0].count > max;
   } catch (error) {
     console.error("[rate-limit] could not check the limit", error);
     return false;

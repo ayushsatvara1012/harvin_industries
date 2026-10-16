@@ -3,6 +3,7 @@
 import { createLead } from "@/lib/leads";
 import { getPublishedSlugs } from "@/lib/products";
 import { isValidSlug } from "@/lib/product-schema";
+import { isRateLimited } from "@/lib/rate-limit";
 import { OUTPUT_BANDS, PHONE } from "@/data/contact";
 import type { QuoteFormState } from "@/lib/quote-form";
 
@@ -51,7 +52,11 @@ export async function submitQuoteRequest(
     validSlugs ? validSlugs.has(slug) : isValidSlug(slug);
   const errors: Record<string, string> = {};
 
-  if (values.name.length < 2) errors.name = "Please enter your name.";
+  if (values.name.length < 2 || values.name.length > 100) errors.name = "Please enter your name.";
+  for (const field of ["company", "location"] as const) {
+    if (values[field].length > 200) errors[field] = "Please keep this under 200 characters.";
+  }
+  if (values.email.length > 200) errors.email = "That email address does not look right.";
   if (!PHONE_PATTERN.test(values.phone)) errors.phone = "Please enter a reachable phone number.";
   if (values.email && !EMAIL_PATTERN.test(values.email)) {
     errors.email = "That email address does not look right.";
@@ -69,6 +74,15 @@ export async function submitQuoteRequest(
       status: "error",
       message: "Please check the highlighted fields and try again.",
       errors,
+      values,
+    };
+  }
+
+  if (await isRateLimited({ scope: "contact", max: 5, windowSeconds: 3600 })) {
+    return {
+      status: "error",
+      message: `Too many enquiries from your connection. Please try again later, or call us on ${PHONE}.`,
+      errors: {},
       values,
     };
   }

@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Each distinct width is a separate transform, so a short list keeps the
+    // free Images quota and the Cloudinary cache small.
+    deviceSizes: [640, 828, 1080, 1280, 1920, 2560],
+    imageSizes: [96, 256, 384],
+    minimumCacheTTL: 31536000,
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

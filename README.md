@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Harvin Industries
 
-## Getting Started
+Website and owner CMS for Harvin Industries, a brick-making machine manufacturer in Ahmedabad.
+Public product catalog, contact and quote enquiries, and an owner-only admin under `/admin`.
 
-First, run the development server:
+## Stack
+
+- Next.js (App Router), TypeScript, Tailwind CSS v4
+- Neon Postgres with Prisma (`@prisma/adapter-neon`)
+- Cloudinary for product images
+- Auth.js v5 credentials login for a single owner account
+- Cloudflare Workers through `@opennextjs/cloudflare`
+
+## Setup
 
 ```bash
+npm ci                      # also generates both Prisma clients
+cp .env.example .env.local  # fill in the values
+npx next typegen            # route types, needed before `tsc`
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm run build` reads the catalog, so it needs `DATABASE_URL` set.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Local dev server |
+| `npm run build` | Production build, must pass before merging to `main` |
+| `npm run lint` | Lint, zero warnings before merging |
+| `npm run db:deploy` | Apply pending Prisma migrations |
+| `npm run db:seed` | Seed the catalog |
+| `npm run auth:hash` | Hash the owner password for `OWNER_PASSWORD_HASH` |
+| `npm run preview` | Build and run the Worker locally |
+| `npm run deploy` | Build and deploy to Cloudflare |
 
-## Learn More
+## Docs
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `CLAUDE.md` and `AGENTS.md`: project rules
+- `docs/harvin-industries-plan.md`: sitemap, brand and company facts
+- `docs/dynamic-product-cms-plan.md`: CMS phases, deploy notes and what is left

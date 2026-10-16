@@ -208,10 +208,24 @@ pages do not change behaviour until phase 4 flips the data source.
 
 ## Resume Here (read this first in a new session)
 
-**State (2026-10-15):** Phases 1 to 7 and 8a are done and merged into `main`
-(pushed, tip `5b0f7c1`). `main` is the only branch; the old feature branches were
-deleted after the merge. Nothing from Phases 4 to 7 is **deployed**: the live
-`workers.dev` site still runs the old static-data build and is not broken.
+**State (2026-10-16):** Phases 1 to 7 and 8a are done and merged into `main`
+(pushed, tip `38a0ec3`). `main` is the only branch. Phases 4 to 7 are live on
+`workers.dev`, but the latest `main` is **not deployed yet**: the CSP and security
+headers, rate limiting, media shrink, skeletons and the staging `noindex` all wait
+for the next `! npm run deploy`. The user does not want the main domain deployed
+until they say so; everything should work perfectly on `workers.dev` first.
+
+**Shipped 2026-10-16:** a `RateLimit` table (migration `20261016000000_rate_limit`,
+already applied to Neon) throttles the contact form (5 per hour per IP) and the
+admin login (8 per 15 minutes); it fails open. Videos and images were re-encoded
+(`public/` 14 MB to 7 MB), shimmer skeletons (`ui/Skeleton`, `.skeleton-media`
+classes) cover images, video frames and the home products, related machines,
+contact and admin loading states. `src/lib/site.ts` allows the `workers.dev` origin
+as a noindex staging host: build with
+`NEXT_PUBLIC_SITE_URL=https://harvin-industries.harvin-industries.workers.dev`
+until launch, then leave it empty. The logo stripe is the `brand-logo-yellow` token.
+End-to-end checks (39 route, header and SEO checks, contact and login throttling in
+a browser) all passed; there is no automated test suite yet.
 
 **Phase 7 (leads) shipped:** the contact action stores a `Lead`, `/admin/leads`
 lists them (mark handled, delete), the admin nav shows a new-enquiry count, and a
@@ -234,16 +248,16 @@ a dedicated key.
 
 **Next steps, in order:**
 1. Rotate the Cloudinary key (above).
-2. Deploy Phases 4 to 7: set the Worker secrets below, then the user runs
-   `! npm run deploy` (assistant deploys and some pushes are blocked by the
-   permission classifier). First `DATABASE_URL`:
-   `grep '^DATABASE_URL=' .env.local | cut -d= -f2- | tr -d '"' | npx wrangler secret put DATABASE_URL`
-   Re-check the live routes, unknown slugs, `/contact?product=`, a test enquiry in
-   `/admin/leads`, `/robots.txt`, `/sitemap.xml` and `/llms.txt`.
+2. Deploy the latest `main` to `workers.dev` only (the user runs `! npm run deploy`;
+   the assistant's deploys are blocked by the permission classifier). Worker
+   secrets are already set except the new Cloudinary key. Re-check the live routes,
+   unknown slugs, `/contact?product=`, a test enquiry in `/admin/leads` (delete it
+   after), the response headers, `/robots.txt` and `/sitemap.xml`.
 3. Phase 8b: custom domain, then confirm ISR and `revalidateTag` in production.
    Set `NEXT_PUBLIC_SITE_URL` at build time for any non-default host.
-4. Owner to confirm: a company email, the map pin (still flagged as a placeholder),
-   handover terms, real FAQ content, brochure PDF field (not built).
+4. Owner to confirm: a company email (still a personal Gmail), the map pin (still
+   flagged as a placeholder), handover terms, real FAQ content, brochure PDF field
+   (not built). Optional: Resend email alerts for new enquiries (needs an account).
 
 **Branch rule:** `main` is production. Work on a branch (`feature/`, `bugfix/`,
 `chore/`), merge only when asked, push only when asked. Check

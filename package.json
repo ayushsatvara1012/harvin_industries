@@ -15,7 +15,8 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "auth:hash": "tsx scripts/hash-password.ts"
+    "auth:hash": "tsx scripts/hash-password.ts",
+    "auth:recovery-key": "tsx scripts/recovery-key.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",

@@ -4,6 +4,8 @@ import { NextResponse, type NextRequest } from "next/server";
 // valid. Real verification happens in `requireOwner` / `assertOwner`.
 const SESSION_COOKIES = ["authjs.session-token", "__Secure-authjs.session-token"];
 
+const PUBLIC_ADMIN_PATHS = new Set(["/admin/login", "/admin/forgot-password"]);
+
 function isMalformedPath(pathname: string) {
   try {
     decodeURIComponent(pathname);
@@ -21,7 +23,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL("/page-not-found", request.url), { status: 404 });
   }
 
-  if (!pathname.startsWith("/admin") || pathname === "/admin/login") return NextResponse.next();
+  if (!pathname.startsWith("/admin") || PUBLIC_ADMIN_PATHS.has(pathname)) return NextResponse.next();
 
   if (!SESSION_COOKIES.some((name) => request.cookies.has(name))) {
     return NextResponse.redirect(new URL("/admin/login", request.url));

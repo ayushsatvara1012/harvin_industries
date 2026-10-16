@@ -39,6 +39,9 @@ export default async function PanelLayout({ children }: { children: React.ReactN
                 </span>
               )}
             </Link>
+            <Link href="/admin/account" prefetch={false} className="text-brand-yellow-light">
+              Account
+            </Link>
           </nav>
           <div className="ml-auto flex items-center gap-4 text-sm">
             <Link href="/" target="_blank" className="hidden items-center gap-1 text-white/80 hover:text-white sm:inline-flex">

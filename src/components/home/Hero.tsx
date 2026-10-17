@@ -82,7 +82,6 @@ function getVisibilityServerSnapshot() {
 export function Hero() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
   const [isInView, setIsInView] = useState(true);
 
   const prefersReducedMotion = useSyncExternalStore(
@@ -145,7 +144,7 @@ export function Hero() {
   }, [handleNextSlide, handlePrevSlide]);
 
   // Autoplay timer effect
-  const shouldAutoplay = isPlaying && !isHovered && isInView && isTabVisible && !prefersReducedMotion;
+  const shouldAutoplay = isPlaying && isInView && isTabVisible && !prefersReducedMotion;
 
   useEffect(() => {
     if (!shouldAutoplay) return;
@@ -188,10 +187,6 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsHovered(true)}
-      onBlur={() => setIsHovered(false)}
       className="relative min-h-[calc(100svh-5rem)] lg:min-h-[calc(100svh-5rem)] flex items-center overflow-hidden bg-brand-ink"
       aria-roledescription="carousel"
       aria-label="Hero Machine Showcase"
@@ -294,7 +289,6 @@ export function Hero() {
                             }`}
                             style={{
                               animationDuration: `${AUTOPLAY_INTERVAL_MS}ms`,
-                              animationPlayState: isHovered ? "paused" : "running",
                             }}
                           />
                         )}
@@ -405,7 +399,6 @@ export function Hero() {
                         }`}
                         style={{
                           animationDuration: `${AUTOPLAY_INTERVAL_MS}ms`,
-                          animationPlayState: isHovered ? "paused" : "running",
                         }}
                       />
                     )}

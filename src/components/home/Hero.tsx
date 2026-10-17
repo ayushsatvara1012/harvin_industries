@@ -44,7 +44,7 @@ const SLIDES = [
 const BADGES = [
   { icon: "bolt", line1: "HIGH", line2: "EFFICIENCY" },
   { icon: "verified_user", line1: "RELIABLE", line2: "PERFORMANCE" },
-  { icon: "trending_up", line1: "BUILT", line2: "FOR LONG TERM" },
+  { icon: "trending_up", line1: "LONG-TERM", line2: "DURABILITY" },
 ];
 
 const AUTOPLAY_INTERVAL_MS = 5500;
@@ -344,8 +344,8 @@ export function Hero() {
                     : ""
                 }`}
               >
-                <Icon name={badge.icon} className="text-brand-yellow text-[28px] sm:text-[32px]" />
-                <span className="text-xs sm:text-[13px] font-bold tracking-wider uppercase text-white leading-tight">
+                <Icon name={badge.icon} className="text-brand-yellow text-[28px] sm:text-[32px] shrink-0" />
+                <span className="text-xs sm:text-[13px] font-bold tracking-wider uppercase text-white leading-tight whitespace-nowrap">
                   {badge.line1}
                   <br />
                   {badge.line2}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Button, Icon, LazyVideo } from "@/components/ui";
 import { MEDIA, VIDEOS } from "@/data/media";
 
@@ -46,12 +46,127 @@ const TABS = [
   },
 ];
 
+const AUTOPLAY_INTERVAL_MS = 5500;
+
+function subscribeReducedMotion(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mediaQuery.addEventListener("change", callback);
+  return () => mediaQuery.removeEventListener("change", callback);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getReducedMotionServerSnapshot() {
+  return false;
+}
+
+function subscribeVisibility(callback: () => void) {
+  if (typeof document === "undefined") return () => {};
+  document.addEventListener("visibilitychange", callback);
+  return () => document.removeEventListener("visibilitychange", callback);
+}
+
+function getVisibilitySnapshot() {
+  return document.visibilityState === "visible";
+}
+
+function getVisibilityServerSnapshot() {
+  return true;
+}
+
 export function AboutSnippet() {
   const [activeTab, setActiveTab] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const startTimeRef = useRef<number>(0);
+  const remainingTimeRef = useRef<number>(AUTOPLAY_INTERVAL_MS);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot
+  );
+
+  const isTabVisible = useSyncExternalStore(
+    subscribeVisibility,
+    getVisibilitySnapshot,
+    getVisibilityServerSnapshot
+  );
+
   const currentTab = TABS[activeTab];
+
+  // Observe section visibility so autoplay works strictly when in view
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleNextTab = useCallback(() => {
+    setActiveTab((prev) => (prev + 1) % TABS.length);
+    remainingTimeRef.current = AUTOPLAY_INTERVAL_MS;
+    startTimeRef.current = Date.now();
+  }, []);
+
+  const handleSelectTab = useCallback((index: number) => {
+    setActiveTab(index);
+    remainingTimeRef.current = AUTOPLAY_INTERVAL_MS;
+    startTimeRef.current = Date.now();
+  }, []);
+
+  // Autoplay loop with accurate hover pause and resumption
+  const shouldAutoplay = isInView && isTabVisible && !prefersReducedMotion;
+
+  useEffect(() => {
+    if (!shouldAutoplay || isHovered) {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      return;
+    }
+
+    startTimeRef.current = Date.now();
+    timerRef.current = setTimeout(() => {
+      handleNextTab();
+    }, remainingTimeRef.current);
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [activeTab, shouldAutoplay, isHovered, handleNextTab]);
+
+  const handleMouseEnter = () => {
+    const elapsed = Date.now() - startTimeRef.current;
+    remainingTimeRef.current = Math.max(300, remainingTimeRef.current - elapsed);
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   return (
     <section
+      ref={sectionRef}
       id="about"
       className="relative scroll-mt-20 border-b border-brand-border/60 bg-white py-16 sm:py-20 lg:py-24 overflow-hidden"
     >
@@ -108,38 +223,65 @@ export function AboutSnippet() {
         </div>
 
         {/* 3. Interactive Tabbed Engineering Console - Full max-w-7xl Container */}
-        <div className="mt-8 sm:mt-10 rounded-2xl border border-brand-border bg-brand-surface-alt/40 p-5 sm:p-7 lg:p-8 shadow-xs">
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="mt-8 sm:mt-10 rounded-2xl border border-brand-border bg-brand-surface-alt/40 p-5 sm:p-7 lg:p-8 shadow-xs"
+        >
           {/* Tab Navigation Pill Bar */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 border-b border-brand-border/60 pb-5">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 border-b border-brand-border/60 pb-5">
             {TABS.map((tab, idx) => {
               const isActive = activeTab === idx;
               return (
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActiveTab(idx)}
-                  className={`cursor-pointer group flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                  onClick={() => handleSelectTab(idx)}
+                  className={`cursor-pointer group relative flex flex-col items-stretch overflow-hidden rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
                     isActive
-                      ? "bg-brand-ink text-white shadow-md shadow-brand-ink/20"
+                      ? "bg-brand-ink text-white shadow-md shadow-brand-ink/20 border border-brand-ink"
                       : "bg-white border border-brand-border text-brand-text-secondary hover:border-brand-yellow hover:text-brand-ink"
                   }`}
+                  aria-selected={isActive}
+                  role="tab"
                 >
-                  <Icon
-                    name={tab.icon}
-                    className={`text-[18px] transition-colors ${
-                      isActive
-                        ? "text-brand-yellow"
-                        : "text-brand-text-secondary/70 group-hover:text-brand-yellow"
-                    }`}
-                  />
-                  <span>{tab.label}</span>
+                  <div className="flex items-center gap-2.5 px-4 sm:px-5 pt-2.5 pb-2">
+                    <Icon
+                      name={tab.icon}
+                      className={`text-[18px] transition-colors ${
+                        isActive
+                          ? "text-brand-yellow"
+                          : "text-brand-text-secondary/70 group-hover:text-brand-yellow"
+                      }`}
+                    />
+                    <span>{tab.label}</span>
+                  </div>
+
+                  {/* Progress bar directly under the title button */}
+                  <div className="h-[3px] w-full overflow-hidden bg-white/15">
+                    {isActive ? (
+                      <div
+                        key={`tab-progress-${activeTab}`}
+                        className="h-full bg-brand-yellow origin-left animate-slide-progress"
+                        style={{
+                          animationDuration: `${AUTOPLAY_INTERVAL_MS}ms`,
+                          animationPlayState: isHovered || !shouldAutoplay ? "paused" : "running",
+                        }}
+                      />
+                    ) : (
+                      <div className="h-full w-0" />
+                    )}
+                  </div>
                 </button>
               );
             })}
           </div>
 
           {/* Active Tab Content Panel with Metrics */}
-          <div className="pt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+          <div
+            key={currentTab.id}
+            className="pt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center animate-hero-fade"
+          >
             <div className="lg:col-span-7">
               <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-brand-accent-text">
                 {`${currentTab.tag} // ENGINEERING SPEC`}

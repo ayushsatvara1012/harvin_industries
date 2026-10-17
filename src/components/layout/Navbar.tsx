@@ -198,7 +198,7 @@ export function Navbar({ products }: { products: Product[] }) {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="border-x border-b border-white/10 bg-brand-ink/70 backdrop-blur-md p-2 shadow-2xl shadow-black/60 rounded-b-xl">
+                      <div className="border-x border-b border-white/15 bg-brand-ink/95 backdrop-blur-2xl p-2.5 shadow-2xl shadow-black/80 rounded-b-xl">
                         {item.children?.map((subItem) => (
                           <Link
                             key={subItem.label}

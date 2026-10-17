@@ -1,6 +1,9 @@
 export const inputClass =
   "w-full rounded-lg border border-brand-border bg-white px-3 py-2.5 text-sm text-brand-text placeholder:text-brand-text-secondary/60 focus:border-brand-yellow focus:outline-none focus:ring-2 focus:ring-brand-yellow/30 disabled:opacity-60";
 
+export const selectClass =
+  "w-full appearance-none rounded-lg border border-brand-border bg-white pl-3.5 pr-10 py-2.5 text-sm text-brand-text focus:border-brand-yellow focus:outline-none focus:ring-2 focus:ring-brand-yellow/30 disabled:opacity-60 cursor-pointer";
+
 export const primaryButtonClass =
   "inline-flex items-center justify-center gap-2 rounded-full bg-brand-yellow px-6 py-2.5 text-sm font-semibold text-brand-ink transition-colors hover:bg-brand-yellow-light disabled:opacity-60";
 

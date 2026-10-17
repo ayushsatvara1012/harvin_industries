@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { markLeadHandled, removeLead } from "@/app/admin/(panel)/leads/actions";
-import { secondaryButtonClass } from "@/components/admin/fields";
+import { Icon } from "@/components/ui";
 
 export function LeadActions({ id, name, handled }: { id: number; name: string; handled: boolean }) {
   const router = useRouter();
@@ -21,14 +21,18 @@ export function LeadActions({ id, name, handled }: { id: number; name: string; h
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center gap-3">
       <button
         type="button"
         disabled={pending}
         onClick={() => run(() => markLeadHandled(id, !handled))}
-        className={`${secondaryButtonClass} py-1.5!`}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3.5 py-2 text-xs font-semibold text-brand-ink transition-colors hover:border-brand-accent hover:text-brand-accent-text hover:bg-brand-surface-alt disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {handled ? "Mark as new" : "Mark as handled"}
+        <Icon
+          name={handled ? "undo" : "check_circle"}
+          className={`text-base ${handled ? "text-brand-text-secondary" : "text-green-600"}`}
+        />
+        <span>{handled ? "Mark as new" : "Mark as handled"}</span>
       </button>
       <button
         type="button"
@@ -36,9 +40,11 @@ export function LeadActions({ id, name, handled }: { id: number; name: string; h
         onClick={() => {
           if (window.confirm(`Delete the enquiry from "${name}"? This cannot be undone.`)) run(() => removeLead(id));
         }}
-        className="text-sm font-semibold text-red-700 hover:underline disabled:opacity-60"
+        title={`Delete enquiry from ${name}`}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-white px-3.5 py-2 text-xs font-semibold text-red-600 transition-colors hover:bg-red-50 hover:border-red-300 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Delete
+        <Icon name="delete" className="text-base" />
+        <span>Delete</span>
       </button>
       {error && (
         <span role="alert" className="text-xs text-red-700">

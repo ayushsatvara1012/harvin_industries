@@ -14,6 +14,13 @@ export type AdminProductSummary = {
   featured: boolean;
   sortOrder: number;
   thumbnail?: string;
+  tagline?: string;
+  description?: string;
+  outputCapacity?: number;
+  power?: string;
+  dailyOutput?: string;
+  specsCount: number;
+  productionRowsCount: number;
   updatedAt: Date;
 };
 
@@ -48,17 +55,27 @@ export async function listAdminProducts(): Promise<AdminProductSummary[]> {
   const rows = await withWakeRetry((db) =>
     db.product.findMany({ orderBy: [{ sortOrder: "asc" }, { id: "asc" }] }),
   );
-  return rows.map((row) => ({
-    id: row.id,
-    slug: row.slug,
-    name: row.name,
-    category: row.category,
-    status: row.status,
-    featured: row.featured,
-    sortOrder: row.sortOrder,
-    thumbnail: toProduct(row).images[0]?.publicId,
-    updatedAt: row.updatedAt,
-  }));
+  return rows.map((row) => {
+    const p = toProduct(row);
+    return {
+      id: row.id,
+      slug: row.slug,
+      name: row.name,
+      category: row.category,
+      status: row.status,
+      featured: row.featured,
+      sortOrder: row.sortOrder,
+      thumbnail: p.images[0]?.publicId,
+      tagline: p.tagline,
+      description: p.description,
+      outputCapacity: p.outputCapacity,
+      power: p.power,
+      dailyOutput: p.dailyOutput,
+      specsCount: p.specs?.length ?? 0,
+      productionRowsCount: p.productionTable?.length ?? 0,
+      updatedAt: row.updatedAt,
+    };
+  });
 }
 
 export async function getAdminProduct(id: number): Promise<(ProductInput & { id: number }) | null> {

@@ -157,42 +157,52 @@ export function ContactForm({
 
         <Field label="Machine of Interest" error={errors.product}>
           {({ id, describedBy }) => (
-            <select
-              id={id}
-              name="product"
-              defaultValue={values.product || selectedProduct || ""}
-              aria-describedby={describedBy}
-              aria-invalid={Boolean(errors.product)}
-              className={`${FIELD_CLASSES} [&>option]:bg-brand-ink [&>option]:text-white`}
-            >
-              <option value="">Select a machine</option>
-              {products.map((product) => (
-                <option key={product.slug} value={product.slug}>
-                  {product.name} — {CATEGORY_LABELS[product.category]}
-                </option>
-              ))}
-              <option value="unsure">Not sure — please advise</option>
-            </select>
+            <div className="relative">
+              <select
+                id={id}
+                name="product"
+                defaultValue={values.product || selectedProduct || ""}
+                aria-describedby={describedBy}
+                aria-invalid={Boolean(errors.product)}
+                className={`${FIELD_CLASSES} appearance-none pr-10 [&>option]:bg-brand-ink [&>option]:text-white`}
+              >
+                <option value="">Select a machine</option>
+                {products.map((product) => (
+                  <option key={product.slug} value={product.slug}>
+                    {product.name} — {CATEGORY_LABELS[product.category]}
+                  </option>
+                ))}
+                <option value="unsure">Not sure — please advise</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400">
+                <Icon name="expand_more" className="text-xl" />
+              </div>
+            </div>
           )}
         </Field>
 
         <Field label="Target Daily Output" error={errors.output}>
           {({ id, describedBy }) => (
-            <select
-              id={id}
-              name="output"
-              defaultValue={values.output}
-              aria-describedby={describedBy}
-              aria-invalid={Boolean(errors.output)}
-              className={`${FIELD_CLASSES} [&>option]:bg-brand-ink [&>option]:text-white`}
-            >
-              <option value="">Select a volume</option>
-              {OUTPUT_BANDS.map((band) => (
-                <option key={band} value={band}>
-                  {band}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                id={id}
+                name="output"
+                defaultValue={values.output}
+                aria-describedby={describedBy}
+                aria-invalid={Boolean(errors.output)}
+                className={`${FIELD_CLASSES} appearance-none pr-10 [&>option]:bg-brand-ink [&>option]:text-white`}
+              >
+                <option value="">Select a volume</option>
+                {OUTPUT_BANDS.map((band) => (
+                  <option key={band} value={band}>
+                    {band}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400">
+                <Icon name="expand_more" className="text-xl" />
+              </div>
+            </div>
           )}
         </Field>
 

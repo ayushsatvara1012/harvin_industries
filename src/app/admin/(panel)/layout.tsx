@@ -1,7 +1,4 @@
-import Link from "next/link";
-import { signOut } from "@/auth";
-import { Logo } from "@/components/layout";
-import { Icon } from "@/components/ui";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { requireOwner } from "@/lib/dal";
 import { countUnhandledLeads } from "@/lib/leads";
 
@@ -19,48 +16,13 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   const newLeads = await unhandledCount();
 
   return (
-    <>
-      <header className="border-b border-brand-border bg-brand-ink text-white">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
-          <Link href="/admin/products" prefetch={false} className="flex items-center gap-3">
-            <Logo className="h-8 text-white" />
-            <span className="font-display text-xl tracking-wide">Harvin Admin</span>
-          </Link>
-          <nav aria-label="Admin" className="order-last flex w-full items-center gap-5 text-sm font-semibold sm:order-none sm:w-auto">
-            <Link href="/admin/products" prefetch={false} className="text-brand-yellow-light">
-              Products
-            </Link>
-            <Link href="/admin/leads" prefetch={false} className="inline-flex items-center gap-2 text-brand-yellow-light">
-              Enquiries
-              {newLeads > 0 && (
-                <span className="rounded-full bg-brand-yellow px-2 py-0.5 text-xs font-bold text-brand-ink">
-                  {newLeads}
-                  <span className="sr-only"> new</span>
-                </span>
-              )}
-            </Link>
-          </nav>
-          <div className="ml-auto flex items-center gap-4 text-sm">
-            <Link href="/" target="_blank" className="hidden items-center gap-1 text-white/80 hover:text-white sm:inline-flex">
-              View site
-              <Icon name="open_in_new" className="text-base" />
-            </Link>
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/admin/login" });
-              }}
-            >
-              <button type="submit" className="rounded-full border border-white/30 px-4 py-1.5 font-semibold hover:border-brand-yellow-light">
-                Sign out
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
-      <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
-        {children}
-      </main>
-    </>
+    <div className="min-h-screen bg-[#f8fafc]">
+      <AdminSidebar newLeads={newLeads} />
+      <div className="flex flex-col md:pl-64 lg:pl-72 min-h-screen">
+        <main id="main" className="flex-1 px-4 py-8 sm:px-8 lg:px-10 max-w-7xl w-full mx-auto">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 }

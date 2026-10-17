@@ -15,7 +15,8 @@ import {
   slugify,
   toPayload,
 } from "@/lib/product-form";
-import { Field, Section, inputClass, primaryButtonClass, secondaryButtonClass } from "./fields";
+import { Field, Section, inputClass, selectClass, primaryButtonClass, secondaryButtonClass } from "./fields";
+import { Icon } from "@/components/ui";
 import { ImagesEditor } from "./ImagesEditor";
 import { RowsEditor, type Column } from "./RowsEditor";
 import type { SpecRowValues, ProductionRowValues } from "@/lib/product-form";
@@ -112,18 +113,23 @@ export function ProductForm({ id, initial }: { id: number | null; initial: Produ
             />
           </Field>
           <Field label="Category" htmlFor="category" error={error("category")}>
-            <select
-              id="category"
-              value={values.category}
-              onChange={(event) => set("category", event.target.value as ProductFormValues["category"])}
-              className={`${inputClass} h-[42px]`}
-            >
-              {CATEGORIES.map((category) => (
-                <option key={category} value={category}>
-                  {CATEGORY_LABELS[category]}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                id="category"
+                value={values.category}
+                onChange={(event) => set("category", event.target.value as ProductFormValues["category"])}
+                className={`${selectClass} h-[42px]`}
+              >
+                {CATEGORIES.map((category) => (
+                  <option key={category} value={category}>
+                    {CATEGORY_LABELS[category]}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-brand-text-secondary">
+                <Icon name="expand_more" className="text-xl" />
+              </div>
+            </div>
           </Field>
           <Field label="Tagline" htmlFor="tagline" hint="One line shown on cards." error={error("tagline")}>
             <input id="tagline" value={values.tagline} onChange={(event) => set("tagline", event.target.value)} className={inputClass} />
@@ -283,15 +289,20 @@ export function ProductForm({ id, initial }: { id: number | null; initial: Produ
       <Section title="Publishing">
         <div className="grid gap-5 sm:grid-cols-3">
           <Field label="Status" htmlFor="status" hint="Drafts are hidden from the public site.">
-            <select
-              id="status"
-              value={values.status}
-              onChange={(event) => set("status", event.target.value as ProductFormValues["status"])}
-              className={`${inputClass} h-[42px]`}
-            >
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-            </select>
+            <div className="relative">
+              <select
+                id="status"
+                value={values.status}
+                onChange={(event) => set("status", event.target.value as ProductFormValues["status"])}
+                className={`${selectClass} h-[42px]`}
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-brand-text-secondary">
+                <Icon name="expand_more" className="text-xl" />
+              </div>
+            </div>
           </Field>
           <Field label="Display order" htmlFor="sortOrder" hint="Lower numbers come first." error={error("sortOrder")}>
             <input

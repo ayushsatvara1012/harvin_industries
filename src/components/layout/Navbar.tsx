@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { BrandLogo } from "./BrandLogo";
-import { Button } from "@/components/ui";
+import { Button, Icon } from "@/components/ui";
 import { type Product, CATEGORY_LABELS } from "@/lib/product-types";
 
 const SPY_SECTION_IDS = ["about", "manufacturing", "advantage", "industries"];
@@ -191,14 +191,14 @@ export function Navbar({ products }: { products: Product[] }) {
                     id="products-dropdown-menu"
                     role="menu"
                     inert={!productsDropdownOpen}
-                    className={`absolute top-full left-0 z-50 grid w-72 transition-[grid-template-rows,opacity] duration-200 ease-out ${
+                    className={`absolute top-full left-0 z-50 grid w-80 transition-[grid-template-rows,opacity] duration-200 ease-out ${
                       productsDropdownOpen
                         ? "grid-rows-[1fr] opacity-100 pointer-events-auto"
                         : "grid-rows-[0fr] opacity-0 pointer-events-none"
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="border-x border-b border-white/10 bg-brand-ink/95 backdrop-blur-xl p-2 shadow-2xl shadow-black/70 rounded-b-xl">
+                      <div className="border-x border-b border-white/10 bg-brand-ink/70 backdrop-blur-md p-2 shadow-2xl shadow-black/60 rounded-b-xl">
                         {item.children?.map((subItem) => (
                           <Link
                             key={subItem.label}
@@ -219,6 +219,30 @@ export function Navbar({ products }: { products: Product[] }) {
                             </svg>
                           </Link>
                         ))}
+
+                        {/* Explore Products action button */}
+                        <div className="mt-1 pt-1.5 border-t border-white/10">
+                          <Link
+                            href="/products"
+                            role="menuitem"
+                            onClick={() => setProductsDropdownOpen(false)}
+                            className="group/all flex items-center justify-between px-3.5 py-2.5 text-sm font-semibold text-brand-yellow rounded-lg bg-white/[0.04] hover:bg-brand-yellow hover:text-brand-ink transition-all"
+                          >
+                            <span className="flex items-center gap-2 font-display text-base">
+                              <Icon name="grid_view" className="text-base" />
+                              <span>Explore Products</span>
+                            </span>
+                            <svg
+                              className="w-4 h-4 transition-transform duration-150 group-hover/all:translate-x-1"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -336,6 +360,20 @@ export function Navbar({ products }: { products: Product[] }) {
                             {subItem.label}
                           </Link>
                         ))}
+                        <Link
+                          href="/products"
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            setMobileProductsOpen(false);
+                          }}
+                          className="py-3 font-display text-base font-semibold text-brand-yellow hover:underline flex items-center justify-between pr-4"
+                        >
+                          <span className="flex items-center gap-2">
+                            <Icon name="grid_view" className="text-base" />
+                            Explore Products
+                          </span>
+                          <span>→</span>
+                        </Link>
                       </div>
                     </div>
                   </div>

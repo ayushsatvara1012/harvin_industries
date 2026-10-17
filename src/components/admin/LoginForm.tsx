@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { login } from "@/app/admin/login/actions";
 import { Field, inputClass, primaryButtonClass } from "./fields";
+import { PasswordInput } from "./PasswordInput";
 
 export function LoginForm() {
   const [state, action, pending] = useActionState(login, undefined);
@@ -13,8 +15,11 @@ export function LoginForm() {
         <input id="email" name="email" type="email" autoComplete="username" required className={inputClass} />
       </Field>
       <Field label="Password" htmlFor="password">
-        <input id="password" name="password" type="password" autoComplete="current-password" required className={inputClass} />
+        <PasswordInput id="password" name="password" autoComplete="current-password" required />
       </Field>
+      <Link href="/admin/forgot-password" prefetch={false} className="-mt-2 justify-self-end text-sm font-semibold text-brand-accent-text hover:underline">
+        Forgot password?
+      </Link>
       {state?.error && (
         <p role="alert" className="text-sm font-medium text-red-700">
           {state.error}

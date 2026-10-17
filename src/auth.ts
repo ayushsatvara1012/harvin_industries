@@ -1,6 +1,7 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
+import { getOwnerPasswordHash } from "@/lib/owner-credentials";
 import { verifyPassword } from "@/lib/password";
 
 const credentialsSchema = z.object({
@@ -19,7 +20,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(raw) {
         const parsed = credentialsSchema.safeParse(raw);
         const ownerEmail = process.env.OWNER_EMAIL?.trim().toLowerCase();
-        const ownerHash = process.env.OWNER_PASSWORD_HASH;
+        let ownerHash: string | undefined;
+        try {
+          ownerHash = await getOwnerPasswordHash();
+        } catch (error) {
+          console.error("[auth] could not read the owner password", error);
+        }
         if (!parsed.success || !ownerEmail || !ownerHash) throw new CredentialsSignin();
 
         // Always run the hash check, even for a wrong email, so timing does not

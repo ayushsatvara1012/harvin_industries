@@ -29,8 +29,29 @@ const securityHeaders = [
     : []),
 ];
 
+// The Worker only needs the Postgres query compiler. Tracing also dragged in the
+// Prisma CLI (pglite, schema engine, every other database's compiler) and the
+// local Cloudflare dev tools, ~50 MB of WASM and binaries that slow cold starts.
+const unusedAtRuntime = [
+  "node_modules/prisma/**",
+  "node_modules/@prisma/dev/**",
+  "node_modules/@prisma/engines/**",
+  "node_modules/@prisma/studio-core/**",
+  "node_modules/@prisma/prisma-schema-wasm/**",
+  "node_modules/@prisma/schema-engine-wasm/**",
+  "node_modules/@electric-sql/**",
+  "node_modules/@prisma/client/runtime/*.{mysql,sqlite,sqlserver,cockroachdb}.*",
+  "node_modules/wrangler/**",
+  "node_modules/workerd/**",
+  "node_modules/@cloudflare/workerd-*/**",
+  "node_modules/miniflare/**",
+  "node_modules/esbuild/**",
+  "node_modules/@esbuild/**",
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingExcludes: { "*": unusedAtRuntime },
   images: {
     formats: ["image/avif", "image/webp"],
     // Each distinct width is a separate transform, so a short list keeps the

@@ -129,8 +129,10 @@ export function Navbar({ products }: { products: Product[] }) {
 
   return (
     <>
-    <header className="sticky top-0 z-50 w-full bg-brand-ink/70 backdrop-blur-md border-b border-white/10">
-      <div className="mx-auto flex h-20 max-w-7xl items-stretch justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 w-full">
+      {/* Background & blur on a dedicated layer so the header box does not establish a backdrop root that traps child dropdowns */}
+      <div className="absolute inset-0 bg-brand-ink/70 backdrop-blur-md border-b border-white/10 pointer-events-none -z-10" />
+      <div className="relative mx-auto flex h-20 max-w-7xl items-stretch justify-between gap-4 px-4 sm:px-6 lg:px-8 z-10">
         {/* Logo */}
         <div className="flex items-center">
           <BrandLogo variant="dark" />
@@ -198,7 +200,7 @@ export function Navbar({ products }: { products: Product[] }) {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="border-x border-b border-white/15 bg-brand-ink/95 backdrop-blur-2xl p-2.5 shadow-2xl shadow-black/80 rounded-b-xl">
+                      <div className="border-x border-b border-white/15 bg-brand-ink/80 backdrop-blur-2xl p-2.5 shadow-2xl shadow-black/80 rounded-b-xl">
                         {item.children?.map((subItem) => (
                           <Link
                             key={subItem.label}

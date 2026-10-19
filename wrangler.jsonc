@@ -36,5 +36,9 @@
 		// Enable image optimization
 		// see https://opennext.js.org/cloudflare/howtos/image
 		"binding": "IMAGES"
+	},
+	"vars": {
+		"NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME": "u2mb4lj7",
+		"NEXT_PUBLIC_SITE_URL": "https://harvinindustries.com"
 	}
 }

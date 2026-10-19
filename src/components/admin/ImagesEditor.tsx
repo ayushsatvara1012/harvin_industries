@@ -21,7 +21,13 @@ async function uploadToCloudinary(file: File): Promise<string> {
   const signed = await fetch("/api/admin/cloudinary-sign", { method: "POST" }).catch(() => {
     throw new Error("Could not reach the server. Check your connection and try again.");
   });
-  if (!signed.ok) throw new Error("Could not start the upload. Please sign in again.");
+  if (!signed.ok) {
+    if (signed.status === 401) {
+      throw new Error("Your session has expired. Please sign in again.");
+    }
+    const errBody = await signed.json().catch(() => null);
+    throw new Error(errBody?.error ?? "Could not start the upload. Please try again.");
+  }
   const sig: Signature = await signed.json();
 
   const form = new FormData();

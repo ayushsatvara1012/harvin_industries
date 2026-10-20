@@ -5,16 +5,34 @@ export function VisionMission() {
   return (
     <section id="vision" className="scroll-mt-20 bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Vision — statement in an interactive statement card */}
-        <div className="group relative rounded-2xl border border-brand-border bg-gradient-to-br from-white via-white to-brand-surface-alt/60 p-6 sm:p-10 shadow-xs transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-brand-ink/10 hover:border-brand-yellow/60 cursor-default transform-gpu">
-          <div className="border-l-4 border-brand-yellow pl-6 sm:pl-8">
-            <SectionHeader eyebrow="Our Vision" size="md" tight>
-              Where We&apos;re <span className="text-brand-accent-text">Headed</span>
-            </SectionHeader>
-            <blockquote className="mt-5 max-w-4xl font-display text-2xl sm:text-3xl lg:text-[34px] leading-[1.25] tracking-tight text-brand-ink">
-              &ldquo;{VISION}&rdquo;
-            </blockquote>
-          </div>
+        {/* Vision — borderless pull quote with interactive 3D letter lift on hover */}
+        <div className="group relative border-l-4 border-brand-yellow pl-6 sm:pl-10 transition-colors duration-300 hover:border-brand-accent-text">
+          <SectionHeader eyebrow="Our Vision" size="md" tight>
+            Where We&apos;re <span className="text-brand-accent-text">Headed</span>
+          </SectionHeader>
+          <blockquote className="mt-5 max-w-4xl font-display text-2xl sm:text-3xl lg:text-[34px] leading-[1.3] tracking-tight text-brand-ink transition-transform duration-300 ease-out origin-left group-hover:scale-[1.01] group-hover:[text-shadow:0_1px_2px_rgba(0,0,0,0.08)]">
+            <span className="sr-only">&ldquo;{VISION}&rdquo;</span>
+            <span aria-hidden="true">
+              <span className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-2 hover:scale-125 hover:text-brand-accent-text hover:[text-shadow:0_4px_12px_rgba(209,140,24,0.45),0_2px_4px_rgba(0,0,0,0.25)]">
+                &ldquo;
+              </span>
+              {VISION.split(" ").map((word, wIdx) => (
+                <span key={wIdx} className="inline-block whitespace-nowrap mr-[0.26em]">
+                  {word.split("").map((char, cIdx) => (
+                    <span
+                      key={cIdx}
+                      className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-2 hover:scale-125 hover:text-brand-accent-text hover:[text-shadow:0_4px_12px_rgba(209,140,24,0.45),0_2px_4px_rgba(0,0,0,0.25)]"
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              ))}
+              <span className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-2 hover:scale-125 hover:text-brand-accent-text hover:[text-shadow:0_4px_12px_rgba(209,140,24,0.45),0_2px_4px_rgba(0,0,0,0.25)]">
+                &rdquo;
+              </span>
+            </span>
+          </blockquote>
         </div>
 
         {/* Mission — four pillars */}

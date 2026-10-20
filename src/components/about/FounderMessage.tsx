@@ -13,7 +13,7 @@ export function FounderMessage() {
               <span className="text-brand-accent-text">Before You Begin</span>
             </SectionHeader>
 
-            <div className="mt-8 flex items-center gap-4 border-t border-brand-border pt-6">
+            <div className="mt-8 flex items-center gap-4 rounded-xl border border-brand-border bg-white p-4 shadow-xs transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-lg hover:border-brand-accent/40 cursor-default transform-gpu">
               <Logo className="h-10 w-auto shrink-0 text-brand-ink" />
               <div>
                 <p className="font-display text-lg tracking-tight text-brand-ink">
@@ -25,7 +25,7 @@ export function FounderMessage() {
           </div>
 
           <div className="lg:col-span-8">
-            <div className="space-y-5">
+            <div className="rounded-2xl border border-brand-border/70 bg-white p-7 sm:p-9 shadow-xs transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:shadow-brand-ink/5 hover:border-brand-accent/30 cursor-default transform-gpu space-y-5">
               {FOUNDER.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph.slice(0, 40)}

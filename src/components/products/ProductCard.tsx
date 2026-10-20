@@ -14,7 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group rounded-xl border border-brand-border bg-brand-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand-accent/40 hover:shadow-lg"
+      className="group rounded-xl border border-brand-border bg-brand-surface p-6 transition-all duration-300 ease-out hover:scale-[1.025] hover:-translate-y-1.5 hover:border-brand-accent/40 hover:shadow-xl transform-gpu"
     >
       <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-lg skeleton-media">
         {image ? (

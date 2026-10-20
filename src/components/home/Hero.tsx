@@ -338,13 +338,13 @@ export function Hero() {
             {BADGES.map((badge, idx) => (
               <div
                 key={badge.line1}
-                className={`flex items-center gap-3 sm:pr-6 lg:pr-10 ${
+                className={`group flex items-center gap-3 sm:pr-6 lg:pr-10 transition-transform duration-300 ease-out hover:scale-105 cursor-default transform-gpu ${
                   idx > 0
                     ? "border-t sm:border-t-0 sm:border-l border-white/20 pt-4 sm:pt-0 sm:pl-6 lg:pl-10"
                     : ""
                 }`}
               >
-                <Icon name={badge.icon} className="text-brand-yellow text-[28px] sm:text-[32px] shrink-0" />
+                <Icon name={badge.icon} className="text-brand-yellow text-[28px] sm:text-[32px] shrink-0 transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_2px_8px_rgba(251,191,36,0.3)]" />
                 <span className="text-xs sm:text-[13px] font-bold tracking-wider uppercase text-white leading-tight whitespace-nowrap">
                   {badge.line1}
                   <br />

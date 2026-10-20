@@ -62,7 +62,7 @@ export function ManufacturingSection() {
             {PROCESS_STEPS.map((step) => (
               <div
                 key={step.title}
-                className="relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl skeleton-media-dark aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] shadow-md"
+                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl skeleton-media-dark aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] shadow-md transition-all duration-300 ease-out hover:scale-[1.03] hover:-translate-y-1.5 hover:shadow-2xl cursor-default transform-gpu"
               >
                 {/* Full-bleed Photo */}
                 <CloudinaryImage
@@ -70,7 +70,7 @@ export function ManufacturingSection() {
                   alt={step.alt}
                   fill
                   sizes="(min-width: 1024px) 18vw, (min-width: 640px) 30vw, 45vw"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                 />
 
                 {/* Scrim overlay: soft dark gradient from bottom for text legibility */}

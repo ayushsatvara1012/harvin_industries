@@ -47,13 +47,13 @@ export function IndustriesSection() {
             <div
               key={ind.title}
               style={{ borderRadius: ind.borderRadius }}
-              className="relative flex h-56 flex-col overflow-hidden bg-white border border-brand-border/80 px-5 py-5 text-left shadow-sm"
+              className="group relative flex h-56 flex-col overflow-hidden bg-white border border-brand-border/80 px-5 py-5 text-left shadow-xs transition-all duration-300 ease-out hover:scale-[1.03] hover:-translate-y-1.5 hover:shadow-xl hover:border-brand-accent/40 cursor-default transform-gpu"
             >
               <div className="relative z-10 flex items-start justify-between">
-                <span className="font-stat text-xs tracking-[0.2em] text-brand-text-secondary">
+                <span className="font-stat text-xs tracking-[0.2em] text-brand-text-secondary transition-colors group-hover:text-brand-accent-text">
                   {String(idx + 1).padStart(2, "0")}
                 </span>
-                <h3 className="text-base font-medium font-stat text-brand-text leading-tight">
+                <h3 className="text-base font-medium font-stat text-brand-text leading-tight transition-colors group-hover:text-brand-accent-text">
                   {ind.title}
                 </h3>
               </div>
@@ -63,7 +63,7 @@ export function IndustriesSection() {
                 style={{
                   fontVariationSettings: "'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 48",
                 }}
-                className="pointer-events-none m-auto text-[128px] text-brand-text-secondary/20"
+                className="pointer-events-none m-auto text-[128px] text-brand-text-secondary/20 transition-transform duration-500 ease-out group-hover:scale-110 group-hover:text-brand-accent/15"
               />
             </div>
           ))}

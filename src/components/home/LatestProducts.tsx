@@ -43,7 +43,7 @@ export async function LatestProducts() {
             <Link
               key={product.slug}
               href={`/products/${product.slug}`}
-              className="group flex flex-col overflow-hidden rounded-sm border border-brand-border bg-white transition-colors duration-300 hover:border-brand-accent/40"
+              className="group flex flex-col overflow-hidden rounded-sm border border-brand-border bg-white transition-all duration-300 ease-out hover:scale-[1.025] hover:-translate-y-1.5 hover:shadow-xl hover:border-brand-accent/50 transform-gpu"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden skeleton-media">
                 {product.images[0] ? (
@@ -110,7 +110,7 @@ export async function LatestProducts() {
               return (
                 <div
                   key={form.name}
-                  className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-brand-border bg-gradient-to-b from-brand-surface-alt/60 to-brand-surface p-4 shadow-sm"
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-brand-border bg-gradient-to-b from-brand-surface-alt/60 to-brand-surface p-4 shadow-xs transition-all duration-300 ease-out hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg hover:border-brand-accent/40 transform-gpu cursor-default"
                 >
                   {/* Subtle technical crosshair registration ticks in corners */}
                   <div className="absolute top-2 right-2 font-mono text-[9px] text-brand-border pointer-events-none select-none">
@@ -220,7 +220,7 @@ export async function LatestProducts() {
             {COMPANY_STATS.map((stat, idx) => (
               <div
                 key={stat.label}
-                className={`flex items-center gap-5 py-2 lg:py-0 lg:px-8 ${
+                className={`flex items-center gap-5 py-2 lg:py-0 lg:px-8 transition-transform duration-300 ease-out hover:scale-[1.03] transform-gpu cursor-default ${
                   idx > 0 ? "lg:border-l lg:border-white/10" : ""
                 }`}
               >

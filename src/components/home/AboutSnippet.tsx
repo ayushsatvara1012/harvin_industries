@@ -299,7 +299,7 @@ export function AboutSnippet() {
               {currentTab.metrics.map((m) => (
                 <div
                   key={m.label}
-                  className="flex flex-col justify-center rounded-xl border border-brand-border bg-white p-3 sm:p-4 text-center shadow-xs"
+                  className="flex flex-col justify-center rounded-xl border border-brand-border bg-white p-3 sm:p-4 text-center shadow-xs transition-all duration-300 ease-out hover:scale-[1.04] hover:-translate-y-1 hover:shadow-md hover:border-brand-accent/40 cursor-default transform-gpu"
                 >
                   <span className="font-stat text-lg sm:text-xl font-bold text-brand-ink">
                     {m.value}

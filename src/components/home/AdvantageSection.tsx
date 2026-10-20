@@ -52,7 +52,7 @@ export function AdvantageSection() {
             {ADVANTAGES.map((item, idx) => (
               <div
                 key={item.title}
-                className="relative flex flex-col gap-6 overflow-hidden rounded-sm border border-white/10 bg-white/[0.03] p-5 cursor-default"
+                className="group relative flex flex-col gap-6 overflow-hidden rounded-sm border border-white/10 bg-white/[0.03] p-5 cursor-default transition-all duration-300 ease-out hover:scale-[1.03] hover:-translate-y-1.5 hover:border-brand-yellow/50 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-black/50 transform-gpu"
               >
                 {/* Giant outlined watermark number, bleeding off the card edge */}
                 <span
@@ -62,7 +62,7 @@ export function AdvantageSection() {
                   {String(idx + 1).padStart(2, "0")}
                 </span>
 
-                <span className="relative flex h-11 w-11 items-center justify-center rounded-sm border border-brand-yellow/30 text-brand-yellow">
+                <span className="relative flex h-11 w-11 items-center justify-center rounded-sm border border-brand-yellow/30 text-brand-yellow transition-transform duration-300 group-hover:scale-110">
                   <Icon name={item.icon} className="text-[22px]" />
                 </span>
 

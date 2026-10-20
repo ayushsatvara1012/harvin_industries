@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Qwigley';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Qwigley.ttf') format('truetype');
+}
+
 /* "Machine Yellow" palette — industrial safety yellow against near-black, the
    colour language of heavy plant equipment. Yellow is fill-only: it never
    carries text on a light background (1.8:1), so `brand-accent` is the deep

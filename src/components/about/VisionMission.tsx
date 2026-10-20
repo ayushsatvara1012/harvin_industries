@@ -58,7 +58,7 @@ export function VisionMission() {
                   <Icon name={pillar.icon} className="text-[24px] transition-transform duration-300 group-hover:-translate-y-0.5" />
                 </span>
 
-                <h3 className="relative font-display text-xl tracking-tight text-brand-ink transition-colors duration-300 group-hover:text-brand-accent-text">
+                <h3 className="relative font-display text-xl font-bold tracking-tight text-brand-ink transition-colors duration-300 group-hover:text-brand-accent-text">
                   {pillar.title}
                 </h3>
                 <p className="relative max-w-md text-sm sm:text-[15px] leading-relaxed text-brand-text-secondary">

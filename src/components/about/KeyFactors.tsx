@@ -22,7 +22,7 @@ export function KeyFactors() {
                 <Icon name={factor.icon} className="text-[22px] transition-transform duration-300 group-hover:-translate-y-0.5" />
               </span>
 
-              <h3 className="font-display text-lg sm:text-xl tracking-tight text-white transition-colors duration-300 group-hover:text-brand-yellow">
+              <h3 className="font-display text-lg sm:text-xl font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-brand-yellow">
                 {factor.title}
               </h3>
               <p className="text-sm sm:text-[15px] leading-relaxed text-gray-400 transition-colors duration-300 group-hover:text-gray-200">

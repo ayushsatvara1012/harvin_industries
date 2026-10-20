@@ -10,10 +10,10 @@ export function VisionMission() {
           <SectionHeader eyebrow="Our Vision" size="md" tight>
             Where We&apos;re <span className="text-brand-accent-text">Headed</span>
           </SectionHeader>
-          <blockquote className="mt-5 max-w-4xl font-display text-2xl sm:text-3xl lg:text-[34px] leading-[1.3] tracking-tight text-brand-ink transition-transform duration-300 ease-out origin-left group-hover:scale-[1.01] group-hover:[text-shadow:0_1px_2px_rgba(0,0,0,0.08)]">
+          <blockquote className="mt-5 w-full font-display text-2xl sm:text-3xl lg:text-[34px] leading-[1.3] tracking-tight text-brand-ink">
             <span className="sr-only">&ldquo;{VISION}&rdquo;</span>
             <span aria-hidden="true">
-              <span className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-2 hover:scale-125 hover:text-brand-accent-text hover:[text-shadow:0_4px_12px_rgba(209,140,24,0.45),0_2px_4px_rgba(0,0,0,0.25)]">
+              <span className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-1 hover:scale-110 hover:text-brand-accent-text hover:[text-shadow:0_3px_8px_rgba(209,140,24,0.35),0_1px_2px_rgba(0,0,0,0.2)]">
                 &ldquo;
               </span>
               {VISION.split(" ").map((word, wIdx) => (
@@ -21,14 +21,14 @@ export function VisionMission() {
                   {word.split("").map((char, cIdx) => (
                     <span
                       key={cIdx}
-                      className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-2 hover:scale-125 hover:text-brand-accent-text hover:[text-shadow:0_4px_12px_rgba(209,140,24,0.45),0_2px_4px_rgba(0,0,0,0.25)]"
+                      className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-1 hover:scale-110 hover:text-brand-accent-text hover:[text-shadow:0_3px_8px_rgba(209,140,24,0.35),0_1px_2px_rgba(0,0,0,0.2)]"
                     >
                       {char}
                     </span>
                   ))}
                 </span>
               ))}
-              <span className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-2 hover:scale-125 hover:text-brand-accent-text hover:[text-shadow:0_4px_12px_rgba(209,140,24,0.45),0_2px_4px_rgba(0,0,0,0.25)]">
+              <span className="inline-block transform-gpu transition-all duration-200 ease-out cursor-default hover:-translate-y-1 hover:scale-110 hover:text-brand-accent-text hover:[text-shadow:0_3px_8px_rgba(209,140,24,0.35),0_1px_2px_rgba(0,0,0,0.2)]">
                 &rdquo;
               </span>
             </span>
